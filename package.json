@@ -74,6 +74,7 @@
     "mapCoverage": true
   },
   "devDependencies": {
+    "@types/history": "^4.6.1",
     "@types/jest": "^21.1.0",
     "@types/node": "^8.0.0",
     "colors": "^1.1.2",
@@ -85,6 +86,7 @@
     "jest": "^21.0.0",
     "lint-staged": "^4.0.0",
     "lodash.camelcase": "^4.3.0",
+    "mobx": "^3.3.1",
     "prettier": "^1.4.4",
     "prompt": "^1.0.0",
     "replace-in-file": "^3.0.0-beta.2",
@@ -102,5 +104,12 @@
     "typedoc": "^0.9.0",
     "typescript": "^2.3.4",
     "validate-commit-msg": "^2.12.2"
+  },
+  "dependencies": {
+    "history": "^4.7.2",
+    "route-node": "^1.10.0"
+  },
+  "peerDependencies": {
+    "mobx": "^3.3.1"
   }
 }
