@@ -1,4 +1,4 @@
-import { newRouter } from '../src/typed-mobx-router'
+import { newRouter, path } from '../src/typed-mobx-router'
 import createMemoryHistory from 'history/createMemoryHistory'
 
 const history = createMemoryHistory()
@@ -49,3 +49,13 @@ describe('Router test', () => {
     )
   })
 })
+
+const nr = newRouter(history)
+  .newAddRoute({
+    name: 'hello',
+    path: path`/${'id'}`,
+    queryParams: ['page']
+  })
+  .start()
+
+nr.hello({ id: '3' })
