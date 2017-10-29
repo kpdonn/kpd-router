@@ -9,20 +9,27 @@ const personOnLoad = jest.fn()
 const router = newRouter(history)
   .addRoute({
     name: 'main',
-    path: '/',
+    path: path`/`,
+    queryParams: ['test'],
     onLoad: () => mainOnLoad()
   })
   .addRoute({
     name: 'people',
-    path: '/people',
+    path: path`/people`,
+    queryParams: ['page'],
     onLoad: () => peopleOnLoad()
   })
   .addRoute({
     name: 'person',
-    path: '/people/:id',
-    onLoad: (params: { id: string }) => personOnLoad(params)
+    path: path`/people/${'id'}`,
+    queryParams: ['test'],
+    onLoad: params => personOnLoad(params)
   })
   .start()
+
+function myString(arg: string): string {
+  return arg
+}
 
 describe('Router test', () => {
   it('is on main page to start', () => {
@@ -49,13 +56,3 @@ describe('Router test', () => {
     )
   })
 })
-
-const nr = newRouter(history)
-  .newAddRoute({
-    name: 'hello',
-    path: path`/${'id'}`,
-    queryParams: ['page']
-  })
-  .start()
-
-nr.hello({ id: '3' })
