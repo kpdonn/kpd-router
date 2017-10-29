@@ -62,6 +62,7 @@ export interface RouteBuilder<
     E,
     'queryParams'
   >
+
   converter<CN extends keyof P & keyof AT, C>(
     name: CN | CN[],
     fun: (arg: string) => C,
@@ -79,6 +80,7 @@ export interface RouteBuilder<
   defaults<D extends Partial<P>>(
     obj: D
   ): RBReturn<N, ObjectDiff<P, D>, AT, R, Q, keyof D, E, 'converter'>
+
   onLoad(
     cb: (args: Optionalize<AT, Q, DK>) => void
   ): RBReturn<N, P, AT, R, Q, DK, E, 'converter' | 'queryParams' | 'defaults'>
@@ -88,8 +90,14 @@ export type Optionalize<
   AT extends object,
   Q extends string,
   DK extends string
-> = ObjectOmit<AT, StringDiff<Q, DK>> & Pick<AT, StringDiff<Q, DK>>
+> = Pick<AT, StringDiff<keyof AT, StringDiff<Q, DK>>> &
+  Partial<
+    Pick<AT, StringDiff<keyof AT, StringDiff<keyof AT, StringDiff<Q, DK>>>>
+  >
 
+//   DK extends string> = Pick<AT,StringDiff<keyof AT, StringDiff<Q, DK>>> & {[K in (keyof AT & Q)]?: AT[K]}
+
+// ObjectOmit<AT, StringDiff<Q, DK>> & Pick<AT, StringDiff<Q, DK>>
 export type RouteBuilderKeys = keyof RouteBuilder<
   any,
   any,
@@ -127,13 +135,18 @@ export interface FinishedRoute<
 const r = newRouter({} as any)
   .route(
     route('test', pb`/test/${'id'}/${'page'}`)
-      .queryParams('query')
+      .queryParams('query', 'q2', 'q3')
       .converter(['page', 'id'], id => Number(id), id => id.toString())
-      .defaults({ page: 1 })
+      .defaults({ page: 1, query: '' })
+      .onLoad(args => ttt(args.query))
   )
   .start()
 
 r.test({ id: 1, query: '%' })
+
+function ttt(arg: string): void {
+  console.log(arg)
+}
 
 export type Params<R extends string, Q extends string> = { [K in R]: string } &
   { [K in Q]?: string }
