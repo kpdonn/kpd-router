@@ -1,6 +1,8 @@
 import { History } from 'history'
 import { pb } from 'router-impl'
 import { ObjectDiff, ObjectOmit, Overwrite, StringDiff } from 'type-utils'
+import * as React from 'react'
+import { TestComp } from 'TestComp'
 
 export interface RouterBuilder<T> {
   start(): T
@@ -84,6 +86,18 @@ export interface RouteBuilder<
   onLoad(
     cb: (args: Optionalize<AT, Q, DK>) => void
   ): RBReturn<N, P, AT, R, Q, DK, E, 'converter' | 'queryParams' | 'defaults'>
+
+  // view<RR extends Optionalize<AT, Q, DK> >(
+  //   reactComponent: React.ComponentType<RR>
+  // ): RBReturn<N, P, AT, R, Q, DK, E, 'converter' | 'queryParams' | 'defaults'>
+
+  view<RR extends Optionalize<AT, Q, DK>>(
+    fun: Comp<RR>
+  ): RBReturn<N, P, AT, R, Q, DK, E, 'converter' | 'queryParams' | 'defaults'>
+}
+
+export interface Comp<P> {
+  (props: P): void
 }
 
 export type Optionalize<
@@ -138,14 +152,15 @@ const r = newRouter({} as any)
       .queryParams('query', 'q2', 'q3')
       .converter(['page', 'id'], id => Number(id), id => id.toString())
       .defaults({ page: 1, query: '' })
-      .onLoad(args => ttt(args.query))
+      .onLoad(args => args)
+      .view(test)
   )
   .start()
 
 r.test({ id: 1, query: '%' })
 
-function ttt(arg: string): void {
-  console.log(arg)
+function test(arg?: { id: number; query: string }): void {
+  console.log()
 }
 
 export type Params<R extends string, Q extends string> = { [K in R]: string } &

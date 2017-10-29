@@ -10,7 +10,8 @@
         "experimentalDecorators": true,
         "declarationDir": "dist/types",
         "outDir": "compiled",
-        "baseUrl": "./src"
+      "jsx": "react",
+      "baseUrl": "./src"
     },
     "include": [
       "src/**/*"

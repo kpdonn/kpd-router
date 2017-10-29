@@ -106,7 +106,9 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
+    "@types/react": "^16.0.18",
     "history": "^4.7.2",
+    "react": "^16.0.0",
     "route-node": "^1.10.0"
   },
   "peerDependencies": {
