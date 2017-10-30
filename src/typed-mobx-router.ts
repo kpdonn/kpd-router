@@ -10,12 +10,12 @@ export interface RouterBuilder<T> {
     R extends string,
     L extends ((
       params: Params<StringDiff<R, CN>, StringDiff<Q, CN>> &
-        Record<StringDiff<CN, Q>, CT> &
-        Partial<Record<StringDiff<CN, R>, CT>>
+        Record<StringDiff<CN, Q> & R, CT> &
+        Partial<Record<StringDiff<CN, R> & Q, CT>>
     ) => void),
     Q extends string,
     D extends { [name: string]: string },
-    CN extends R | Q,
+    CN extends string,
     CT,
     Extra,
     Extra2
@@ -46,11 +46,11 @@ const nr = newRouter({} as any)
     path: pb`/test/${'id'} ${'other'}`,
     queryParams: ['hello'],
     onLoad: args => args,
-    converter: [['hello'], (nid: number) => nid.toString()]
+    converter: [['id'], (nid: number) => nid.toString()]
   })
   .start()
 
-nr.test({ id: '', other: '' })
+nr.test({ id: 2, other: '' })
 
 export interface Route<N, R, L, Q, D, CN, CT> {
   name: N
