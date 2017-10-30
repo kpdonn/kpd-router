@@ -9,12 +9,21 @@ export interface RouterBuilder<T> {
     N extends string,
     R extends string,
     L extends ((
-      params: Params<StringDiff<R, CN>, StringDiff<Q, CN>> &
-        Record<StringDiff<CN, Q> & R, CT> &
-        Partial<Record<StringDiff<CN, R> & Q, CT>>
+      params: Params<
+        StringDiff<R | keyof D, CN>,
+        StringDiff<StringDiff<Q, keyof D>, CN>
+      > &
+        Record<StringDiff<CN, StringDiff<Q, keyof D>> & R | keyof D, CT> &
+        Partial<
+          Record<StringDiff<CN, R | keyof D> & StringDiff<Q, keyof D>, CT>
+        >
     ) => void),
     Q extends string,
-    D extends { [name: string]: string },
+    D extends Partial<
+      Params<StringDiff<R, CN>, StringDiff<Q, CN>> &
+        Record<StringDiff<CN, Q> & R, CT> &
+        Partial<Record<StringDiff<CN, R> & Q, CT>>
+    >,
     CN extends string,
     CT,
     Extra,
@@ -45,12 +54,15 @@ const nr = newRouter({} as any)
     name: 'test',
     path: pb`/test/${'id'} ${'other'}`,
     queryParams: ['hello'],
-    onLoad: args => args,
+    onLoad: args => reqstring(args.hello),
+    defaults: { hello: '' },
     converter: [['id'], (nid: number) => nid.toString()]
   })
   .start()
 
-nr.test({ id: 2, other: '' })
+// nr.test({ id: 2, other: '' })
+
+declare function reqstring(arg: string): void
 
 export interface Route<N, R, L, Q, D, CN, CT> {
   name: N
