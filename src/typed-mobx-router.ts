@@ -1,5 +1,5 @@
 import { History } from 'history'
-import { StringDiff } from 'type-utils'
+import { Diff } from 'type-utils'
 import { pb } from 'router-impl'
 
 export interface RouterBuilder<T> {
@@ -32,12 +32,9 @@ export type GoToRouteParams<
   CN extends string,
   CT,
   D extends Defaults<R, Q, CN, CT>
-> = Params<
-  StringDiff<StringDiff<R, keyof D>, CN>,
-  StringDiff<Q | keyof D, CN>
-> &
-  Record<StringDiff<CN, Q> & StringDiff<R, keyof D>, CT> &
-  Partial<Record<StringDiff<CN, StringDiff<R, keyof D>>, CT>>
+> = Params<Diff<Diff<R, keyof D>, CN>, Diff<Q | keyof D, CN>> &
+  Record<Diff<CN, Q> & Diff<R, keyof D>, CT> &
+  Partial<Record<Diff<CN, Diff<R, keyof D>>, CT>>
 
 export type Defaults<
   R extends string,
@@ -45,9 +42,7 @@ export type Defaults<
   CN extends string,
   CT
 > = Partial<
-  Record<StringDiff<R, CN>, string> &
-    Record<StringDiff<Q, CN>, string> &
-    Record<CN, CT>
+  Record<Diff<R, CN>, string> & Record<Diff<Q, CN>, string> & Record<CN, CT>
 >
 
 export type OnLoadParams<
@@ -56,12 +51,9 @@ export type OnLoadParams<
   CN extends string,
   CT,
   D extends Defaults<R, Q, CN, CT>
-> = Params<
-  StringDiff<R | keyof D, CN>,
-  StringDiff<StringDiff<Q, keyof D>, CN>
-> &
-  Record<StringDiff<CN, StringDiff<Q, keyof D>> & R | keyof D, CT> &
-  Partial<Record<StringDiff<CN, R | keyof D> & StringDiff<Q, keyof D>, CT>>
+> = Params<Diff<R | keyof D, CN>, Diff<Diff<Q, keyof D>, CN>> &
+  Record<Diff<CN, Diff<Q, keyof D>> & R | keyof D, CT> &
+  Partial<Record<Diff<CN, R | keyof D> & Diff<Q, keyof D>, CT>>
 
 export interface Converters<CNA extends string, CTA> {
   [0]?: Converter<CNA, CTA>

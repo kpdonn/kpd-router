@@ -1,6 +1,6 @@
 import { History } from 'history'
 import { pb } from 'router-impl'
-import { ObjectDiff, ObjectOmit, Overwrite, StringDiff } from 'type-utils'
+import { ObjectDiff, ObjectOmit, Overwrite, Diff } from 'type-utils'
 import * as React from 'react'
 import { TestComp } from 'TestComp'
 
@@ -104,10 +104,8 @@ export type Optionalize<
   AT extends object,
   Q extends string,
   DK extends string
-> = Pick<AT, StringDiff<keyof AT, StringDiff<Q, DK>>> &
-  Partial<
-    Pick<AT, StringDiff<keyof AT, StringDiff<keyof AT, StringDiff<Q, DK>>>>
-  >
+> = Pick<AT, Diff<keyof AT, Diff<Q, DK>>> &
+  Partial<Pick<AT, Diff<keyof AT, Diff<keyof AT, Diff<Q, DK>>>>>
 
 //   DK extends string> = Pick<AT,StringDiff<keyof AT, StringDiff<Q, DK>>> & {[K in (keyof AT & Q)]?: AT[K]}
 
