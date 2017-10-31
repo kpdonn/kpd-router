@@ -32,18 +32,23 @@ export type GoToRouteParams<
   CN extends string,
   CT,
   D extends Defaults<R, Q, CN, CT>
-> = Params<Diff<Diff<R, keyof D>, CN>, Diff<Q | keyof D, CN>> &
-  Record<Diff<CN, Q> & Diff<R, keyof D>, CT> &
-  Partial<Record<Diff<CN, Diff<R, keyof D>>, CT>>
+> = ReqParams<MultiDiff<R, CN, keyof D>> &
+  OptParams<Diff<Q | keyof D, CN>> &
+  ReqParams<Diff<CN, Q> & Diff<R, keyof D>, CT> &
+  OptParams<Diff<CN, Diff<R, keyof D>>, CT>
+
+export type MultiDiff<
+  A extends string,
+  M1 extends string,
+  M2 extends string
+> = Diff<Diff<A, M1>, M2>
 
 export type Defaults<
   R extends string,
   Q extends string,
   CN extends string,
   CT
-> = Partial<
-  Record<Diff<R, CN>, string> & Record<Diff<Q, CN>, string> & Record<CN, CT>
->
+> = OptParams<Diff<R | Q, CN>> & OptParams<CN, CT>
 
 export type OnLoadParams<
   R extends string,
@@ -51,9 +56,10 @@ export type OnLoadParams<
   CN extends string,
   CT,
   D extends Defaults<R, Q, CN, CT>
-> = Params<Diff<R | keyof D, CN>, Diff<Diff<Q, keyof D>, CN>> &
-  Record<Diff<CN, Diff<Q, keyof D>> & R | keyof D, CT> &
-  Partial<Record<Diff<CN, R | keyof D> & Diff<Q, keyof D>, CT>>
+> = ReqParams<Diff<R | keyof D, CN>> &
+  OptParams<Diff<Q, CN | keyof D>> &
+  ReqParams<(R | keyof D) & CN, CT> &
+  OptParams<Diff<Q & CN, keyof D>, CT>
 
 export interface Converters<CNA extends string, CTA> {
   [0]?: Converter<CNA, CTA>
@@ -65,6 +71,9 @@ export interface Converter<N extends string, T> {
   names: N
   from: (arg: T) => string
 }
+
+export type ReqParams<K extends string, T = string> = Record<K, T>
+export type OptParams<K extends string, T = string> = Partial<Record<K, T>>
 
 export type Params<R extends string, Q extends string> = { [K in R]: string } &
   { [K in Q]?: string }
