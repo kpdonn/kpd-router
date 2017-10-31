@@ -20,9 +20,9 @@ export interface RouterBuilder<T> {
     ) => void),
     Q extends string,
     D extends Partial<
-      Params<StringDiff<R, CN>, StringDiff<Q, CN>> &
-        Record<StringDiff<CN, Q> & R, CT> &
-        Partial<Record<StringDiff<CN, R> & Q, CT>>
+      Record<StringDiff<R, CN>, string> &
+        Record<StringDiff<Q, CN>, string> &
+        Record<CN, CT>
     >,
     CN extends string,
     CT,
@@ -34,7 +34,7 @@ export interface RouterBuilder<T> {
     queryParams?: Q[]
     onLoad?: L & Extra
     defaults?: D
-    converter?: [CN[], (arg: CT) => string]
+    converter?: [CN | CN[], (arg: CT) => string]
   }): RouterBuilder<
     T &
       Record<
@@ -45,9 +45,7 @@ export interface RouterBuilder<T> {
             StringDiff<Q | keyof D, CN>
           > &
             Record<StringDiff<CN, Q> & StringDiff<R, keyof D>, CT> &
-            Partial<
-              Record<StringDiff<CN, StringDiff<R, keyof D>> & (Q | keyof D), CT>
-            >
+            Partial<Record<StringDiff<CN, StringDiff<R, keyof D>>, CT>>
         ) => void
       >
   >
@@ -69,13 +67,13 @@ const nr = newRouter({} as any)
     name: 'test',
     path: pb`/test/${'id'} ${'other'}`,
     queryParams: ['hello'],
-    onLoad: args => 'hello',
-    defaults: { other: 2 },
-    converter: [['id', 'other'], (nid: number) => nid.toString()]
+    onLoad: args => args,
+    defaults: { hello: '' },
+    converter: [['id'], (nid: number) => nid.toString()]
   })
   .start()
 
-nr.test({ id: 3, other: 2 })
+nr.test({ id: 3 })
 
 declare function reqstring(arg: string): void
 
