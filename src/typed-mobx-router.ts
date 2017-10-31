@@ -1,5 +1,5 @@
 import { History } from 'history'
-import { ObjectOmit, StringDiff } from 'type-utils'
+import { StringDiff } from 'type-utils'
 import { pb } from 'router-impl'
 
 export interface RouterBuilder<T> {
@@ -8,47 +8,70 @@ export interface RouterBuilder<T> {
   addRoute<
     N extends string,
     R extends string,
-    L extends ((
-      params: Params<
-        StringDiff<R | keyof D, CN>,
-        StringDiff<StringDiff<Q, keyof D>, CN>
-      > &
-        Record<StringDiff<CN, StringDiff<Q, keyof D>> & R | keyof D, CT> &
-        Partial<
-          Record<StringDiff<CN, R | keyof D> & StringDiff<Q, keyof D>, CT>
-        >
-    ) => void),
+    L extends ((params: OnLoadParams<R, Q, CN, CT, D>) => void),
     Q extends string,
-    D extends Partial<
-      Record<StringDiff<R, CN>, string> &
-        Record<StringDiff<Q, CN>, string> &
-        Record<CN, CT>
-    >,
     CN extends string,
     CT,
-    Extra,
-    Extra2
+    D extends Defaults<R, Q, CN, CT>,
+    Extra
   >(route: {
     name: N
     path: [string, R[]]
     queryParams?: Q[]
     onLoad?: L & Extra
     defaults?: D
-    converter?: [CN | CN[], (arg: CT) => string]
+    converters?: Converters<CN, CT>
   }): RouterBuilder<
-    T &
-      Record<
-        N,
-        (
-          args: Params<
-            StringDiff<StringDiff<R, keyof D>, CN>,
-            StringDiff<Q | keyof D, CN>
-          > &
-            Record<StringDiff<CN, Q> & StringDiff<R, keyof D>, CT> &
-            Partial<Record<StringDiff<CN, StringDiff<R, keyof D>>, CT>>
-        ) => void
-      >
+    T & Record<N, (args: GoToRouteParams<R, Q, CN, CT, D>) => void>
   >
+}
+
+export type GoToRouteParams<
+  R extends string,
+  Q extends string,
+  CN extends string,
+  CT,
+  D extends Defaults<R, Q, CN, CT>
+> = Params<
+  StringDiff<StringDiff<R, keyof D>, CN>,
+  StringDiff<Q | keyof D, CN>
+> &
+  Record<StringDiff<CN, Q> & StringDiff<R, keyof D>, CT> &
+  Partial<Record<StringDiff<CN, StringDiff<R, keyof D>>, CT>>
+
+export type Defaults<
+  R extends string,
+  Q extends string,
+  CN extends string,
+  CT
+> = Partial<
+  Record<StringDiff<R, CN>, string> &
+    Record<StringDiff<Q, CN>, string> &
+    Record<CN, CT>
+>
+
+export type OnLoadParams<
+  R extends string,
+  Q extends string,
+  CN extends string,
+  CT,
+  D extends Defaults<R, Q, CN, CT>
+> = Params<
+  StringDiff<R | keyof D, CN>,
+  StringDiff<StringDiff<Q, keyof D>, CN>
+> &
+  Record<StringDiff<CN, StringDiff<Q, keyof D>> & R | keyof D, CT> &
+  Partial<Record<StringDiff<CN, R | keyof D> & StringDiff<Q, keyof D>, CT>>
+
+export interface Converters<CNA extends string, CTA> {
+  [0]?: Converter<CNA, CTA>
+
+  [index: number]: Converter<any, any> | undefined
+}
+
+export interface Converter<N extends string, T> {
+  names: N
+  from: (arg: T) => string
 }
 
 export type Params<R extends string, Q extends string> = { [K in R]: string } &
@@ -68,8 +91,8 @@ const nr = newRouter({} as any)
     path: pb`/test/${'id'} ${'other'}`,
     queryParams: ['hello'],
     onLoad: args => args,
-    defaults: { hello: '' },
-    converter: [['id'], (nid: number) => nid.toString()]
+    defaults: { other: '' },
+    converters: [{ names: 'id', from: (nid: number) => nid.toString() }]
   })
   .start()
 
