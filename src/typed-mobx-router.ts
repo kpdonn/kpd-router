@@ -1,6 +1,8 @@
 import { History } from 'history'
 import { Diff } from 'type-utils'
 import { pb } from 'router-impl'
+import * as React from 'react'
+import { TestComp } from 'TestComp'
 
 export interface RouterBuilder<T> {
   start(): T & { routerStore: RouterStore }
@@ -15,6 +17,7 @@ export interface RouterBuilder<T> {
     CN2 extends string,
     CT2,
     D extends Defaults<R, Q, CN1, CT1, CN2, CT2>,
+    ReactCompProps extends OnLoadParams<R, Q, CN1, CT1, CN2, CT2, D>,
     Extra
   >(route: {
     name: N
@@ -23,10 +26,15 @@ export interface RouterBuilder<T> {
     onLoad?: L & Extra
     defaults?: D
     converters?: Converters<CN1, CT1, CN2, CT2>
+    component?: ReactComponentCreator<ReactCompProps>
   }): RouterBuilder<
     T & Record<N, (args: GoToRouteParams<R, Q, CN1, CT1, CN2, CT2, D>) => void>
   >
 }
+
+export type ReactComponentCreator<P> =
+  | (new (props: P) => React.Component<any>)
+  | React.StatelessComponent<P>
 
 export type GoToRouteParams<
   R extends string,
@@ -38,10 +46,17 @@ export type GoToRouteParams<
   D extends Defaults<R, Q, CN1, CT1, CN2, CT2>
 > = ReqParams<MultiDiff<R, CN1, CN2, keyof D>> &
   OptParams<MultiDiff<Q | keyof D, CN1, CN2>> &
-  ReqParams<Diff<CN1, Q> & Diff<R, keyof D>, CT1> &
-  OptParams<Diff<CN1, Diff<R, keyof D>>, CT1> &
-  ReqParams<Diff<CN2, Q> & Diff<R, keyof D>, CT2> &
-  OptParams<Diff<CN2, Diff<R, keyof D>>, CT2>
+  GoToRouteConvertedParams<R, Q, D, CN1, CT1> &
+  GoToRouteConvertedParams<R, Q, D, CN2, CT2>
+
+export type GoToRouteConvertedParams<
+  R extends string,
+  Q extends string,
+  D,
+  CN extends string,
+  CT
+> = ReqParams<Diff<CN, Q> & Diff<R, keyof D>, CT> &
+  OptParams<Diff<CN, Diff<R, keyof D>>, CT>
 
 export type MultiDiff<
   A extends string,
@@ -72,10 +87,16 @@ export type OnLoadParams<
   D extends Defaults<R, Q, CN1, CT1, CN2, CT2>
 > = ReqParams<MultiDiff<R | keyof D, CN1, CN2>> &
   OptParams<MultiDiff<Q, CN1, CN2, keyof D>> &
-  ReqParams<(R | keyof D) & CN1, CT1> &
-  OptParams<Diff<Q & CN1, keyof D>, CT1> &
-  ReqParams<(R | keyof D) & CN2, CT2> &
-  OptParams<Diff<Q & CN2, keyof D>, CT2>
+  OnLoadConvertedParams<R, Q, D, CN1, CT1> &
+  OnLoadConvertedParams<R, Q, D, CN2, CT2>
+
+export type OnLoadConvertedParams<
+  R extends string,
+  Q extends string,
+  D,
+  CN extends string,
+  CT
+> = ReqParams<(R | keyof D) & CN, CT> & OptParams<Diff<Q & CN, keyof D>, CT>
 
 export interface Converters<CN1 extends string, CT1, CN2 extends string, CT2> {
   [0]?: Converter<CN1, CT1>
@@ -110,7 +131,8 @@ const nr = newRouter({} as any)
     converters: [
       { names: ['id'], from: (nid: number) => nid.toString() },
       { names: ['hello', 'other'], from: (nid: boolean) => nid.toString() }
-    ]
+    ],
+    component: TestComp
   })
   .start()
 
