@@ -1,19 +1,25 @@
 {
-    "compilerOptions": {
-        "moduleResolution": "node",
-        "target": "es5",
-        "module":"es2015",
-        "lib": ["es2015", "es2016", "es2017", "dom"],
-        "strict": true,
-        "sourceMap": true,
-        "declaration": true,
-        "experimentalDecorators": true,
-        "declarationDir": "dist/types",
-        "outDir": "compiled",
-      "jsx": "react",
-      "baseUrl": "./src"
-    },
-    "include": [
-      "src/**/*"
-    ]
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es5",
+    "module": "es2015",
+    "lib": [
+      "es2015",
+      "es2016",
+      "es2017",
+      "dom"
+    ],
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "declarationDir": "dist/types",
+    "outDir": "compiled",
+    "jsx": "react",
+    "baseUrl": "./src",
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
