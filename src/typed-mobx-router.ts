@@ -85,7 +85,7 @@ export interface Converters<CN1 extends string, CT1, CN2 extends string, CT2> {
 }
 
 export interface Converter<N extends string, T> {
-  names: N
+  names: N[]
   from: (arg: T) => string
 }
 
@@ -106,10 +106,10 @@ const nr = newRouter({} as any)
     path: pb`/test/${'id'} ${'other'}`,
     queryParams: ['hello'],
     onLoad: args => args,
-    defaults: { other: '' },
+    defaults: { other: true },
     converters: [
-      { names: 'id', from: (nid: number) => nid.toString() },
-      { names: 'hello', from: (nid: boolean) => nid.toString() }
+      { names: ['id'], from: (nid: number) => nid.toString() },
+      { names: ['hello', 'other'], from: (nid: boolean) => nid.toString() }
     ]
   })
   .start()
