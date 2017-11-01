@@ -10,14 +10,71 @@ export interface RouterBuilder<T> {
   addRoute<
     N extends string,
     R extends string,
-    L extends ((params: OnLoadParams<R, Q, CN1, CT1, CN2, CT2, D>) => void),
+    L extends ((
+      params: OnLoadParams<
+        R,
+        Q,
+        D,
+        CN0,
+        CT0,
+        CN1,
+        CT1,
+        CN2,
+        CT2,
+        CN3,
+        CT3,
+        CN4,
+        CT4,
+        CN5,
+        CT5
+      >
+    ) => void),
     Q extends string,
+    CN0 extends string,
+    CT0,
     CN1 extends string,
     CT1,
     CN2 extends string,
     CT2,
-    D extends Defaults<R, Q, CN1, CT1, CN2, CT2>,
-    ReactCompProps extends OnLoadParams<R, Q, CN1, CT1, CN2, CT2, D>,
+    CN3 extends string,
+    CT3,
+    CN4 extends string,
+    CT4,
+    CN5 extends string,
+    CT5,
+    D extends Defaults<
+      R,
+      Q,
+      CN0,
+      CT0,
+      CN1,
+      CT1,
+      CN2,
+      CT2,
+      CN3,
+      CT3,
+      CN4,
+      CT4,
+      CN5,
+      CT5
+    >,
+    ReactCompProps extends OnLoadParams<
+      R,
+      Q,
+      D,
+      CN0,
+      CT0,
+      CN1,
+      CT1,
+      CN2,
+      CT2,
+      CN3,
+      CT3,
+      CN4,
+      CT4,
+      CN5,
+      CT5
+    >,
     Extra
   >(route: {
     name: N
@@ -25,10 +82,45 @@ export interface RouterBuilder<T> {
     queryParams?: Q[]
     onLoad?: L & Extra
     defaults?: D
-    converters?: Converters<CN1, CT1, CN2, CT2>
+    converters?: Converters<
+      CN0,
+      CT0,
+      CN1,
+      CT1,
+      CN2,
+      CT2,
+      CN3,
+      CT3,
+      CN4,
+      CT4,
+      CN5,
+      CT5
+    >
     component?: ReactComponentCreator<ReactCompProps>
   }): RouterBuilder<
-    T & Record<N, (args: GoToRouteParams<R, Q, CN1, CT1, CN2, CT2, D>) => void>
+    T &
+      Record<
+        N,
+        (
+          args: GoToRouteParams<
+            R,
+            Q,
+            D,
+            CN0,
+            CT0,
+            CN1,
+            CT1,
+            CN2,
+            CT2,
+            CN3,
+            CT3,
+            CN4,
+            CT4,
+            CN5,
+            CT5
+          >
+        ) => void
+      >
   >
 }
 
@@ -39,15 +131,27 @@ export type ReactComponentCreator<P> =
 export type GoToRouteParams<
   R extends string,
   Q extends string,
+  D,
+  CN0 extends string,
+  CT0,
   CN1 extends string,
   CT1,
   CN2 extends string,
   CT2,
-  D extends Defaults<R, Q, CN1, CT1, CN2, CT2>
-> = ReqParams<MultiDiff<R, CN1, CN2, keyof D>> &
-  OptParams<MultiDiff<Q | keyof D, CN1, CN2>> &
+  CN3 extends string,
+  CT3,
+  CN4 extends string,
+  CT4,
+  CN5 extends string,
+  CT5
+> = ReqParams<MultiDiff<R, CN0, CN1, CN2, CN3, CN4, CN5, keyof D>> &
+  OptParams<MultiDiff<Q | keyof D, CN0, CN1, CN2, CN3, CN4, CN5>> &
+  GoToRouteConvertedParams<R, Q, D, CN0, CT0> &
   GoToRouteConvertedParams<R, Q, D, CN1, CT1> &
-  GoToRouteConvertedParams<R, Q, D, CN2, CT2>
+  GoToRouteConvertedParams<R, Q, D, CN2, CT2> &
+  GoToRouteConvertedParams<R, Q, D, CN3, CT3> &
+  GoToRouteConvertedParams<R, Q, D, CN4, CT4> &
+  GoToRouteConvertedParams<R, Q, D, CN5, CT5>
 
 export type GoToRouteConvertedParams<
   R extends string,
@@ -63,32 +167,59 @@ export type MultiDiff<
   M1 extends string,
   M2 extends string = string,
   M3 extends string = string,
-  M4 extends string = string
-> = Diff<Diff<Diff<Diff<A, M1>, M2>, M3>, M4>
+  M4 extends string = string,
+  M5 extends string = string,
+  M6 extends string = string,
+  M7 extends string = string
+> = Diff<Diff<Diff<Diff<Diff<Diff<Diff<A, M1>, M2>, M3>, M4>, M5>, M6>, M7>
 
 export type Defaults<
   R extends string,
   Q extends string,
-  CN1 extends string,
-  CT1,
-  CN2 extends string,
-  CT2
-> = OptParams<MultiDiff<R | Q, CN1, CN2>> &
-  OptParams<CN1, CT1> &
-  OptParams<CN2, CT2>
-
-export type OnLoadParams<
-  R extends string,
-  Q extends string,
+  CN0 extends string,
+  CT0,
   CN1 extends string,
   CT1,
   CN2 extends string,
   CT2,
-  D extends Defaults<R, Q, CN1, CT1, CN2, CT2>
-> = ReqParams<MultiDiff<R | keyof D, CN1, CN2>> &
-  OptParams<MultiDiff<Q, CN1, CN2, keyof D>> &
+  CN3 extends string,
+  CT3,
+  CN4 extends string,
+  CT4,
+  CN5 extends string,
+  CT5
+> = OptParams<MultiDiff<R | Q, CN0, CN1, CN2, CN3, CN4, CN5>> &
+  OptParams<CN0, CT0> &
+  OptParams<CN1, CT1> &
+  OptParams<CN2, CT2> &
+  OptParams<CN3, CT3> &
+  OptParams<CN4, CT4> &
+  OptParams<CN5, CT5>
+
+export type OnLoadParams<
+  R extends string,
+  Q extends string,
+  D,
+  CN0 extends string,
+  CT0,
+  CN1 extends string,
+  CT1,
+  CN2 extends string,
+  CT2,
+  CN3 extends string,
+  CT3,
+  CN4 extends string,
+  CT4,
+  CN5 extends string,
+  CT5
+> = ReqParams<MultiDiff<R | keyof D, CN0, CN1, CN2, CN3, CN4, CN5>> &
+  OptParams<MultiDiff<Q, CN0, CN1, CN2, CN3, CN4, CN5, keyof D>> &
+  OnLoadConvertedParams<R, Q, D, CN0, CT0> &
   OnLoadConvertedParams<R, Q, D, CN1, CT1> &
-  OnLoadConvertedParams<R, Q, D, CN2, CT2>
+  OnLoadConvertedParams<R, Q, D, CN2, CT2> &
+  OnLoadConvertedParams<R, Q, D, CN3, CT3> &
+  OnLoadConvertedParams<R, Q, D, CN4, CT4> &
+  OnLoadConvertedParams<R, Q, D, CN5, CT5>
 
 export type OnLoadConvertedParams<
   R extends string,
@@ -98,9 +229,27 @@ export type OnLoadConvertedParams<
   CT
 > = ReqParams<(R | keyof D) & CN, CT> & OptParams<Diff<Q & CN, keyof D>, CT>
 
-export interface Converters<CN1 extends string, CT1, CN2 extends string, CT2> {
-  [0]?: Converter<CN1, CT1>
-  [1]?: Converter<CN2, CT2>
+export interface Converters<
+  CN0 extends string,
+  CT0,
+  CN1 extends string,
+  CT1,
+  CN2 extends string,
+  CT2,
+  CN3 extends string,
+  CT3,
+  CN4 extends string,
+  CT4,
+  CN5 extends string,
+  CT5
+> {
+  [0]?: Converter<CN0, CT0>
+  [1]?: Converter<CN1, CT1>
+  [2]?: Converter<CN2, CT2>
+  [3]?: Converter<CN3, CT3>
+  [4]?: Converter<CN4, CT4>
+  [5]?: Converter<CN5, CT5>
+  [6]?: never // Error on more than 6 elements since that can't be typed correctly
 
   [index: number]: Converter<any, any> | undefined
 }
@@ -136,7 +285,7 @@ const nr = newRouter({} as any)
   })
   .start()
 
-nr.test({ id: 3, hello: true })
+nr.test({ id: 3, hello: false })
 
 declare function reqstring(arg: string): void
 
