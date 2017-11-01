@@ -3,7 +3,6 @@ import RouteNode from 'route-node'
 import { autorun, computed, observable, runInAction } from 'mobx'
 import { History } from 'history'
 import {
-  Params,
   PathTemplate,
   Route,
   RouterBuilder,

@@ -8,11 +8,13 @@ export interface RouterBuilder<T> {
   addRoute<
     N extends string,
     R extends string,
-    L extends ((params: OnLoadParams<R, Q, CN, CT, D>) => void),
+    L extends ((params: OnLoadParams<R, Q, CN1, CT1, CN2, CT2, D>) => void),
     Q extends string,
-    CN extends string,
-    CT,
-    D extends Defaults<R, Q, CN, CT>,
+    CN1 extends string,
+    CT1,
+    CN2 extends string,
+    CT2,
+    D extends Defaults<R, Q, CN1, CT1, CN2, CT2>,
     Extra
   >(route: {
     name: N
@@ -20,49 +22,64 @@ export interface RouterBuilder<T> {
     queryParams?: Q[]
     onLoad?: L & Extra
     defaults?: D
-    converters?: Converters<CN, CT>
+    converters?: Converters<CN1, CT1, CN2, CT2>
   }): RouterBuilder<
-    T & Record<N, (args: GoToRouteParams<R, Q, CN, CT, D>) => void>
+    T & Record<N, (args: GoToRouteParams<R, Q, CN1, CT1, CN2, CT2, D>) => void>
   >
 }
 
 export type GoToRouteParams<
   R extends string,
   Q extends string,
-  CN extends string,
-  CT,
-  D extends Defaults<R, Q, CN, CT>
-> = ReqParams<MultiDiff<R, CN, keyof D>> &
-  OptParams<Diff<Q | keyof D, CN>> &
-  ReqParams<Diff<CN, Q> & Diff<R, keyof D>, CT> &
-  OptParams<Diff<CN, Diff<R, keyof D>>, CT>
+  CN1 extends string,
+  CT1,
+  CN2 extends string,
+  CT2,
+  D extends Defaults<R, Q, CN1, CT1, CN2, CT2>
+> = ReqParams<MultiDiff<R, CN1, CN2, keyof D>> &
+  OptParams<MultiDiff<Q | keyof D, CN1, CN2>> &
+  ReqParams<Diff<CN1, Q> & Diff<R, keyof D>, CT1> &
+  OptParams<Diff<CN1, Diff<R, keyof D>>, CT1> &
+  ReqParams<Diff<CN2, Q> & Diff<R, keyof D>, CT2> &
+  OptParams<Diff<CN2, Diff<R, keyof D>>, CT2>
 
 export type MultiDiff<
   A extends string,
   M1 extends string,
-  M2 extends string
-> = Diff<Diff<A, M1>, M2>
+  M2 extends string = string,
+  M3 extends string = string,
+  M4 extends string = string
+> = Diff<Diff<Diff<Diff<A, M1>, M2>, M3>, M4>
 
 export type Defaults<
   R extends string,
   Q extends string,
-  CN extends string,
-  CT
-> = OptParams<Diff<R | Q, CN>> & OptParams<CN, CT>
+  CN1 extends string,
+  CT1,
+  CN2 extends string,
+  CT2
+> = OptParams<MultiDiff<R | Q, CN1, CN2>> &
+  OptParams<CN1, CT1> &
+  OptParams<CN2, CT2>
 
 export type OnLoadParams<
   R extends string,
   Q extends string,
-  CN extends string,
-  CT,
-  D extends Defaults<R, Q, CN, CT>
-> = ReqParams<Diff<R | keyof D, CN>> &
-  OptParams<Diff<Q, CN | keyof D>> &
-  ReqParams<(R | keyof D) & CN, CT> &
-  OptParams<Diff<Q & CN, keyof D>, CT>
+  CN1 extends string,
+  CT1,
+  CN2 extends string,
+  CT2,
+  D extends Defaults<R, Q, CN1, CT1, CN2, CT2>
+> = ReqParams<MultiDiff<R | keyof D, CN1, CN2>> &
+  OptParams<MultiDiff<Q, CN1, CN2, keyof D>> &
+  ReqParams<(R | keyof D) & CN1, CT1> &
+  OptParams<Diff<Q & CN1, keyof D>, CT1> &
+  ReqParams<(R | keyof D) & CN2, CT2> &
+  OptParams<Diff<Q & CN2, keyof D>, CT2>
 
-export interface Converters<CNA extends string, CTA> {
-  [0]?: Converter<CNA, CTA>
+export interface Converters<CN1 extends string, CT1, CN2 extends string, CT2> {
+  [0]?: Converter<CN1, CT1>
+  [1]?: Converter<CN2, CT2>
 
   [index: number]: Converter<any, any> | undefined
 }
@@ -74,9 +91,6 @@ export interface Converter<N extends string, T> {
 
 export type ReqParams<K extends string, T = string> = Record<K, T>
 export type OptParams<K extends string, T = string> = Partial<Record<K, T>>
-
-export type Params<R extends string, Q extends string> = { [K in R]: string } &
-  { [K in Q]?: string }
 
 export interface RouterStore {
   routeName: string
@@ -93,11 +107,14 @@ const nr = newRouter({} as any)
     queryParams: ['hello'],
     onLoad: args => args,
     defaults: { other: '' },
-    converters: [{ names: 'id', from: (nid: number) => nid.toString() }]
+    converters: [
+      { names: 'id', from: (nid: number) => nid.toString() },
+      { names: 'hello', from: (nid: boolean) => nid.toString() }
+    ]
   })
   .start()
 
-nr.test({ id: 3 })
+nr.test({ id: 3, hello: true })
 
 declare function reqstring(arg: string): void
 
