@@ -1,8 +1,7 @@
-import { History } from 'history'
 import { Diff } from 'type-utils'
-import { pb } from 'router-impl'
 import * as React from 'react'
 import { TestComp } from 'TestComp'
+import { pb } from 'router-impl'
 
 export interface RouterBuilder<T> {
   start(): T & { routerStore: RouterStore }
@@ -270,7 +269,7 @@ export interface RouterStore {
   readonly currentPath: string
 }
 
-const nr = newRouter({} as any)
+const nr = newRouter()
   .addRoute({
     name: 'test',
     path: pb`/test/${'id'} ${'other'}`,
@@ -287,8 +286,6 @@ const nr = newRouter({} as any)
 
 nr.test({ id: 3, hello: false })
 
-declare function reqstring(arg: string): void
-
 export interface Route<N, R, L, Q, D, CN, CT> {
   name: N
   path: [string, R[]]
@@ -298,7 +295,7 @@ export interface Route<N, R, L, Q, D, CN, CT> {
   converter?: [CN[], (arg: CT) => string]
 }
 
-export function newRouter(history: History): RouterBuilder<{}> {
+export function newRouter(): RouterBuilder<{}> {
   // return new RouterBuilderImpl(history)
   return {} as any
 }
