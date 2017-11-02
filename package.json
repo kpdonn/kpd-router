@@ -21,20 +21,16 @@
   "scripts": {
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc && rollup -c rollup.config.ts && rimraf compiled && typedoc --out dist/docs --target es6 --theme minimal src",
+    "build": "tsc && rollup -c rollup.config.ts && rimraf compiled",
     "start": "tsc -w & rollup -c rollup.config.ts -w",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:prod": "yarn run lint && yarn run test -- --coverage --no-cache",
-    "deploy-docs": "ts-node tools/gh-pages-publish",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "semantic-release": "semantic-release pre && yarn publish && semantic-release post",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
-      "prettier --write --no-semi --single-quote",
+      "prettier --write --no-semi",
       "git add"
     ]
   },
@@ -47,49 +43,28 @@
       "ts",
       "tsx",
       "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test/"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 90,
-        "functions": 95,
-        "lines": 95,
-        "statements": 95
-      }
-    },
-    "collectCoverage": true,
-    "mapCoverage": true
+    ]
   },
   "devDependencies": {
     "@types/history": "^4.6.1",
     "@types/jest": "^21.1.0",
     "@types/node": "^8.0.0",
     "colors": "^1.1.2",
-    "coveralls": "^3.0.0",
     "cross-env": "^5.0.1",
     "husky": "^0.14.0",
     "jest": "^21.0.0",
     "lint-staged": "^4.0.0",
-    "lodash.camelcase": "^4.3.0",
     "mobx": "^3.3.1",
     "prettier": "^1.4.4",
-    "prompt": "^1.0.0",
-    "replace-in-file": "^3.0.0-beta.2",
     "rimraf": "^2.6.1",
     "rollup": "^0.50.0",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
-    "semantic-release": "^8.0.0",
     "ts-jest": "^21.0.0",
-    "ts-node": "^3.0.6",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.1.0",
     "tslint-config-standard": "^6.0.0",
-    "typedoc": "^0.9.0",
     "typescript": "^2.6.1",
     "typings-checker": "^2.0.0"
   },
