@@ -1,11 +1,11 @@
-import { pb } from "router-impl"
+import { path } from "router-impl"
 import { TestComp } from "TestComp"
 import { newRouter } from "typed-mobx-router"
 
 const nr = newRouter({} as any)
   .addRoute({
     name: "test",
-    path: pb`/test/${"id"} ${"other"}`,
+    path: path`/test/${"id"} ${"other"}`,
     queryParams: ["hello"],
     onLoad: args => args,
     defaults: { other: true },

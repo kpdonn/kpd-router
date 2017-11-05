@@ -16,7 +16,7 @@ export class RouterStoreImpl implements RouterStore {
   }
 }
 
-export const pb: PathTemplate = <T extends string>(
+export const path: PathTemplate = <T extends string>(
   literals: TemplateStringsArray,
   ...args: T[]
 ): [string, T[]] => {

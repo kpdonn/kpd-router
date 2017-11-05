@@ -1,5 +1,6 @@
-import { newRouter, path } from "../src/typed-mobx-router"
+import { newRouter } from "../src/typed-mobx-router"
 import createMemoryHistory from "history/createMemoryHistory"
+import { path } from "router-impl"
 
 const history = createMemoryHistory()
 const mainOnLoad = jest.fn()
@@ -27,10 +28,6 @@ const router = newRouter(history)
   })
   .start()
 
-function myString(arg: string): string {
-  return arg
-}
-
 describe("Router test", () => {
   it("is on main page to start", () => {
     expect(router.routerStore.routeName).toBe("main")
@@ -39,7 +36,7 @@ describe("Router test", () => {
 
   it("goes to people when function called", () => {
     expect(peopleOnLoad).not.toBeCalled()
-    router.people()
+    router.people({})
     expect(router.routerStore.routeName).toBe("people")
     expect(peopleOnLoad).toBeCalled()
     expect(history.location.pathname + history.location.search).toBe("/people")
