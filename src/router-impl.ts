@@ -1,7 +1,7 @@
-import RouteNode from 'route-node'
+import RouteNode from "route-node"
 
-import { computed, observable } from 'mobx'
-import { PathTemplate, RouterStore } from 'typed-mobx-router'
+import { computed, observable } from "mobx"
+import { PathTemplate, RouterStore } from "typed-mobx-router"
 
 export class RouterStoreImpl implements RouterStore {
   @observable routeName: string
@@ -21,7 +21,7 @@ export const pb: PathTemplate = <T extends string>(
   ...args: T[]
 ): [string, T[]] => {
   const builtPath = literals
-    .map((litString, i) => (args[i] ? litString + ':' + args[i] : litString))
+    .map((litString, i) => (args[i] ? litString + ":" + args[i] : litString))
     .join()
 
   return [builtPath, args]

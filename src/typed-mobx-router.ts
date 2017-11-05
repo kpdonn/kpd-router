@@ -1,7 +1,7 @@
-import { Diff } from 'type-utils'
-import * as React from 'react'
-import { TestComp } from 'TestComp'
-import { pb } from 'router-impl'
+import { Diff } from "type-utils"
+import * as React from "react"
+import { TestComp } from "TestComp"
+import { pb } from "router-impl"
 
 export interface RouterBuilder<T> {
   start(): T & { routerStore: RouterStore }
@@ -10,23 +10,7 @@ export interface RouterBuilder<T> {
     N extends string,
     R extends string,
     L extends ((
-      params: OnLoadParams<
-        R,
-        Q,
-        D,
-        CN0,
-        CT0,
-        CN1,
-        CT1,
-        CN2,
-        CT2,
-        CN3,
-        CT3,
-        CN4,
-        CT4,
-        CN5,
-        CT5
-      >
+      params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
     ) => void),
     Q extends string,
     CN0 extends string,
@@ -41,22 +25,7 @@ export interface RouterBuilder<T> {
     CT4,
     CN5 extends string,
     CT5,
-    D extends Defaults<
-      R,
-      Q,
-      CN0,
-      CT0,
-      CN1,
-      CT1,
-      CN2,
-      CT2,
-      CN3,
-      CT3,
-      CN4,
-      CT4,
-      CN5,
-      CT5
-    >,
+    D extends Defaults<R, Q, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>,
     ReactCompProps extends OnLoadParams<
       R,
       Q,
@@ -81,43 +50,14 @@ export interface RouterBuilder<T> {
     queryParams?: Q[]
     onLoad?: L & Extra
     defaults?: D
-    converters?: Converters<
-      CN0,
-      CT0,
-      CN1,
-      CT1,
-      CN2,
-      CT2,
-      CN3,
-      CT3,
-      CN4,
-      CT4,
-      CN5,
-      CT5
-    >
+    converters?: Converters<CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
     component?: ReactComponentCreator<ReactCompProps>
   }): RouterBuilder<
     T &
       Record<
         N,
         (
-          args: GoToRouteParams<
-            R,
-            Q,
-            D,
-            CN0,
-            CT0,
-            CN1,
-            CT1,
-            CN2,
-            CT2,
-            CN3,
-            CT3,
-            CN4,
-            CT4,
-            CN5,
-            CT5
-          >
+          args: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
         ) => void
       >
   >
@@ -158,8 +98,7 @@ export type GoToRouteConvertedParams<
   D,
   CN extends string,
   CT
-> = ReqParams<Diff<CN, Q> & Diff<R, keyof D>, CT> &
-  OptParams<Diff<CN, Diff<R, keyof D>>, CT>
+> = ReqParams<Diff<CN, Q> & Diff<R, keyof D>, CT> & OptParams<Diff<CN, Diff<R, keyof D>>, CT>
 
 export type MultiDiff<
   A extends string,
@@ -271,14 +210,14 @@ export interface RouterStore {
 
 const nr = newRouter()
   .addRoute({
-    name: 'test',
-    path: pb`/test/${'id'} ${'other'}`,
-    queryParams: ['hello'],
+    name: "test",
+    path: pb`/test/${"id"} ${"other"}`,
+    queryParams: ["hello"],
     onLoad: args => args,
     defaults: { other: true },
     converters: [
-      { names: ['id'], from: (nid: number) => nid.toString() },
-      { names: ['hello', 'other'], from: (nid: boolean) => nid.toString() }
+      { names: ["id"], from: (nid: number) => nid.toString() },
+      { names: ["hello", "other"], from: (nid: boolean) => nid.toString() }
     ],
     component: TestComp
   })
@@ -301,8 +240,5 @@ export function newRouter(): RouterBuilder<{}> {
 }
 
 export interface PathTemplate {
-  <T extends string>(literals: TemplateStringsArray, ...args: T[]): [
-    string,
-    T[]
-  ]
+  <T extends string>(literals: TemplateStringsArray, ...args: T[]): [string, T[]]
 }

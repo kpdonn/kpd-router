@@ -1,1 +1,1 @@
-declare module 'route-node'
+declare module "route-node"
