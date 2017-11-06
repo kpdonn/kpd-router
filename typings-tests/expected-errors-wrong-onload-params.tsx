@@ -1,5 +1,4 @@
-import { path } from "router-impl"
-import { newRouter } from "typed-mobx-router"
+import {newRouter, path} from "typed-mobx-router"
 import * as React from "react"
 
 newRouter({} as any).addRoute({

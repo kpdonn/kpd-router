@@ -1,5 +1,4 @@
-import { path } from "router-impl"
-import { newRouter } from "typed-mobx-router"
+import {newRouter, path} from "typed-mobx-router"
 
 newRouter({} as any).addRoute({
   name: "p1",

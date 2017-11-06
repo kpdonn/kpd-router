@@ -1,5 +1,4 @@
-import { path } from "router-impl"
-import { newRouter } from "typed-mobx-router"
+import {newRouter, path} from "typed-mobx-router"
 import * as React from "react"
 
 class P1Comp extends React.Component<{ r1: number; q1?: boolean; extra?: string }> {
@@ -85,11 +84,11 @@ const nr = newRouter({} as any)
   })
   .start()
 
-nr.p1({ r1: 2 })
-nr.p1({ r1: 2, q1: false })
-nr.p2({ r1: "", r2: "e" })
-nr.p2({ r1: "", r2: "e", q1: "" })
-nr.p3({
+nr.goTo.p1({ r1: 2 })
+nr.goTo.p1({ r1: 2, q1: false })
+nr.goTo.p2({ r1: "", r2: "e" })
+nr.goTo.p2({ r1: "", r2: "e", q1: "" })
+nr.goTo.p3({
   r1: 1,
   r2: false,
   r3: { nested1: "" },
@@ -99,12 +98,12 @@ nr.p3({
   q1: 4,
   q3: { nested1: "" }
 })
-nr.p3({ r5: { nested3: "" }, r6: { nested4: "" }, q1: 4, q3: { nested1: "" } })
-nr.noQuery({ r2: true })
-nr.noQuery({ r1: 1, r2: false })
+nr.goTo.p3({ r5: { nested3: "" }, r6: { nested4: "" }, q1: 4, q3: { nested1: "" } })
+nr.goTo.noQuery({ r2: true })
+nr.goTo.noQuery({ r1: 1, r2: false })
 
-nr.noRequired({})
-nr.noRequired({ q2: "str" })
-nr.noRequired({ q1: 1 })
+nr.goTo.noRequired({})
+nr.goTo.noRequired({ q2: "str" })
+nr.goTo.noRequired({ q1: 1 })
 
-nr.noArgs({})
+nr.goTo.noArgs({})

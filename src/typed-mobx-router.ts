@@ -1,10 +1,20 @@
 import { Diff } from "type-utils"
 import * as React from "react"
-import { path } from "router-impl"
 import { History } from "history"
 
+export const path: PathTemplate = <T extends string>(
+  literals: TemplateStringsArray,
+  ...args: T[]
+): [string, T[]] => {
+  const builtPath = literals
+    .map((litString, i) => (args[i] ? litString + ":" + args[i] : litString))
+    .join()
+
+  return [builtPath, args]
+}
+
 export interface RouterBuilder<T> {
-  start(): T & { routerStore: RouterStore }
+  start(): RouterStore & { goTo: T }
 
   addRoute<
     N extends string,
@@ -209,7 +219,7 @@ const nr = newRouter({} as any)
   })
   .start()
 
-nr.test({ id: 3, hello: false })
+nr.goTo.test({ id: 2 })
 
 export interface Route<N, R, L, Q, D, CN, CT> {
   name: N

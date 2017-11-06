@@ -15,14 +15,3 @@ export class RouterStoreImpl implements RouterStore {
     return this.rootNode.buildPath(this.routeName, this.params)
   }
 }
-
-export const path: PathTemplate = <T extends string>(
-  literals: TemplateStringsArray,
-  ...args: T[]
-): [string, T[]] => {
-  const builtPath = literals
-    .map((litString, i) => (args[i] ? litString + ":" + args[i] : litString))
-    .join()
-
-  return [builtPath, args]
-}
