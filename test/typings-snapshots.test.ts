@@ -8,5 +8,5 @@ it("Verifies output of typings checker matches expected", () => {
 
   expect(stdout.toString()).toMatchSnapshot()
   expect(stderr.toString()).toMatchSnapshot()
-  expect(status).toBe(0)
+  expect(status).toBe(1)
 })

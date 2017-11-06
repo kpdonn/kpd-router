@@ -60,6 +60,29 @@ const nr = newRouter({} as any)
       { names: ["r6", "q6"], from: (a: { nested4: string }) => a.nested4 }
     ]
   })
+  .addRoute({
+    name: "noQuery",
+    path: path`/noQuery/${"r1"}/${"r2"}`,
+    onLoad: (args: { r1: number; r2: boolean }) => args,
+    defaults: { r1: 0 },
+    converters: [
+      { names: ["r1"], from: (id: number) => id.toString() },
+      { names: ["r2"], from: (nid: boolean) => nid.toString() }
+    ]
+  })
+  .addRoute({
+    name: "noRequired",
+    path: "/noRequired",
+    queryParams: ["q1", "q2"],
+    onLoad: (args: { q1: number; q2?: string }) => args,
+    defaults: { q1: 2 },
+    converters: [{ names: ["q1"], from: (id: number) => id.toString() }]
+  })
+  .addRoute({
+    name: "noArgs",
+    path: "/noArgs",
+    onLoad: () => console.log("nothing")
+  })
   .start()
 
 nr.p1({ r1: 2 })
@@ -77,3 +100,11 @@ nr.p3({
   q3: { nested1: "" }
 })
 nr.p3({ r5: { nested3: "" }, r6: { nested4: "" }, q1: 4, q3: { nested1: "" } })
+nr.noQuery({ r2: true })
+nr.noQuery({ r1: 1, r2: false })
+
+nr.noRequired({})
+nr.noRequired({ q2: "str" })
+nr.noRequired({ q1: 1 })
+
+nr.noArgs({})

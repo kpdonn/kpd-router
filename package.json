@@ -39,7 +39,10 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleDirectories": ["src", "node_modules"],
+    "moduleDirectories": [
+      "src",
+      "node_modules"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -67,7 +70,7 @@
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.1.0",
     "tslint-config-standard": "^6.0.0",
-    "typescript": "^2.6.1",
+    "typescript": "^2.7.0-dev.20171104",
     "typings-checker": "^2.0.0"
   },
   "dependencies": {

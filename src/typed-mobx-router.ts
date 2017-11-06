@@ -9,9 +9,6 @@ export interface RouterBuilder<T> {
   addRoute<
     N extends string,
     R extends string,
-    L extends ((
-      params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-    ) => void),
     Q extends string,
     CN0 extends string,
     CT0,
@@ -26,32 +23,19 @@ export interface RouterBuilder<T> {
     CN5 extends string,
     CT5,
     D extends Defaults<R, Q, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>,
-    ReactCompProps extends OnLoadParams<
-      R,
-      Q,
-      D,
-      CN0,
-      CT0,
-      CN1,
-      CT1,
-      CN2,
-      CT2,
-      CN3,
-      CT3,
-      CN4,
-      CT4,
-      CN5,
-      CT5
-    >,
     Extra
   >(route: {
     name: N
-    path: [string, R[]]
+    path: [string, R[]] | string
     queryParams?: Q[]
-    onLoad?: L & Extra
+    onLoad?: (
+      params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
+    ) => void
     defaults?: D
     converters?: Converters<CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-    component?: ReactComponentCreator<ReactCompProps>
+    component?: ReactComponentCreator<
+      OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
+    >
   }): RouterBuilder<
     T &
       Record<
@@ -150,7 +134,8 @@ export type OnLoadParams<
   CT4,
   CN5 extends string,
   CT5
-> = ReqParams<MultiDiff<R | keyof D, CN0, CN1, CN2, CN3, CN4, CN5>> &
+> = ReqParams<MultiDiff<R, CN0, CN1, CN2, CN3, CN4, CN5>> &
+  ReqParams<MultiDiff<keyof D, CN0, CN1, CN2, CN3, CN4, CN5>> &
   OptParams<MultiDiff<Q, CN0, CN1, CN2, CN3, CN4, CN5, keyof D>> &
   OnLoadConvertedParams<R, Q, D, CN0, CT0> &
   OnLoadConvertedParams<R, Q, D, CN1, CT1> &
@@ -165,7 +150,9 @@ export type OnLoadConvertedParams<
   D,
   CN extends string,
   CT
-> = ReqParams<Diff<R | keyof D, Diff<R | keyof D, CN>>, CT> & OptParams<Diff<Q & CN, keyof D>, CT>
+> = ReqParams<Diff<R, Diff<R, CN>>, CT> &
+  ReqParams<Diff<keyof D, Diff<keyof D, CN>>, CT> &
+  OptParams<Diff<Q & CN, keyof D>, CT>
 
 export interface Converters<
   CN0 extends string,
