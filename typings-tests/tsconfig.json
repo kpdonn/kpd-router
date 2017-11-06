@@ -5,7 +5,9 @@
     "noUnusedLocals": false
   },
   "files": [
-    "index.ts",
     "../src/definitions.d.ts"
+  ],
+  "include": [
+    "./**/*"
   ]
 }

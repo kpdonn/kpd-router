@@ -5,6 +5,6 @@
     "outDir": "compiled"
   },
   "include": [
-    "./"
+    "./**/*"
   ]
 }

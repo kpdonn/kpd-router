@@ -39,6 +39,7 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleDirectories": ["src", "node_modules"],
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -48,7 +49,7 @@
   "devDependencies": {
     "@types/history": "^4.6.1",
     "@types/jest": "^21.1.0",
-    "@types/node": "^8.0.0",
+    "@types/node": "^8.0.47",
     "colors": "^1.1.2",
     "cross-env": "^5.0.1",
     "husky": "^0.14.0",

@@ -1,6 +1,5 @@
 import { Diff } from "type-utils"
 import * as React from "react"
-import { TestComp } from "TestComp"
 import { path } from "router-impl"
 import { History } from "history"
 
@@ -166,7 +165,7 @@ export type OnLoadConvertedParams<
   D,
   CN extends string,
   CT
-> = ReqParams<(R | keyof D) & CN, CT> & OptParams<Diff<Q & CN, keyof D>, CT>
+> = ReqParams<Diff<R | keyof D, Diff<R | keyof D, CN>>, CT> & OptParams<Diff<Q & CN, keyof D>, CT>
 
 export interface Converters<
   CN0 extends string,
@@ -219,8 +218,7 @@ const nr = newRouter({} as any)
     converters: [
       { names: ["id"], from: (nid: number) => nid.toString() },
       { names: ["hello", "other"], from: (nid: boolean) => nid.toString() }
-    ],
-    component: TestComp
+    ]
   })
   .start()
 
