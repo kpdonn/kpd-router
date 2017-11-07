@@ -13,8 +13,8 @@ export const path: PathTemplate = <T extends string>(
   return [builtPath, args]
 }
 
-export interface RouterBuilder<T> {
-  start(): RouterStore & { goTo: T }
+export interface RouterBuilder<T, L = never> {
+  start(): RouterStore & { goTo: T } & { Link: React.ComponentClass<L> }
 
   addRoute<
     N extends string,
@@ -53,7 +53,25 @@ export interface RouterBuilder<T> {
         (
           args: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
         ) => void
-      >
+      >,
+    | L
+    | ({ route: N } & GoToRouteParams<
+      R,
+      Q,
+      D,
+      CN0,
+      CT0,
+      CN1,
+      CT1,
+      CN2,
+      CT2,
+      CN3,
+      CT3,
+      CN4,
+      CT4,
+      CN5,
+      CT5
+    >)
   >
 }
 
