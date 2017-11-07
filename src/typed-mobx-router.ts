@@ -13,8 +13,15 @@ export const path: PathTemplate = <T extends string>(
   return [builtPath, args]
 }
 
+export interface RouterStore<GoToFuns, LinkProps, States> {
+  readonly currentPath: string
+  goTo: GoToFuns
+  Link: React.ComponentClass<LinkProps>
+  currentRoute: States
+}
+
 export interface RouterBuilder<T, L = never, S = never> {
-  start(): RouterStore & { goTo: T } & { Link: React.ComponentClass<L> } & { currentRoute: S }
+  start(): RouterStore<T, L, S>
 
   addRoute<
     N extends string,
@@ -32,8 +39,7 @@ export interface RouterBuilder<T, L = never, S = never> {
     CT4,
     CN5 extends string,
     CT5,
-    D extends Defaults<R, Q, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>,
-    Extra
+    D extends Defaults<R, Q, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
   >(route: {
     name: N
     path: [string, R[]] | string
@@ -219,41 +225,6 @@ export interface Converter<N extends string, T> {
 
 export type ReqParams<K extends string, T = string> = Record<K, T>
 export type OptParams<K extends string, T = string> = Partial<Record<K, T>>
-
-export interface RouterStore {
-  readonly currentPath: string
-}
-
-const nr = newRouter({} as any)
-  .addRoute({
-    name: "test",
-    path: path`/test/${"id"} ${"other"}`,
-    queryParams: ["hello"],
-    onLoad: args => args,
-    defaults: { other: true },
-    converters: [
-      { names: ["id"], from: (nid: number) => nid.toString() },
-      { names: ["hello", "other"], from: (nid: boolean) => nid.toString() }
-    ]
-  })
-  .addRoute({
-    name: "other",
-    path: path`/test/${"otherParam"}`,
-    queryParams: ["optParam"],
-    converters: [{ names: ["otherParam"], from: (nid: number) => nid.toString() }]
-  })
-  .start()
-
-nr.goTo.test({ id: 2 })
-
-export interface Route<N, R, L, Q, D, CN, CT> {
-  name: N
-  path: [string, R[]]
-  queryParams?: Q[]
-  onLoad?: L
-  defaults?: D
-  converter?: [CN[], (arg: CT) => string]
-}
 
 export function newRouter(history: History): RouterBuilder<{}> {
   // return new RouterBuilderImpl(history)
