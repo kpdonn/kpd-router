@@ -13,8 +13,8 @@ export const path: PathTemplate = <T extends string>(
   return [builtPath, args]
 }
 
-export interface RouterBuilder<T, L = never> {
-  start(): RouterStore & { goTo: T } & { Link: React.ComponentClass<L> }
+export interface RouterBuilder<T, L = never, S = never> {
+  start(): RouterStore & { goTo: T } & { Link: React.ComponentClass<L> } & { currentRoute: S }
 
   addRoute<
     N extends string,
@@ -71,7 +71,12 @@ export interface RouterBuilder<T, L = never> {
       CT4,
       CN5,
       CT5
-    >)
+    >),
+    | S
+    | ({
+      route: N
+      params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
+    })
   >
 }
 
@@ -216,10 +221,6 @@ export type ReqParams<K extends string, T = string> = Record<K, T>
 export type OptParams<K extends string, T = string> = Partial<Record<K, T>>
 
 export interface RouterStore {
-  routeName: string
-
-  params: object
-
   readonly currentPath: string
 }
 
@@ -234,6 +235,12 @@ const nr = newRouter({} as any)
       { names: ["id"], from: (nid: number) => nid.toString() },
       { names: ["hello", "other"], from: (nid: boolean) => nid.toString() }
     ]
+  })
+  .addRoute({
+    name: "other",
+    path: path`/test/${"otherParam"}`,
+    queryParams: ["optParam"],
+    converters: [{ names: ["otherParam"], from: (nid: number) => nid.toString() }]
   })
   .start()
 
