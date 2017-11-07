@@ -20,7 +20,7 @@ export interface RouterStore<GoToFuns, LinkProps, States> {
   currentRoute: States
 }
 
-export interface RouterBuilder<T, L = never, S = never> {
+export interface RouterBuilder<T = {}, L = never, S = never> {
   start(): RouterStore<T, L, S>
 
   addRoute<
@@ -226,7 +226,7 @@ export interface Converter<N extends string, T> {
 export type ReqParams<K extends string, T = string> = Record<K, T>
 export type OptParams<K extends string, T = string> = Partial<Record<K, T>>
 
-export function newRouter(history: History): RouterBuilder<{}> {
+export function newRouter(history: History): RouterBuilder {
   // return new RouterBuilderImpl(history)
   return { history } as any
 }
