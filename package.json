@@ -53,8 +53,6 @@
     "@types/history": "^4.6.1",
     "@types/jest": "^21.1.0",
     "@types/node": "^8.0.47",
-    "colors": "^1.1.2",
-    "cross-env": "^5.0.1",
     "husky": "^0.14.0",
     "jest": "^21.0.0",
     "lint-staged": "^4.0.0",
@@ -70,8 +68,7 @@
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.1.0",
     "tslint-config-standard": "^6.0.0",
-    "typescript": "^2.7.0-dev.20171104",
-    "typings-checker": "^2.0.0"
+    "typescript": "^2.7.0-dev.20171104"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
