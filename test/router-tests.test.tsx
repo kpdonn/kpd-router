@@ -20,64 +20,91 @@ const Main = (a: any) => <div>Main</div>
 const PersonList = (a: any) => <div>PersonList</div>
 const Person = (a: any) => <div>Person</div>
 
-test("is on main page to start", () => {
+describe("is on main page to start", () => {
+  beforeAll(() => {
+    jest.clearAllMocks()
+  })
+
   const router = createRouter()
 
-  expect(router.currentRoute.route).toBe("main")
-  expect(mainOnLoad).toBeCalled()
+  it("current route main", () => expect(router.currentRoute.route).toBe("main"))
+  it("mainOnLoad called", () => expect(mainOnLoad).toBeCalled())
 
-  const wrapper = shallow(<Router router={router} />)
-  expect(wrapper.some(Main)).toBeTruthy()
-  expect(wrapper.some(PersonList)).toBeFalsy()
-  expect(wrapper.some(Person)).toBeFalsy()
+  describe("Router component output", () => {
+    const wrapper = shallow(<Router router={router} />)
+
+    it("Renders main", () => expect(wrapper.some(Main)).toBeTruthy())
+    it("not render PersonList", () => expect(wrapper.some(PersonList)).toBeFalsy())
+    it("not render Person", () => expect(wrapper.some(Person)).toBeFalsy())
+  })
 })
 
-test("goes to people when function called", () => {
-  const router = createRouter()
+describe("goes to people when function called", () => {
+  beforeAll(() => {
+    jest.clearAllMocks()
+  })
 
-  expect(personListOnLoad).not.toBeCalled()
+  const router = createRouter()
   router.goTo.personList({})
-  expect(router.currentRoute.route).toBe("personList")
-  expect(router.currentRoute.params).toEqual({ page: 1 })
 
-  expect(personListOnLoad).toBeCalledWith({ page: 1 })
-  expect(history.location.pathname + history.location.search).toBe("/people?page=1")
+  it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
+  it("correct params", () =>expect(router.currentRoute.params).toEqual({ page: 1 }))
 
-  const wrapper = shallow(<Router router={router} />)
-  expect(wrapper.some(<PersonList page={1} />)).toBeTruthy()
-  expect(wrapper.some(Main)).toBeFalsy()
-  expect(wrapper.some(Person)).toBeFalsy()
+  it("called on load correctly", () =>expect(personListOnLoad).toBeCalledWith({ page: 1 }))
+  it("correct url", () =>expect(history.location.pathname + history.location.search).toBe("/people?page=1"))
+
+
+  describe("Router component output", () => {
+    const wrapper = shallow(<Router router={router} />)
+    it("Renders PersonList", () => expect(wrapper.some(<PersonList page={1} />)).toBeTruthy())
+    it("not render Main", () => expect(wrapper.some(Main)).toBeFalsy())
+    it("not render Person", () => expect(wrapper.some(Person)).toBeFalsy())
+  })
 })
 
-test("goes to person when function called", () => {
+describe("goes to person when function called", () => {
+  beforeAll(() => {
+    jest.clearAllMocks()
+  })
+
   const router = createRouter()
-
-  expect(personOnLoad).not.toBeCalled()
   router.goTo.person({ id: "42" })
-  expect(router.currentRoute.route).toEqual("person")
-  expect(router.currentRoute.params).toEqual({ id: "42" })
-  expect(personOnLoad).toBeCalledWith({ id: "42" })
-  expect(history.location.pathname + history.location.search).toBe("/people/42")
 
-  const wrapper = shallow(<Router router={router} />)
-  expect(wrapper.some(<Person id="42" />)).toBeTruthy()
-  expect(wrapper.some(Main)).toBeFalsy()
-  expect(wrapper.some(PersonList)).toBeFalsy()
+  it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
+  it("correct params", () =>expect(router.currentRoute.params).toEqual({ id: "42" }))
+
+  it("called on load correctly", () =>expect(personOnLoad).toBeCalledWith({ id: "42" }))
+  it("correct url", () =>expect(history.location.pathname + history.location.search).toBe("/people/42"))
+
+
+  describe("Router component output", () => {
+    const wrapper = shallow(<Router router={router} />)
+    it("Renders PersonList", () => expect(wrapper.some(<Person id="42" />)).toBeTruthy())
+    it("not render Main", () => expect(wrapper.some(Main)).toBeFalsy())
+    it("not render Person", () => expect(wrapper.some(PersonList)).toBeFalsy())
+  })
 })
 
-test("is on person page to start", () => {
-  expect(personListOnLoad).not.toBeCalled()
+describe("is on person list to start", () => {
+  beforeAll(() => {
+    jest.clearAllMocks()
+  })
 
   const router = createRouter("/people/100")
-  expect(router.currentRoute.route).toBe("person")
-  expect(router.currentRoute.params).toEqual({ id: "100" })
-  expect(personOnLoad).toBeCalledWith({ id: "100" })
-  expect(history.location.pathname + history.location.search).toBe("/people/100")
 
-  const wrapper = shallow(<Router router={router} />)
-  expect(wrapper.some(<Person id="100" />)).toBeTruthy()
-  expect(wrapper.some(Main)).toBeFalsy()
-  expect(wrapper.some(PersonList)).toBeFalsy()
+  it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
+  it("correct params", () =>expect(router.currentRoute.params).toEqual({ id: "100" }))
+
+  it("called on load correctly", () =>expect(personOnLoad).toBeCalledWith({ id: "100" }))
+  it("correct url", () =>expect(history.location.pathname + history.location.search).toBe("/people/100"))
+
+
+  describe("Router component output", () => {
+    const wrapper = shallow(<Router router={router} />)
+    it("Renders PersonList", () => expect(wrapper.some(<Person id="100" />)).toBeTruthy())
+    it("not render Main", () => expect(wrapper.some(Main)).toBeFalsy())
+    it("not render Person", () => expect(wrapper.some(PersonList)).toBeFalsy())
+  })
 })
 
 const numberConverter = {
