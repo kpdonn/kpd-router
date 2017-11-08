@@ -37,14 +37,13 @@ class RouterStoreImpl
 
 class RouterBuilderImpl {
   private rootNode = new RouteNode()
-  private goTo: { [index: string]: Function } = {}
 
   private routerStore = new RouterStoreImpl(this.rootNode)
 
   constructor(public history: History) {}
 
   start(): RouterStoreImpl {
-    return {} as any
+    return this.routerStore
   }
 
   addRoute(route: Route): this {
@@ -54,7 +53,7 @@ class RouterBuilderImpl {
       this.rootNode.addNode(route.name, route.path[0])
     }
 
-    this.goTo[route.name] = (...args: any[]) => {
+    this.routerStore.goTo[route.name] = (args: any) => {
       runInAction(() => {
         this.routerStore.currentRoute = { route: route.name, params: args }
       })
