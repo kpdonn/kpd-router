@@ -69,7 +69,9 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
     | S
     | ({
       route: N
-      params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
+      params: Readonly<
+        OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
+      >
     })
   >
 }
