@@ -48,11 +48,11 @@ describe("goes to people when function called", () => {
   router.goTo.personList({})
 
   it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
-  it("correct params", () =>expect(router.currentRoute.params).toEqual({ page: 1 }))
+  it("correct params", () => expect(router.currentRoute.params).toEqual({ page: 1 }))
 
-  it("called on load correctly", () =>expect(personListOnLoad).toBeCalledWith({ page: 1 }))
-  it("correct url", () =>expect(history.location.pathname + history.location.search).toBe("/people?page=1"))
-
+  it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith({ page: 1 }))
+  it("correct url", () =>
+    expect(history.location.pathname + history.location.search).toBe("/people?page=1"))
 
   describe("Router component output", () => {
     const wrapper = shallow(<Router router={router} />)
@@ -71,11 +71,11 @@ describe("goes to person when function called", () => {
   router.goTo.person({ id: "42" })
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
-  it("correct params", () =>expect(router.currentRoute.params).toEqual({ id: "42" }))
+  it("correct params", () => expect(router.currentRoute.params).toEqual({ id: "42" }))
 
-  it("called on load correctly", () =>expect(personOnLoad).toBeCalledWith({ id: "42" }))
-  it("correct url", () =>expect(history.location.pathname + history.location.search).toBe("/people/42"))
-
+  it("called on load correctly", () => expect(personOnLoad).toBeCalledWith({ id: "42" }))
+  it("correct url", () =>
+    expect(history.location.pathname + history.location.search).toBe("/people/42"))
 
   describe("Router component output", () => {
     const wrapper = shallow(<Router router={router} />)
@@ -93,11 +93,11 @@ describe("is on person list to start", () => {
   const router = createRouter("/people/100")
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
-  it("correct params", () =>expect(router.currentRoute.params).toEqual({ id: "100" }))
+  it("correct params", () => expect(router.currentRoute.params).toEqual({ id: "100" }))
 
-  it("called on load correctly", () =>expect(personOnLoad).toBeCalledWith({ id: "100" }))
-  it("correct url", () =>expect(history.location.pathname + history.location.search).toBe("/people/100"))
-
+  it("called on load correctly", () => expect(personOnLoad).toBeCalledWith({ id: "100" }))
+  it("correct url", () =>
+    expect(history.location.pathname + history.location.search).toBe("/people/100"))
 
   describe("Router component output", () => {
     const wrapper = shallow(<Router router={router} />)
