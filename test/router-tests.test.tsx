@@ -33,9 +33,9 @@ describe("is on main page to start", () => {
   describe("Router component output", () => {
     const wrapper = shallow(<Router router={router} />)
 
-    it("Renders main", () => expect(wrapper.some(Main)).toBeTruthy())
-    it("not render PersonList", () => expect(wrapper.some(PersonList)).toBeFalsy())
-    it("not render Person", () => expect(wrapper.some(Person)).toBeFalsy())
+    it("Renders main", () => expect(wrapper.contains(<Main />)).toBeTruthy())
+    it("not render PersonList", () => expect(wrapper.find(PersonList)).toHaveLength(0))
+    it("not render Person", () => expect(wrapper.find(Person)).toHaveLength(0))
   })
 })
 
@@ -56,9 +56,9 @@ describe("goes to people when function called", () => {
 
   describe("Router component output", () => {
     const wrapper = shallow(<Router router={router} />)
-    it("Renders PersonList", () => expect(wrapper.some(<PersonList page={1} />)).toBeTruthy())
-    it("not render Main", () => expect(wrapper.some(Main)).toBeFalsy())
-    it("not render Person", () => expect(wrapper.some(Person)).toBeFalsy())
+    it("Renders PersonList", () => expect(wrapper.contains(<PersonList page={1} />)).toBeTruthy())
+    it("not render Main", () => expect(wrapper.find(Main)).toHaveLength(0))
+    it("not render Person", () => expect(wrapper.find(Person)).toHaveLength(0))
   })
 })
 
@@ -79,9 +79,9 @@ describe("goes to person when function called", () => {
 
   describe("Router component output", () => {
     const wrapper = shallow(<Router router={router} />)
-    it("Renders PersonList", () => expect(wrapper.some(<Person id="42" />)).toBeTruthy())
-    it("not render Main", () => expect(wrapper.some(Main)).toBeFalsy())
-    it("not render Person", () => expect(wrapper.some(PersonList)).toBeFalsy())
+    it("Renders PersonList", () => expect(wrapper.contains(<Person id="42" />)).toBeTruthy())
+    it("not render Main", () => expect(wrapper.find(Main)).toHaveLength(0))
+    it("not render PersonList", () => expect(wrapper.find(PersonList)).toHaveLength(0))
   })
 })
 
@@ -101,9 +101,9 @@ describe("is on person list to start", () => {
 
   describe("Router component output", () => {
     const wrapper = shallow(<Router router={router} />)
-    it("Renders PersonList", () => expect(wrapper.some(<Person id="100" />)).toBeTruthy())
-    it("not render Main", () => expect(wrapper.some(Main)).toBeFalsy())
-    it("not render Person", () => expect(wrapper.some(PersonList)).toBeFalsy())
+    it("Renders PersonList", () => expect(wrapper.contains(<Person id="100" />)).toBeTruthy())
+    it("not render Main", () => expect(wrapper.find(Main)).toHaveLength(0))
+    it("not render PersonList", () => expect(wrapper.find(PersonList)).toHaveLength(0))
   })
 })
 
