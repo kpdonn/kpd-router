@@ -1,5 +1,5 @@
 {
-  "extends": "./configs/base.tsconfig",
+  "extends": "./configs/tsconfig",
   "compilerOptions": {
     "sourceMap": true,
     "declaration": true,

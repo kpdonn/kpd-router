@@ -1,8 +1,9 @@
 {
-  "extends": "../configs/base.tsconfig",
+  "extends": "../configs/tsconfig",
   "compilerOptions": {
     "sourceMap": true,
-    "outDir": "compiled"
+    "outDir": "compiled",
+    "experimentalDecorators": true
   },
   "include": [
     "./**/*"

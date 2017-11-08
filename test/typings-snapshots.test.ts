@@ -1,7 +1,7 @@
 import { spawnSync } from "child_process"
 
 const tscOptions = [
-  "src/definitions.d.ts",
+  "configs/definitions.d.ts",
   "--noEmit",
   "--baseUrl",
   "src/",
