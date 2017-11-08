@@ -2,7 +2,7 @@ import { History } from "history"
 import { RouterBuilder, RouterStore } from "interfaces"
 import * as React from "react"
 import * as RouteNode from "route-node"
-import { computed, observable, runInAction } from "mobx"
+import { autorun, computed, observable, runInAction } from "mobx"
 
 export const path = <T extends string>(
   literals: TemplateStringsArray,
@@ -16,7 +16,6 @@ export const path = <T extends string>(
 }
 
 export function newRouter(history: History): RouterBuilder {
-  // return new RouterBuilderImpl(history)
   return new RouterBuilderImpl(history) as any
 }
 
@@ -27,7 +26,7 @@ class RouterStoreImpl
 
   @observable currentRoute: { route: string; params: any }
 
-  constructor(private rootNode: any) {}
+  constructor(private rootNode: any, readonly history: History) {}
 
   @computed
   get currentPath(): string {
@@ -38,11 +37,37 @@ class RouterStoreImpl
 class RouterBuilderImpl {
   private rootNode = new RouteNode()
 
-  private routerStore = new RouterStoreImpl(this.rootNode)
+  private routerStore: RouterStoreImpl
 
-  constructor(public history: History) {}
+  private onLoadMap = new Map<string, (params: any) => void>()
+
+  constructor(readonly history: History) {
+    this.routerStore = new RouterStoreImpl(this.rootNode, this.history)
+  }
 
   start(): RouterStoreImpl {
+    const initialMatch = this.rootNode.matchPath(
+      this.history.location.pathname + this.history.location.search
+    )
+
+    this.routerStore.currentRoute = { route: initialMatch.name, params: initialMatch.params }
+
+    autorun(() => {
+      const { route } = this.routerStore.currentRoute
+      const onLoadFun = this.onLoadMap.get(route)
+      if (onLoadFun) {
+        const params = this.routerStore.currentRoute.params
+        onLoadFun(params)
+      }
+    })
+
+    autorun(() => {
+      const path = this.routerStore.currentPath
+      if (path !== this.history.location.pathname + this.history.location.search) {
+        this.history.push(path)
+      }
+    })
+
     return this.routerStore
   }
 
@@ -58,6 +83,10 @@ class RouterBuilderImpl {
         this.routerStore.currentRoute = { route: route.name, params: args }
       })
     }
+
+    if (route.onLoad) {
+      this.onLoadMap.set(route.name, route.onLoad)
+    }
     return this
   }
 }
@@ -66,7 +95,7 @@ interface Route {
   name: string
   path: [string, string[]] | string
   queryParams?: string[]
-  onLoad?: (...args: any[]) => void
+  onLoad?: (params: any) => void
   defaults?: { [index: string]: any }
   converters?: { names: string[]; from: (arg: any) => string }[]
   component?: React.ComponentType

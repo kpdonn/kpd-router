@@ -2,6 +2,7 @@ import * as raf from "raf"
 raf.polyfill(global)
 
 import createMemoryHistory from "history/createMemoryHistory"
+import { History } from "history"
 
 import { newRouter, path } from "typed-mobx-router"
 import * as React from "react"
@@ -11,7 +12,6 @@ import { Router } from "Router"
 
 configure({ adapter: new ReactSixteenAdapter() })
 
-let history = createMemoryHistory()
 const mainOnLoad = jest.fn()
 const personListOnLoad = jest.fn()
 const personOnLoad = jest.fn()
@@ -43,8 +43,9 @@ describe("goes to people when function called", () => {
   beforeAll(() => {
     jest.clearAllMocks()
   })
-
   const router = createRouter()
+  const history: History = (router as any).history
+
   router.goTo.personList({})
 
   it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
@@ -68,6 +69,8 @@ describe("goes to person when function called", () => {
   })
 
   const router = createRouter()
+  const history: History = (router as any).history
+
   router.goTo.person({ id: "42" })
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
@@ -91,6 +94,7 @@ describe("is on person list to start", () => {
   })
 
   const router = createRouter("/people/100")
+  const history: History = (router as any).history
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
   it("correct params", () => expect(router.currentRoute.params).toEqual({ id: "100" }))
@@ -112,7 +116,7 @@ const numberConverter = {
 }
 
 function createRouter(initialPath: string = "/") {
-  history = createMemoryHistory({ initialEntries: [initialPath] })
+  const history = createMemoryHistory({ initialEntries: [initialPath] })
   return newRouter(history)
     .addRoute({
       name: "main",
