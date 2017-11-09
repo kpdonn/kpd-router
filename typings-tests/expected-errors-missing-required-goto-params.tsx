@@ -1,5 +1,6 @@
 import {newRouter, path} from "typed-mobx-router"
-
+const numConverter = {from: (id: number) => id.toString(), to: (arg: string) => Number.parseInt(arg) }
+const boolConverter = { from: (nid: boolean) => nid.toString(), to: (arg: string) => arg === "true"  }
 const nr = newRouter({} as any)
   .addRoute({
     name: "p1",
@@ -17,8 +18,8 @@ const nr = newRouter({} as any)
     path: path`/p3/${"r1"}/${"r2"}`,
     defaults: { r1: 4 },
     converters: [
-      { names: ["r1"], from: (arg: number) => arg.toString() },
-      { names: ["r2"], from: (arg: boolean) => arg.toString() }
+      { names: ["r1"], ...numConverter },
+      { names: ["r2"], ...boolConverter }
     ]
   })
   .start()

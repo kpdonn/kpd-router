@@ -131,8 +131,9 @@ describe("is on person list to start", () => {
   })
 })
 
-const numberConverter = {
-  from: (num: number) => num.toString()
+const numConverter = {
+  from: (id: number) => id.toString(),
+  to: (arg: string) => Number.parseInt(arg)
 }
 
 function createRouter(
@@ -152,7 +153,7 @@ function createRouter(
       path: path`/people`,
       queryParams: ["page"],
       defaults: { page: 1 },
-      converters: [{ names: ["page"], ...numberConverter }],
+      converters: [{ names: ["page"], ...numConverter }],
       onLoad: mocks.personListOnLoad,
       component: PersonList
     })

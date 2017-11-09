@@ -18,6 +18,10 @@ function p2Comp(args: { r1: string; r2: string; q1?: string }) {
 declare function p1OnLoad(args: { r1: number; q1: boolean }): void
 declare function p2OnLoad(args: { r1: string; r2: string; q1?: string }): void
 
+const numConverter = {from: (id: number) => id.toString(), to: (arg: string) => Number.parseInt(arg) }
+const boolConverter = { from: (nid: boolean) => nid.toString(), to: (arg: string) => arg === "true"  }
+
+
 const nr = newRouter({} as any)
   .addRoute({
     name: "p1",
@@ -26,8 +30,8 @@ const nr = newRouter({} as any)
     onLoad: p1OnLoad,
     defaults: { q1: true },
     converters: [
-      { names: ["r1"], from: (id: number) => id.toString() },
-      { names: ["q1"], from: (nid: boolean) => nid.toString() }
+      { names: ["r1"], ...numConverter },
+      { names: ["q1"], ...boolConverter}
     ],
     component: P1Comp
   })
@@ -47,8 +51,8 @@ const nr = newRouter({} as any)
       r2: true
     },
     converters: [
-      { names: ["r1", "q1"], from: (a: number) => a.toString() },
-      { names: ["r2", "q2"], from: (a: boolean) => a.toString() }
+      { names: ["r1", "q1"], ...numConverter },
+      { names: ["r2", "q2"], ...boolConverter }
     ]
   })
   .addRoute({
@@ -57,8 +61,8 @@ const nr = newRouter({} as any)
     onLoad: (args: { r1: number; r2: boolean }) => args,
     defaults: { r1: 0 },
     converters: [
-      { names: ["r1"], from: (id: number) => id.toString() },
-      { names: ["r2"], from: (nid: boolean) => nid.toString() }
+      { names: ["r1"], ...numConverter },
+      { names: ["r2"], ...boolConverter }
     ]
   })
   .addRoute({
@@ -67,7 +71,7 @@ const nr = newRouter({} as any)
     queryParams: ["q1", "q2"],
     onLoad: (args: { q1: number; q2?: string }) => args,
     defaults: { q1: 2 },
-    converters: [{ names: ["q1"], from: (id: number) => id.toString() }]
+    converters: [{ names: ["q1"], ...numConverter}]
   })
   .addRoute({
     name: "noArgs",

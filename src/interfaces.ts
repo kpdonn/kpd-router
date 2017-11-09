@@ -182,6 +182,7 @@ export interface Converters<CN0 extends string, CT0, CN1 extends string, CT1> {
 export interface Converter<N extends string, T> {
   names: N[]
   from: (arg: T) => string
+  to: (arg: string) => T
 }
 
 export type ReqParams<K extends string, T = string> = Record<K, T>

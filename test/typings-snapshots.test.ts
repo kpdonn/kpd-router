@@ -15,7 +15,7 @@ const tscOptions = [
   "--module",
   "es2015",
   "--lib",
-  "es2015,dom",
+  "es2015,dom,es7",
   "--strict",
   "--noUnusedLocals",
   "false",

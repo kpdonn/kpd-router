@@ -6,6 +6,8 @@ class P3Comp extends React.Component<{ q1?: boolean; extra: string }> {
     return <div />
   }
 }
+const numConverter = {from: (id: number) => id.toString(), to: (arg: string) => Number.parseInt(arg) }
+const boolConverter = { from: (nid: boolean) => nid.toString(), to: (arg: string) => arg === "true"  }
 
 newRouter({} as any).addRoute({
   name: "p1",
@@ -19,8 +21,8 @@ newRouter({} as any).addRoute({
     </div>
   ),
   converters: [
-    { names: ["r1"], from: (id: number) => id.toString() },
-    { names: ["q1"], from: (nid: boolean) => nid.toString() }
+    { names: ["r1"],...numConverter },
+    { names: ["q1"], ...boolConverter}
   ]
 })
 
@@ -38,7 +40,7 @@ newRouter({} as any).addRoute({
   component: P3Comp,
   defaults: { r1: 0, r2: false },
   converters: [
-    { names: ["r1"], from: (id: number) => id.toString() },
-    { names: ["r2"], from: (nid: boolean) => nid.toString() }
+    { names: ["r1"], ...numConverter },
+    { names: ["r2"], ...boolConverter }
   ]
 })
