@@ -1,8 +1,8 @@
 import { History } from "history"
 import { RouterBuilder, RouterStore } from "interfaces"
 import * as React from "react"
-import * as RouteNode from "route-node"
 import { autorun, computed, observable, runInAction } from "mobx"
+import { RouteManager } from "route-manager"
 
 export const path = <T extends string>(
   literals: TemplateStringsArray,
@@ -26,31 +26,44 @@ class RouterStoreImpl
 
   @observable currentRoute: { route: string; params: any }
 
-  constructor(private rootNode: any, readonly history: History) {}
+  constructor(private routeManager: RouteManager, readonly history: History) {}
 
   @computed
   get currentPath(): string {
-    return this.rootNode.buildPath(this.currentRoute.route, this.currentRoute.params)
+    return this.routeManager.buildRoute(this.currentRoute.route, this.currentRoute.params)
   }
 }
 
 class RouterBuilderImpl {
-  private rootNode = new RouteNode()
+  private routePaths = []
 
   private routerStore: RouterStoreImpl
 
   private onLoadMap = new Map<string, (params: any) => void>()
 
+  private defaultsMap = new Map<string, object>()
+
+  private routeManager = new RouteManager()
+
   constructor(readonly history: History) {
-    this.routerStore = new RouterStoreImpl(this.rootNode, this.history)
+    this.routerStore = new RouterStoreImpl(this.routeManager, this.history)
+  }
+
+  setRouteInfoFromLocation() {
+    const match = this.routeManager.matchRoute(
+      this.history.location.pathname,
+      this.history.location.search
+    )
+
+    const defaults = this.defaultsMap.get(match.name) || {}
+
+    const params = { ...defaults, ...match.params }
+
+    this.routerStore.currentRoute = { route: match.name, params }
   }
 
   start(): RouterStoreImpl {
-    const initialMatch = this.rootNode.matchPath(
-      this.history.location.pathname + this.history.location.search
-    )
-
-    this.routerStore.currentRoute = { route: initialMatch.name, params: initialMatch.params }
+    this.setRouteInfoFromLocation()
 
     autorun(() => {
       const { route } = this.routerStore.currentRoute
@@ -72,11 +85,18 @@ class RouterBuilderImpl {
   }
 
   addRoute(route: Route): this {
-    if (typeof route.path === "string") {
-      this.rootNode.addNode(route.name, route.path)
-    } else {
-      this.rootNode.addNode(route.name, route.path[0])
+    if (route.defaults) {
+      this.defaultsMap.set(route.name, route.defaults)
     }
+
+    let path
+    if (typeof route.path === "string") {
+      path = route.path
+    } else {
+      path = route.path[0]
+    }
+
+    this.routeManager.addRoute(route.name, path, route.queryParams)
 
     this.routerStore.goTo[route.name] = (args: any) => {
       runInAction(() => {

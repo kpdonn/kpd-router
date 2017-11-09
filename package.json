@@ -55,6 +55,7 @@
     "@types/history": "^4.6.1",
     "@types/jest": "^21.1.0",
     "@types/node": "^8.0.47",
+    "@types/qs": "^6.5.1",
     "@types/react": "^16.0.18",
     "@types/react-test-renderer": "^16.0.0",
     "enzyme": "^3.1.1",
@@ -83,8 +84,9 @@
   },
   "dependencies": {
     "history": "^4.7.2",
+    "qs": "^6.5.1",
     "react": "^16.0.0",
-    "route-node": "^1.10.0"
+    "url-pattern": "^1.0.3"
   },
   "peerDependencies": {
     "mobx": "^3.3.1"
