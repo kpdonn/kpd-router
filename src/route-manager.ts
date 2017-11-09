@@ -25,7 +25,7 @@ export class RouteManager {
 
     const urlParams = urlPattern.match(path)
 
-    const queryParams = search ? qs.parse(search) : {}
+    const queryParams = search ? qs.parse(search, { ignoreQueryPrefix: true }) : {}
 
     const defaults = this.defaultsMap.get(name) || {}
 

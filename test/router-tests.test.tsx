@@ -60,6 +60,29 @@ describe("goes to people when function called", () => {
   })
 })
 
+describe("is on people page 2 to start", () => {
+  const mainOnLoad = jest.fn()
+  const personListOnLoad = jest.fn()
+  const personOnLoad = jest.fn()
+
+  const router = createRouter("/people?page=2", { mainOnLoad, personListOnLoad, personOnLoad })
+  const history: History = (router as any).history
+
+  it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
+  it("correct params", () => expect(router.currentRoute.params).toEqual({ page: 2 }))
+
+  it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith({ page: 2 }))
+  it("correct url", () =>
+    expect(history.location.pathname + history.location.search).toBe("/people?page=2"))
+
+  describe("Router component output", () => {
+    const wrapper = shallow(<Router router={router} />)
+    it("Renders PersonList", () => expect(wrapper.contains(<PersonList page={2} />)).toBeTruthy())
+    it("not render Main", () => expect(wrapper.find(Main)).toHaveLength(0))
+    it("not render Person", () => expect(wrapper.find(Person)).toHaveLength(0))
+  })
+})
+
 describe("goes to person when function called", () => {
   const mainOnLoad = jest.fn()
   const personListOnLoad = jest.fn()
