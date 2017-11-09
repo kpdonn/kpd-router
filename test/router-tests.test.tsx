@@ -12,20 +12,16 @@ import { Router } from "Router"
 
 configure({ adapter: new ReactSixteenAdapter() })
 
-const mainOnLoad = jest.fn()
-const personListOnLoad = jest.fn()
-const personOnLoad = jest.fn()
-
 const Main = (a: any) => <div>Main</div>
 const PersonList = (a: any) => <div>PersonList</div>
 const Person = (a: any) => <div>Person</div>
 
 describe("is on main page to start", () => {
-  beforeAll(() => {
-    jest.clearAllMocks()
-  })
+  const mainOnLoad = jest.fn()
+  const personListOnLoad = jest.fn()
+  const personOnLoad = jest.fn()
 
-  const router = createRouter()
+  const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
 
   it("current route main", () => expect(router.currentRoute.route).toBe("main"))
   it("mainOnLoad called", () => expect(mainOnLoad).toBeCalled())
@@ -40,10 +36,11 @@ describe("is on main page to start", () => {
 })
 
 describe("goes to people when function called", () => {
-  beforeAll(() => {
-    jest.clearAllMocks()
-  })
-  const router = createRouter()
+  const mainOnLoad = jest.fn()
+  const personListOnLoad = jest.fn()
+  const personOnLoad = jest.fn()
+
+  const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
   const history: History = (router as any).history
 
   router.goTo.personList({})
@@ -64,11 +61,11 @@ describe("goes to people when function called", () => {
 })
 
 describe("goes to person when function called", () => {
-  beforeAll(() => {
-    jest.clearAllMocks()
-  })
+  const mainOnLoad = jest.fn()
+  const personListOnLoad = jest.fn()
+  const personOnLoad = jest.fn()
 
-  const router = createRouter()
+  const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
   const history: History = (router as any).history
 
   router.goTo.person({ id: "42" })
@@ -89,11 +86,11 @@ describe("goes to person when function called", () => {
 })
 
 describe("is on person list to start", () => {
-  beforeAll(() => {
-    jest.clearAllMocks()
-  })
+  const mainOnLoad = jest.fn()
+  const personListOnLoad = jest.fn()
+  const personOnLoad = jest.fn()
 
-  const router = createRouter("/people/100")
+  const router = createRouter("/people/100", { mainOnLoad, personListOnLoad, personOnLoad })
   const history: History = (router as any).history
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
@@ -115,13 +112,16 @@ const numberConverter = {
   from: (num: number) => num.toString()
 }
 
-function createRouter(initialPath: string = "/") {
+function createRouter(
+  initialPath: string = "/",
+  mocks: { mainOnLoad: any; personListOnLoad: any; personOnLoad: any }
+) {
   const history = createMemoryHistory({ initialEntries: [initialPath] })
   return newRouter(history)
     .addRoute({
       name: "main",
       path: "/",
-      onLoad: mainOnLoad,
+      onLoad: mocks.mainOnLoad,
       component: Main
     })
     .addRoute({
@@ -130,13 +130,13 @@ function createRouter(initialPath: string = "/") {
       queryParams: ["page"],
       defaults: { page: 1 },
       converters: [{ names: ["page"], ...numberConverter }],
-      onLoad: personListOnLoad,
+      onLoad: mocks.personListOnLoad,
       component: PersonList
     })
     .addRoute({
       name: "person",
       path: path`/people/${"id"}`,
-      onLoad: personOnLoad,
+      onLoad: mocks.personOnLoad,
       component: Person
     })
     .start()
