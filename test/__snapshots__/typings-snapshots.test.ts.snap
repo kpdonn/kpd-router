@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Verify expected errors from missing required goto params matches expected 1`] = `
-"typings-tests/expected-errors-missing-required-goto-params.tsx(26,12): error TS2345: Argument of type '{ r1: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", \\"q1\\", { q1: string; }, string, {}, string, {}, string, {}, string, {...'.
+"typings-tests/expected-errors-missing-required-goto-params.tsx(26,12): error TS2345: Argument of type '{ r1: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", \\"q1\\", { q1: string; }, string, {}, string, {}>'.
   Type '{ r1: string; }' is not assignable to type 'Record<\\"r1\\" | \\"r2\\", string>'.
     Property 'r2' is missing in type '{ r1: string; }'.
-typings-tests/expected-errors-missing-required-goto-params.tsx(27,12): error TS2345: Argument of type '{ r2: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", \\"q1\\", { q1: string; }, string, {}, string, {}, string, {}, string, {...'.
+typings-tests/expected-errors-missing-required-goto-params.tsx(27,12): error TS2345: Argument of type '{ r2: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", \\"q1\\", { q1: string; }, string, {}, string, {}>'.
   Type '{ r2: string; }' is not assignable to type 'Record<\\"r1\\" | \\"r2\\", string>'.
     Property 'r1' is missing in type '{ r2: string; }'.
-typings-tests/expected-errors-missing-required-goto-params.tsx(28,12): error TS2345: Argument of type '{ q1: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", \\"q1\\", { q1: string; }, string, {}, string, {}, string, {}, string, {...'.
+typings-tests/expected-errors-missing-required-goto-params.tsx(28,12): error TS2345: Argument of type '{ q1: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", \\"q1\\", { q1: string; }, string, {}, string, {}>'.
   Type '{ q1: string; }' is not assignable to type 'Record<\\"r1\\" | \\"r2\\", string>'.
     Property 'r1' is missing in type '{ q1: string; }'.
-typings-tests/expected-errors-missing-required-goto-params.tsx(29,12): error TS2345: Argument of type '{ r1: string; q1: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", \\"q1\\", { q1: string; }, string, {}, string, {}, string, {}, string, {...'.
+typings-tests/expected-errors-missing-required-goto-params.tsx(29,12): error TS2345: Argument of type '{ r1: string; q1: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", \\"q1\\", { q1: string; }, string, {}, string, {}>'.
   Type '{ r1: string; q1: string; }' is not assignable to type 'Record<\\"r1\\" | \\"r2\\", string>'.
     Property 'r2' is missing in type '{ r1: string; q1: string; }'.
-typings-tests/expected-errors-missing-required-goto-params.tsx(31,14): error TS2345: Argument of type '{ r1: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", string, { r1: string; }, string, {}, string, {}, string, {}, string,...'.
-  Object literal may only specify known properties, and 'r1' does not exist in type 'GoToRouteParams<\\"r1\\" | \\"r2\\", string, { r1: string; }, string, {}, string, {}, string, {}, string,...'.
-typings-tests/expected-errors-missing-required-goto-params.tsx(33,12): error TS2345: Argument of type '{ r1: number; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", string, { r1: number; }, \\"r1\\", number, \\"r2\\", boolean, string, {}, st...'.
+typings-tests/expected-errors-missing-required-goto-params.tsx(31,14): error TS2345: Argument of type '{ r1: string; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", string, { r1: string; }, string, {}, string, {}>'.
+  Object literal may only specify known properties, and 'r1' does not exist in type 'GoToRouteParams<\\"r1\\" | \\"r2\\", string, { r1: string; }, string, {}, string, {}>'.
+typings-tests/expected-errors-missing-required-goto-params.tsx(33,12): error TS2345: Argument of type '{ r1: number; }' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", string, { r1: number; }, \\"r1\\", number, \\"r2\\", boolean>'.
   Type '{ r1: number; }' is not assignable to type 'Record<\\"r2\\", boolean>'.
     Property 'r2' is missing in type '{ r1: number; }'.
-typings-tests/expected-errors-missing-required-goto-params.tsx(34,12): error TS2345: Argument of type '{}' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", string, { r1: number; }, \\"r1\\", number, \\"r2\\", boolean, string, {}, st...'.
+typings-tests/expected-errors-missing-required-goto-params.tsx(34,12): error TS2345: Argument of type '{}' is not assignable to parameter of type 'GoToRouteParams<\\"r1\\" | \\"r2\\", string, { r1: number; }, \\"r1\\", number, \\"r2\\", boolean>'.
   Type '{}' is not assignable to type 'Record<\\"r2\\", boolean>'.
     Property 'r2' is missing in type '{}'.
 typings-tests/expected-errors-missing-required-goto-params.tsx(35,1): error TS2554: Expected 1 arguments, but got 0.
@@ -30,28 +30,26 @@ exports[`Verify expected errors from missing required goto params matches expect
 exports[`Verify expected errors from wrong component props matches expected 1`] = `
 "typings-tests/expected-errors-wrong-component-props.tsx(10,31): error TS2345: Argument of type '{ name: \\"p1\\"; path: [string, \\"r1\\"[]]; queryParams: \\"q1\\"[]; defaults: { q1: true; }; component: (a...' is not assignable to parameter of type '{ name: \\"p1\\"; path: string | [string, \\"r1\\"[]]; queryParams?: \\"q1\\"[] | undefined; onLoad?: ((param...'.
   Types of property 'component' are incompatible.
-    Type '(arg: { r1: string; q1: boolean; }) => Element' is not assignable to type '(new (props: OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", number, \\"q1\\", boolean, string, stri...'.
-      Type '(arg: { r1: string; q1: boolean; }) => Element' is not assignable to type 'StatelessComponent<OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", number, \\"q1\\", boolean, string...'.
+    Type '(arg: { r1: string; q1: boolean; }) => Element' is not assignable to type '(new (props: OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", number, \\"q1\\", boolean>) => Componen...'.
+      Type '(arg: { r1: string; q1: boolean; }) => Element' is not assignable to type 'StatelessComponent<OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", number, \\"q1\\", boolean>>'.
         Types of parameters 'arg' and 'props' are incompatible.
           Type 'Record<never, string> & Partial<Record<never, string>> & Record<\\"r1\\", number> & Record<never, num...' is not assignable to type '{ r1: string; q1: boolean; }'.
             Types of property 'r1' are incompatible.
               Type 'number' is not assignable to type 'string'.
 typings-tests/expected-errors-wrong-component-props.tsx(27,31): error TS2345: Argument of type '{ name: \\"p2\\"; path: [string, \\"r1\\"[]]; queryParams: \\"q1\\"[]; defaults: { r1: string; }; component: ...' is not assignable to parameter of type '{ name: \\"p2\\"; path: string | [string, \\"r1\\"[]]; queryParams?: \\"q1\\"[] | undefined; onLoad?: ((param...'.
   Types of property 'component' are incompatible.
-    Type '(arg: { r1: string; q1: string; }) => Element' is not assignable to type '(new (props: OnLoadParams<\\"r1\\", \\"q1\\", { r1: string; }, string, string, string, string, string, st...'.
-      Type '(arg: { r1: string; q1: string; }) => Element' is not assignable to type 'StatelessComponent<OnLoadParams<\\"r1\\", \\"q1\\", { r1: string; }, string, string, string, string, stri...'.
+    Type '(arg: { r1: string; q1: string; }) => Element' is not assignable to type '(new (props: OnLoadParams<\\"r1\\", \\"q1\\", { r1: string; }, string, string, string, string>) => Compon...'.
+      Type '(arg: { r1: string; q1: string; }) => Element' is not assignable to type 'StatelessComponent<OnLoadParams<\\"r1\\", \\"q1\\", { r1: string; }, string, string, string, string>>'.
         Types of parameters 'arg' and 'props' are incompatible.
           Type 'Record<\\"r1\\", string> & Record<\\"r1\\", string> & Partial<Record<\\"q1\\", string>> & Record<never, strin...' is not assignable to type '{ r1: string; q1: string; }'.
             Types of property 'q1' are incompatible.
               Type 'string | undefined' is not assignable to type 'string'.
                 Type 'undefined' is not assignable to type 'string'.
 typings-tests/expected-errors-wrong-component-props.tsx(35,31): error TS2345: Argument of type '{ name: \\"noQuery\\"; path: [string, (\\"r1\\" | \\"r2\\")[]]; component: typeof P3Comp; defaults: { r1: num...' is not assignable to parameter of type '{ name: \\"noQuery\\"; path: string | [string, (\\"r1\\" | \\"r2\\")[]]; queryParams?: string[] | undefined; ...'.
-  Types of property 'defaults' are incompatible.
-    Type '{ r1: number; r2: false; }' is not assignable to type 'Defaults<\\"r1\\" | \\"r2\\", string, \\"r1\\", number, \\"r2\\", boolean, string, string | boolean | undefined, ...'.
-      Type '{ r1: number; r2: false; }' is not assignable to type 'Defaults<\\"r1\\" | \\"r2\\", string, \\"r1\\", number, \\"r2\\", boolean, string, string | boolean | undefined, ...'.
-        Type '{ r1: number; r2: false; }' is not assignable to type 'Partial<Record<string, string | boolean | undefined>>'.
-          Property 'r1' is incompatible with index signature.
-            Type 'number' is not assignable to type 'string | boolean | undefined'.
+  Types of property 'component' are incompatible.
+    Type 'typeof P3Comp' is not assignable to type '(new (props: OnLoadParams<\\"r1\\" | \\"r2\\", string, { r1: number; r2: boolean; }, \\"r1\\", number, \\"r2\\", ...'.
+      Type 'typeof P3Comp' is not assignable to type 'StatelessComponent<OnLoadParams<\\"r1\\" | \\"r2\\", string, { r1: number; r2: boolean; }, \\"r1\\", number, ...'.
+        Type 'typeof P3Comp' provides no match for the signature '(props: Record<never, string> & Partial<Record<never, string>> & Record<\\"r1\\", number> & Record<\\"r1\\", number> & Partial<Record<never, number>> & Record<\\"r2\\", boolean> & Record<\\"r2\\", boolean> & Partial<Record<never, boolean>> & { children?: ReactNode; }, context?: any): ReactElement<any> | null'.
 "
 `;
 
@@ -60,15 +58,15 @@ exports[`Verify expected errors from wrong component props matches expected 2`] 
 exports[`Verify expected errors from wrong default types matches expected 1`] = `
 "typings-tests/expected-errors-wrong-default-type.tsx(3,31): error TS2345: Argument of type '{ name: \\"p1\\"; path: [string, \\"r1\\"[]]; queryParams: \\"q1\\"[]; defaults: { q1: boolean; }; }' is not assignable to parameter of type '{ name: \\"p1\\"; path: string | [string, \\"r1\\"[]]; queryParams?: \\"q1\\"[] | undefined; onLoad?: ((param...'.
   Types of property 'defaults' are incompatible.
-    Type '{ q1: boolean; }' is not assignable to type 'Defaults<\\"r1\\", \\"q1\\", string, {}, string, {}, string, {}, string, {}, string, {}, string, {}> | un...'.
-      Type '{ q1: boolean; }' is not assignable to type 'Defaults<\\"r1\\", \\"q1\\", string, {}, string, {}, string, {}, string, {}, string, {}, string, {}>'.
+    Type '{ q1: boolean; }' is not assignable to type 'Defaults<\\"r1\\", \\"q1\\", string, {}, string, {}> | undefined'.
+      Type '{ q1: boolean; }' is not assignable to type 'Defaults<\\"r1\\", \\"q1\\", string, {}, string, {}>'.
         Type '{ q1: boolean; }' is not assignable to type 'Partial<Record<\\"r1\\" | \\"q1\\", string>>'.
           Types of property 'q1' are incompatible.
             Type 'boolean' is not assignable to type 'string | undefined'.
 typings-tests/expected-errors-wrong-default-type.tsx(10,31): error TS2345: Argument of type '{ name: \\"p1\\"; path: [string, \\"r1\\"[]]; queryParams: \\"q1\\"[]; defaults: { r1: string; }; converters:...' is not assignable to parameter of type '{ name: \\"p1\\"; path: string | [string, \\"r1\\"[]]; queryParams?: \\"q1\\"[] | undefined; onLoad?: ((param...'.
   Types of property 'defaults' are incompatible.
-    Type '{ r1: string; }' is not assignable to type 'Defaults<\\"r1\\", \\"q1\\", \\"r1\\", number, string, {}, string, {}, string, {}, string, {}, string, {}> | ...'.
-      Type '{ r1: string; }' is not assignable to type 'Defaults<\\"r1\\", \\"q1\\", \\"r1\\", number, string, {}, string, {}, string, {}, string, {}, string, {}>'.
+    Type '{ r1: string; }' is not assignable to type 'Defaults<\\"r1\\", \\"q1\\", \\"r1\\", number, string, {}> | undefined'.
+      Type '{ r1: string; }' is not assignable to type 'Defaults<\\"r1\\", \\"q1\\", \\"r1\\", number, string, {}>'.
         Type '{ r1: string; }' is not assignable to type 'Partial<Record<\\"r1\\", number>>'.
           Types of property 'r1' are incompatible.
             Type 'string' is not assignable to type 'number | undefined'.
@@ -80,36 +78,36 @@ exports[`Verify expected errors from wrong default types matches expected 2`] = 
 exports[`Verify expected errors from wrong onload params matches expected 1`] = `
 "typings-tests/expected-errors-wrong-onload-params.tsx(4,31): error TS2345: Argument of type '{ name: \\"p1\\"; path: [string, \\"r1\\"[]]; queryParams: \\"q1\\"[]; defaults: { q1: true; }; onLoad: (arg:...' is not assignable to parameter of type '{ name: \\"p1\\"; path: string | [string, \\"r1\\"[]]; queryParams?: \\"q1\\"[] | undefined; onLoad?: ((param...'.
   Types of property 'onLoad' are incompatible.
-    Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '((params: OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", string | boolean, \\"q1\\", boolean, strin...'.
-      Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '(params: OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", string | boolean, \\"q1\\", boolean, string...'.
+    Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '((params: OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", string | boolean, \\"q1\\", boolean>) => v...'.
+      Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '(params: OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", string | boolean, \\"q1\\", boolean>) => void'.
         Types of parameters 'arg' and 'params' are incompatible.
-          Type 'OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", string | boolean, \\"q1\\", boolean, string, string ...' is not assignable to type '{ r1: string; q1: boolean; }'.
+          Type 'OnLoadParams<\\"r1\\", \\"q1\\", { q1: boolean; }, \\"r1\\", string | boolean, \\"q1\\", boolean>' is not assignable to type '{ r1: string; q1: boolean; }'.
             Types of property 'r1' are incompatible.
               Type 'string | boolean' is not assignable to type 'string'.
                 Type 'true' is not assignable to type 'string'.
 typings-tests/expected-errors-wrong-onload-params.tsx(16,31): error TS2345: Argument of type '{ name: \\"p2\\"; path: [string, \\"r1\\"[]]; queryParams: \\"q1\\"[]; onLoad: (arg: { r1: string; q1: boolea...' is not assignable to parameter of type '{ name: \\"p2\\"; path: string | [string, \\"r1\\"[]]; queryParams?: \\"q1\\"[] | undefined; onLoad?: ((param...'.
   Types of property 'onLoad' are incompatible.
-    Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '((params: OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean, string, string | ...'.
-      Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '(params: OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean, string, string | b...'.
+    Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '((params: OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean>) => void) | undef...'.
+      Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '(params: OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean>) => void'.
         Types of parameters 'arg' and 'params' are incompatible.
-          Type 'OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean, string, string | boolean, s...' is not assignable to type '{ r1: string; q1: boolean; }'.
+          Type 'OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean>' is not assignable to type '{ r1: string; q1: boolean; }'.
             Types of property 'q1' are incompatible.
               Type 'boolean | undefined' is not assignable to type 'boolean'.
                 Type 'undefined' is not assignable to type 'boolean'.
 typings-tests/expected-errors-wrong-onload-params.tsx(24,31): error TS2345: Argument of type '{ name: \\"noQuery\\"; path: [string, (\\"r1\\" | \\"r2\\")[]]; onLoad: (args: { missingArg: string; }) => { ...' is not assignable to parameter of type '{ name: \\"noQuery\\"; path: string | [string, (\\"r1\\" | \\"r2\\")[]]; queryParams?: string[] | undefined; ...'.
   Types of property 'onLoad' are incompatible.
-    Type '(args: { missingArg: string; }) => { missingArg: string; }' is not assignable to type '((params: OnLoadParams<\\"r1\\" | \\"r2\\", string, Defaults<\\"r1\\" | \\"r2\\", string, \\"r1\\", string, \\"r2\\", str...'.
-      Type '(args: { missingArg: string; }) => { missingArg: string; }' is not assignable to type '(params: OnLoadParams<\\"r1\\" | \\"r2\\", string, Defaults<\\"r1\\" | \\"r2\\", string, \\"r1\\", string, \\"r2\\", stri...'.
+    Type '(args: { missingArg: string; }) => { missingArg: string; }' is not assignable to type '((params: OnLoadParams<\\"r1\\" | \\"r2\\", string, DefaultsAllReq<\\"r1\\" | \\"r2\\", string, \\"r1\\", string, \\"r2...'.
+      Type '(args: { missingArg: string; }) => { missingArg: string; }' is not assignable to type '(params: OnLoadParams<\\"r1\\" | \\"r2\\", string, DefaultsAllReq<\\"r1\\" | \\"r2\\", string, \\"r1\\", string, \\"r2\\"...'.
         Types of parameters 'args' and 'params' are incompatible.
-          Type 'OnLoadParams<\\"r1\\" | \\"r2\\", string, Defaults<\\"r1\\" | \\"r2\\", string, \\"r1\\", string, \\"r2\\", string, strin...' is not assignable to type '{ missingArg: string; }'.
-            Property 'missingArg' is missing in type 'OnLoadParams<\\"r1\\" | \\"r2\\", string, Defaults<\\"r1\\" | \\"r2\\", string, \\"r1\\", string, \\"r2\\", string, strin...'.
+          Type 'OnLoadParams<\\"r1\\" | \\"r2\\", string, DefaultsAllReq<\\"r1\\" | \\"r2\\", string, \\"r1\\", string, \\"r2\\", string>...' is not assignable to type '{ missingArg: string; }'.
+            Property 'missingArg' is missing in type 'OnLoadParams<\\"r1\\" | \\"r2\\", string, DefaultsAllReq<\\"r1\\" | \\"r2\\", string, \\"r1\\", string, \\"r2\\", string>...'.
 typings-tests/expected-errors-wrong-onload-params.tsx(35,31): error TS2345: Argument of type '{ name: \\"noArgs\\"; path: string; onLoad: (args: { q1: string; }) => { q1: string; }; }' is not assignable to parameter of type '{ name: \\"noArgs\\"; path: string | [string, string[]]; queryParams?: string[] | undefined; onLoad?:...'.
   Types of property 'onLoad' are incompatible.
-    Type '(args: { q1: string; }) => { q1: string; }' is not assignable to type '((params: DefaultsAllReq<string, string, string, string, string, string, string, string, string, ...'.
-      Type '(args: { q1: string; }) => { q1: string; }' is not assignable to type '(params: DefaultsAllReq<string, string, string, string, string, string, string, string, string, s...'.
+    Type '(args: { q1: string; }) => { q1: string; }' is not assignable to type '((params: DefaultsAllReq<string, string, string, string, string, string>) => void) | undefined'.
+      Type '(args: { q1: string; }) => { q1: string; }' is not assignable to type '(params: DefaultsAllReq<string, string, string, string, string, string>) => void'.
         Types of parameters 'args' and 'params' are incompatible.
-          Type 'DefaultsAllReq<string, string, string, string, string, string, string, string, string, string, st...' is not assignable to type '{ q1: string; }'.
-            Property 'q1' is missing in type 'DefaultsAllReq<string, string, string, string, string, string, string, string, string, string, st...'.
+          Type 'DefaultsAllReq<string, string, string, string, string, string>' is not assignable to type '{ q1: string; }'.
+            Property 'q1' is missing in type 'DefaultsAllReq<string, string, string, string, string, string>'.
 "
 `;
 

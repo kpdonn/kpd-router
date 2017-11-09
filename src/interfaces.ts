@@ -8,6 +8,19 @@ export interface RouterStore<GoToFuns, LinkProps, States> {
   currentRoute: States
 }
 
+export type RouteState<
+  N extends string,
+  R extends string,
+  Q extends string,
+  D,
+  CN0 extends string,
+  CT0,
+  CN1 extends string,
+  CT1
+> = {
+  route: N
+  params: Readonly<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
+}
 export interface RouterBuilder<T = {}, L = never, S = never> {
   start(): RouterStore<T, L, S>
 
@@ -19,76 +32,19 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
     CT0,
     CN1 extends string,
     CT1,
-    CN2 extends string,
-    CT2,
-    CN3 extends string,
-    CT3,
-    CN4 extends string,
-    CT4,
-    CN5 extends string,
-    CT5,
-    D extends DefaultsAllReq<R, Q, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
+    D extends DefaultsAllReq<R, Q, CN0, CT0, CN1, CT1>
   >(route: {
     name: N
     path: [string, R[]]
     queryParams?: Q[]
-    onLoad?: (
-      params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-    ) => void
+    onLoad?: (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
     defaults: D
-    converters?: Converters<CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-    component?: ReactComponentCreator<
-      OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-    >
+    converters?: Converters<CN0, CT0, CN1, CT1>
+    component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
   }): RouterBuilder<
-    T &
-      Record<
-        N,
-        (
-          args?: GoToRouteParams<
-            R,
-            Q,
-            D,
-            CN0,
-            CT0,
-            CN1,
-            CT1,
-            CN2,
-            CT2,
-            CN3,
-            CT3,
-            CN4,
-            CT4,
-            CN5,
-            CT5
-          >
-        ) => void
-      >,
-    | L
-    | ({ route: N } & GoToRouteParams<
-      R,
-      Q,
-      D,
-      CN0,
-      CT0,
-      CN1,
-      CT1,
-      CN2,
-      CT2,
-      CN3,
-      CT3,
-      CN4,
-      CT4,
-      CN5,
-      CT5
-    >),
-    | S
-    | ({
-      route: N
-      params: Readonly<
-        OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-      >
-    })
+    T & Record<N, (args?: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>) => void>,
+    L | ({ route: N } & GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>),
+    S | RouteState<N, R, Q, D, CN0, CT0, CN1, CT1>
   >
   addRoute<
     N extends string,
@@ -98,60 +54,41 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
     CT0,
     CN1 extends string,
     CT1,
-    CN2 extends string,
-    CT2,
-    CN3 extends string,
-    CT3,
-    CN4 extends string,
-    CT4,
-    CN5 extends string,
-    CT5,
-    D extends Defaults<R, Q, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
+    D extends Defaults<R, Q, CN0, CT0, CN1, CT1>
+  >(route: {
+    name: N
+    path: string
+    queryParams?: Q[]
+    onLoad?: (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
+    defaults?: D
+    converters?: Converters<CN0, CT0, CN1, CT1>
+    component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
+  }): RouterBuilder<
+    T & Record<N, (args?: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>) => void>,
+    L | ({ route: N } & GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>),
+    S | RouteState<N, R, Q, D, CN0, CT0, CN1, CT1>
+  >
+  addRoute<
+    N extends string,
+    R extends string,
+    Q extends string,
+    CN0 extends string,
+    CT0,
+    CN1 extends string,
+    CT1,
+    D extends Defaults<R, Q, CN0, CT0, CN1, CT1>
   >(route: {
     name: N
     path: [string, R[]] | string
     queryParams?: Q[]
-    onLoad?: (
-      params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-    ) => void
+    onLoad?: (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
     defaults?: D
-    converters?: Converters<CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-    component?: ReactComponentCreator<
-      OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-    >
+    converters?: Converters<CN0, CT0, CN1, CT1>
+    component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
   }): RouterBuilder<
-    T &
-      Record<
-        N,
-        (
-          args: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-        ) => void
-      >,
-    | L
-    | ({ route: N } & GoToRouteParams<
-      R,
-      Q,
-      D,
-      CN0,
-      CT0,
-      CN1,
-      CT1,
-      CN2,
-      CT2,
-      CN3,
-      CT3,
-      CN4,
-      CT4,
-      CN5,
-      CT5
-    >),
-    | S
-    | ({
-      route: N
-      params: Readonly<
-        OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1, CN2, CT2, CN3, CT3, CN4, CT4, CN5, CT5>
-      >
-    })
+    T & Record<N, (args: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>) => void>,
+    L | ({ route: N } & GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>),
+    S | RouteState<N, R, Q, D, CN0, CT0, CN1, CT1>
   >
 }
 
@@ -166,23 +103,11 @@ export type GoToRouteParams<
   CN0 extends string,
   CT0,
   CN1 extends string,
-  CT1,
-  CN2 extends string,
-  CT2,
-  CN3 extends string,
-  CT3,
-  CN4 extends string,
-  CT4,
-  CN5 extends string,
-  CT5
-> = ReqParams<MultiDiff<R, CN0, CN1, CN2, CN3, CN4, CN5, keyof D>> &
-  OptParams<MultiDiff<Q | keyof D, CN0, CN1, CN2, CN3, CN4, CN5>> &
+  CT1
+> = ReqParams<MultiDiff<R, CN0, CN1, keyof D>> &
+  OptParams<MultiDiff<Q | keyof D, CN0, CN1>> &
   GoToRouteConvertedParams<R, Q, D, CN0, CT0> &
-  GoToRouteConvertedParams<R, Q, D, CN1, CT1> &
-  GoToRouteConvertedParams<R, Q, D, CN2, CT2> &
-  GoToRouteConvertedParams<R, Q, D, CN3, CT3> &
-  GoToRouteConvertedParams<R, Q, D, CN4, CT4> &
-  GoToRouteConvertedParams<R, Q, D, CN5, CT5>
+  GoToRouteConvertedParams<R, Q, D, CN1, CT1>
 
 export type GoToRouteConvertedParams<
   R extends string,
@@ -196,12 +121,8 @@ export type MultiDiff<
   A extends string,
   M1 extends string,
   M2 extends string = string,
-  M3 extends string = string,
-  M4 extends string = string,
-  M5 extends string = string,
-  M6 extends string = string,
-  M7 extends string = string
-> = Diff<Diff<Diff<Diff<Diff<Diff<Diff<A, M1>, M2>, M3>, M4>, M5>, M6>, M7>
+  M3 extends string = string
+> = Diff<Diff<Diff<A, M1>, M2>, M3>
 
 export type DefaultsAllReq<
   R extends string,
@@ -209,29 +130,13 @@ export type DefaultsAllReq<
   CN0 extends string,
   CT0,
   CN1 extends string,
-  CT1,
-  CN2 extends string,
-  CT2,
-  CN3 extends string,
-  CT3,
-  CN4 extends string,
-  CT4,
-  CN5 extends string,
-  CT5
-> = ReqParams<MultiDiff<R, CN0, CN1, CN2, CN3, CN4, CN5>> &
+  CT1
+> = ReqParams<MultiDiff<R, CN0, CN1>> &
   ReqParams<Diff<CN0, Q>, CT0> &
   ReqParams<Diff<CN1, Q>, CT1> &
-  ReqParams<Diff<CN2, Q>, CT2> &
-  ReqParams<Diff<CN3, Q>, CT3> &
-  ReqParams<Diff<CN4, Q>, CT4> &
-  ReqParams<Diff<CN5, Q>, CT5> &
-  OptParams<MultiDiff<Q, CN0, CN1, CN2, CN3, CN4, CN5>> &
+  OptParams<MultiDiff<Q, CN0, CN1>> &
   OptParams<Diff<CN0, R>, CT0> &
-  OptParams<Diff<CN1, R>, CT1> &
-  OptParams<Diff<CN2, R>, CT2> &
-  OptParams<Diff<CN3, R>, CT3> &
-  OptParams<Diff<CN4, R>, CT4> &
-  OptParams<Diff<CN5, R>, CT5>
+  OptParams<Diff<CN1, R>, CT1>
 
 export type Defaults<
   R extends string,
@@ -239,22 +144,8 @@ export type Defaults<
   CN0 extends string,
   CT0,
   CN1 extends string,
-  CT1,
-  CN2 extends string,
-  CT2,
-  CN3 extends string,
-  CT3,
-  CN4 extends string,
-  CT4,
-  CN5 extends string,
-  CT5
-> = OptParams<MultiDiff<R | Q, CN0, CN1, CN2, CN3, CN4, CN5>> &
-  OptParams<CN0, CT0> &
-  OptParams<CN1, CT1> &
-  OptParams<CN2, CT2> &
-  OptParams<CN3, CT3> &
-  OptParams<CN4, CT4> &
-  OptParams<CN5, CT5>
+  CT1
+> = OptParams<MultiDiff<R | Q, CN0, CN1>> & OptParams<CN0, CT0> & OptParams<CN1, CT1>
 
 export type OnLoadParams<
   R extends string,
@@ -263,24 +154,12 @@ export type OnLoadParams<
   CN0 extends string,
   CT0,
   CN1 extends string,
-  CT1,
-  CN2 extends string,
-  CT2,
-  CN3 extends string,
-  CT3,
-  CN4 extends string,
-  CT4,
-  CN5 extends string,
-  CT5
-> = ReqParams<MultiDiff<R, CN0, CN1, CN2, CN3, CN4, CN5>> &
-  ReqParams<MultiDiff<keyof D, CN0, CN1, CN2, CN3, CN4, CN5>> &
-  OptParams<MultiDiff<Q, CN0, CN1, CN2, CN3, CN4, CN5, keyof D>> &
+  CT1
+> = ReqParams<MultiDiff<R, CN0, CN1>> &
+  ReqParams<MultiDiff<keyof D, CN0, CN1>> &
+  OptParams<MultiDiff<Q, CN0, CN1, keyof D>> &
   OnLoadConvertedParams<R, Q, D, CN0, CT0> &
-  OnLoadConvertedParams<R, Q, D, CN1, CT1> &
-  OnLoadConvertedParams<R, Q, D, CN2, CT2> &
-  OnLoadConvertedParams<R, Q, D, CN3, CT3> &
-  OnLoadConvertedParams<R, Q, D, CN4, CT4> &
-  OnLoadConvertedParams<R, Q, D, CN5, CT5>
+  OnLoadConvertedParams<R, Q, D, CN1, CT1>
 
 export type OnLoadConvertedParams<
   R extends string,
@@ -292,27 +171,10 @@ export type OnLoadConvertedParams<
   ReqParams<Diff<keyof D, Diff<keyof D, CN>>, CT> &
   OptParams<Diff<Q & CN, keyof D>, CT>
 
-export interface Converters<
-  CN0 extends string,
-  CT0,
-  CN1 extends string,
-  CT1,
-  CN2 extends string,
-  CT2,
-  CN3 extends string,
-  CT3,
-  CN4 extends string,
-  CT4,
-  CN5 extends string,
-  CT5
-> {
+export interface Converters<CN0 extends string, CT0, CN1 extends string, CT1> {
   [0]?: Converter<CN0, CT0>
   [1]?: Converter<CN1, CT1>
-  [2]?: Converter<CN2, CT2>
-  [3]?: Converter<CN3, CT3>
-  [4]?: Converter<CN4, CT4>
-  [5]?: Converter<CN5, CT5>
-  [6]?: never // Error on more than 6 elements since that can't be typed correctly
+  [2]?: never // Error on more than 6 elements since that can't be typed correctly
 
   [index: number]: Converter<any, any> | undefined
 }

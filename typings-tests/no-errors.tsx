@@ -40,23 +40,15 @@ const nr = newRouter({} as any)
   })
   .addRoute({
     name: "p3",
-    path: path`/p3/${"r1"}/${"r2"}/${"r3"}/${"r4"}/${"r5"}/${"r6"}`,
-    queryParams: ["q1", "q2", "q3", "q4", "q5", "q6"],
+    path: path`/p3/${"r1"}/${"r2"}`,
+    queryParams: ["q1", "q2"],
     defaults: {
       r1: 1,
-      r2: true,
-      r3: { nested1: "" },
-      r4: { nested2: "" },
-      q5: { nested3: "" },
-      q6: { nested4: "" }
+      r2: true
     },
     converters: [
       { names: ["r1", "q1"], from: (a: number) => a.toString() },
-      { names: ["r2", "q2"], from: (a: boolean) => a.toString() },
-      { names: ["r3", "q3"], from: (a: { nested1: string }) => a.nested1 },
-      { names: ["r4", "q4"], from: (a: { nested2: string }) => a.nested2 },
-      { names: ["r5", "q5"], from: (a: { nested3: string }) => a.nested3 },
-      { names: ["r6", "q6"], from: (a: { nested4: string }) => a.nested4 }
+      { names: ["r2", "q2"], from: (a: boolean) => a.toString() }
     ]
   })
   .addRoute({
@@ -90,20 +82,15 @@ nr.goTo.p2({ r1: "", r2: "e" })
 nr.goTo.p2({ r1: "", r2: "e", q1: "" })
 nr.goTo.p3({
   r1: 1,
-  r2: false,
-  r3: { nested1: "" },
-  r4: { nested2: "" },
-  r5: { nested3: "" },
-  r6: { nested4: "" },
-  q1: 4,
-  q3: { nested1: "" }
+  r2: false
 })
-nr.goTo.p3({ r5: { nested3: "" }, r6: { nested4: "" }, q1: 4, q3: { nested1: "" } })
+nr.goTo.p3({q1: 4 })
+nr.goTo.p3()
 nr.goTo.noQuery({ r2: true })
 nr.goTo.noQuery({ r1: 1, r2: false })
 
-nr.goTo.noRequired({})
+nr.goTo.noRequired()
 nr.goTo.noRequired({ q2: "str" })
 nr.goTo.noRequired({ q1: 1 })
 
-nr.goTo.noArgs({})
+nr.goTo.noArgs()
