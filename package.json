@@ -79,7 +79,7 @@
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.1.0",
     "tslint-config-standard": "^7.0.0",
-    "typescript": "^2.7.0-dev.20171104"
+    "typescript": "^2.7.0-dev.20171109"
   },
   "dependencies": {
     "history": "^4.7.2",

@@ -12,7 +12,8 @@
     "experimentalDecorators": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "baseUrl": "../src"
+    "baseUrl": "../src",
+    "noErrorTruncation": true
   },
   "files": [
     "./definitions.d.ts"

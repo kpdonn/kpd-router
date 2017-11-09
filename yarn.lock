@@ -3361,9 +3361,9 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-typescript@^2.7.0-dev.20171104:
-  version "2.7.0-dev.20171104"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.0-dev.20171104.tgz#c91e9313a96a27aef9287ab5d6a10543cb709011"
+typescript@^2.7.0-dev.20171109:
+  version "2.7.0-dev.20171109"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.0-dev.20171109.tgz#5b8d55cf06b95f6ffb6fbe76d25f00df6c95afd6"
 
 ua-parser-js@^0.7.9:
   version "0.7.17"
