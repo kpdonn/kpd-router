@@ -35,13 +35,9 @@ class RouterStoreImpl
 }
 
 class RouterBuilderImpl {
-  private routePaths = []
-
   private routerStore: RouterStoreImpl
 
   private onLoadMap = new Map<string, (params: any) => void>()
-
-  private defaultsMap = new Map<string, object>()
 
   private routeManager = new RouteManager()
 
@@ -55,11 +51,7 @@ class RouterBuilderImpl {
       this.history.location.search
     )
 
-    const defaults = this.defaultsMap.get(match.name) || {}
-
-    const params = { ...defaults, ...match.params }
-
-    this.routerStore.currentRoute = { route: match.name, params }
+    this.routerStore.currentRoute = { route: match.name, params: match.params }
   }
 
   start(): RouterStoreImpl {
@@ -85,10 +77,6 @@ class RouterBuilderImpl {
   }
 
   addRoute(route: Route): this {
-    if (route.defaults) {
-      this.defaultsMap.set(route.name, route.defaults)
-    }
-
     let path
     if (typeof route.path === "string") {
       path = route.path
@@ -96,11 +84,13 @@ class RouterBuilderImpl {
       path = route.path[0]
     }
 
-    this.routeManager.addRoute(route.name, path, route.queryParams)
+    this.routeManager.addRoute(route.name, path, route.queryParams, route.defaults)
+
+    const defaults = route.defaults || {}
 
     this.routerStore.goTo[route.name] = (args: any) => {
       runInAction(() => {
-        this.routerStore.currentRoute = { route: route.name, params: args }
+        this.routerStore.currentRoute = { route: route.name, params: { ...defaults, ...args } }
       })
     }
 
