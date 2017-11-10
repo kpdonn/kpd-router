@@ -77,14 +77,7 @@ class RouterBuilderImpl {
   }
 
   addRoute(route: Route): this {
-    let path
-    if (typeof route.path === "string") {
-      path = route.path
-    } else {
-      path = route.path[0]
-    }
-
-    this.routeManager.addRoute(route.name, path, route.queryParams, route.defaults)
+    this.routeManager.addRoute(route)
 
     const defaults = route.defaults || {}
 
@@ -101,12 +94,16 @@ class RouterBuilderImpl {
   }
 }
 
-interface Route {
+export interface Route {
   name: string
   path: [string, string[]] | string
   queryParams?: string[]
   onLoad?: (params: any) => void
   defaults?: { [index: string]: any }
-  converters?: { names: string[]; from: (arg: any) => string }[]
+  converters?: {
+    names: string[]
+    toString: (arg: any) => string
+    fromString: (arg: string) => any
+  }[]
   component?: React.ComponentType
 }

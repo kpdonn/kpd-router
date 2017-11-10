@@ -15,6 +15,10 @@ configure({ adapter: new ReactSixteenAdapter() })
 const Main = (a: any) => <div>Main</div>
 const PersonList = (a: any) => <div>PersonList</div>
 const Person = (a: any) => <div>Person</div>
+const numConverter = {
+  toString: (id: number) => id.toString(),
+  fromString: (arg: string) => Number.parseInt(arg)
+}
 
 describe("is on main page to start", () => {
   const mainOnLoad = jest.fn()
@@ -130,11 +134,6 @@ describe("is on person list to start", () => {
     it("not render PersonList", () => expect(wrapper.find(PersonList)).toHaveLength(0))
   })
 })
-
-const numConverter = {
-  from: (id: number) => id.toString(),
-  to: (arg: string) => Number.parseInt(arg)
-}
 
 function createRouter(
   initialPath: string = "/",

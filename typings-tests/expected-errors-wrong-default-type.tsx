@@ -1,7 +1,7 @@
 import {newRouter, path} from "typed-mobx-router"
 
 
-const numConverter = {from: (id: number) => id.toString(), to: (arg: string) => Number.parseInt(arg) }
+const numConverter = {toString: (id: number) => id.toString(), fromString: (arg: string) => Number.parseInt(arg) }
 
 newRouter({} as any).addRoute({
   name: "p1",
