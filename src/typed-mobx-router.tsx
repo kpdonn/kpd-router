@@ -1,8 +1,9 @@
 import { History } from "history"
-import { RouterBuilder, RouterStore } from "interfaces"
+import { ReactComponentCreator, RouterBuilder, RouterStore } from "interfaces"
 import * as React from "react"
 import { autorun, computed, observable, runInAction } from "mobx"
 import { RouteManager } from "route-manager"
+import { observer } from "mobx-react"
 
 export const path = <T extends string>(
   literals: TemplateStringsArray,
@@ -26,7 +27,11 @@ class RouterStoreImpl
 
   @observable currentRoute: { route: string; params: any }
 
-  constructor(private routeManager: RouteManager, readonly history: History) {}
+  constructor(
+    private routeManager: RouteManager,
+    readonly history: History,
+    readonly componentMap: Map<string, ReactComponentCreator<any>>
+  ) {}
 
   @computed
   get currentPath(): string {
@@ -40,9 +45,10 @@ class RouterBuilderImpl {
   private onLoadMap = new Map<string, (params: any) => void>()
 
   private routeManager = new RouteManager()
+  private componentMap = new Map<string, ReactComponentCreator<any>>()
 
   constructor(readonly history: History) {
-    this.routerStore = new RouterStoreImpl(this.routeManager, this.history)
+    this.routerStore = new RouterStoreImpl(this.routeManager, this.history, this.componentMap)
   }
 
   setRouteInfoFromLocation() {
@@ -87,6 +93,10 @@ class RouterBuilderImpl {
       })
     }
 
+    if (route.component) {
+      this.componentMap.set(route.name, route.component)
+    }
+
     if (route.onLoad) {
       this.onLoadMap.set(route.name, route.onLoad)
     }
@@ -106,4 +116,21 @@ export interface Route {
     fromString: (arg: string) => any
   }[]
   component?: React.ComponentType
+}
+
+@observer
+export class Router extends React.Component<{ router: RouterStore<any, any, any> }> {
+  render() {
+    const routerStoreImpl = this.props.router as RouterStoreImpl
+
+    const { route, params } = this.props.router.currentRoute
+
+    const Component = routerStoreImpl.componentMap.get(route)
+
+    if (Component) {
+      return <Component {...params} />
+    } else {
+      return null
+    }
+  }
 }

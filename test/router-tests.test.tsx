@@ -4,11 +4,10 @@ raf.polyfill(global)
 import createMemoryHistory from "history/createMemoryHistory"
 import { History } from "history"
 
-import { newRouter, path } from "typed-mobx-router"
+import { newRouter, path, Router } from "typed-mobx-router"
 import * as React from "react"
 import * as ReactSixteenAdapter from "enzyme-adapter-react-16"
 import { configure, shallow } from "enzyme"
-import { Router } from "Router"
 
 configure({ adapter: new ReactSixteenAdapter() })
 
