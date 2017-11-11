@@ -83,6 +83,26 @@ describe("is on person page to start", () => {
     expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
+describe("goes back when user clicks back", () => {
+  const { router, mainOnLoad, history, renderer } = createRouter("/")
+
+  expect(mainOnLoad).toHaveBeenCalled()
+  mainOnLoad.mockClear()
+  router.goTo.personList({ page: 5 })
+  expect(renderer.getRenderOutput().type).toEqual(PersonList)
+  expect(renderer.getRenderOutput().props).toEqual({ page: 5 })
+  expect(mainOnLoad).not.toHaveBeenCalled()
+  expect(router.currentRoute.route).not.toBe("main")
+  expect(history.location.pathname + history.location.search).not.toBe("/")
+  history.goBack()
+
+  it("called main on load after going back", () => expect(mainOnLoad).toHaveBeenCalled())
+  it("current route main after going back", () => expect(router.currentRoute.route).toBe("main"))
+  it("current route params empty", () => expect(router.currentRoute.params).toEqual({}))
+  it("main url after", () => expect(history.location.pathname + history.location.search).toBe("/"))
+  it("should render main", () => expect(renderer.getRenderOutput().type).toEqual(Main))
+})
+
 function createRouter(initialPath: string = "/") {
   const history = createMemoryHistory({ initialEntries: [initialPath] })
   const mainOnLoad = jest.fn()
