@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`goes to people when function called renderer should match snapshot 1`] = `
+<PersonList
+  page={1}
+/>
+`;
+
+exports[`goes to person when function called renderer should match snapshot 1`] = `
+<Person
+  id="42"
+/>
+`;
+
+exports[`is on main page to start renderer should match snapshot 1`] = `<Main />`;
+
+exports[`is on people page 2 to start renderer should match snapshot 1`] = `
+<PersonList
+  page={2}
+/>
+`;
+
+exports[`is on person list to start renderer should match snapshot 1`] = `
+<Person
+  id="100"
+/>
+`;

@@ -126,6 +126,7 @@ export class Router extends React.Component<{ router: RouterStore<any, any, any>
     const { route, params } = this.props.router.currentRoute
 
     const Component = routerStoreImpl.componentMap.get(route)
+    console.log("render component: ", Component)
 
     if (Component) {
       return <Component {...params} />

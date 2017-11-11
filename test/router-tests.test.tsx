@@ -6,12 +6,9 @@ import { History } from "history"
 
 import { newRouter, path, Router } from "typed-mobx-router"
 import * as React from "react"
-import * as ReactSixteenAdapter from "enzyme-adapter-react-16"
-import { configure, shallow } from "enzyme"
-
-configure({ adapter: new ReactSixteenAdapter() })
-
-const Main = (a: any) => <div>Main</div>
+import * as TestRenderer from "react-test-renderer"
+import { createRenderer } from "react-test-renderer/shallow"
+const Main = (a: any) => <span>Main</span>
 const PersonList = (a: any) => <div>PersonList</div>
 const Person = (a: any) => <div>Person</div>
 const numConverter = {
@@ -25,17 +22,13 @@ describe("is on main page to start", () => {
   const personOnLoad = jest.fn()
 
   const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
+  const renderer = createRenderer()
+  renderer.render(<Router router={router} />)
 
   it("current route main", () => expect(router.currentRoute.route).toBe("main"))
   it("mainOnLoad called", () => expect(mainOnLoad).toBeCalled())
 
-  describe("Router component output", () => {
-    const wrapper = shallow(<Router router={router} />)
-
-    it("Renders main", () => expect(wrapper.contains(<Main />)).toBeTruthy())
-    it("not render PersonList", () => expect(wrapper.find(PersonList)).toHaveLength(0))
-    it("not render Person", () => expect(wrapper.find(Person)).toHaveLength(0))
-  })
+  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
 describe("goes to people when function called", () => {
@@ -44,6 +37,8 @@ describe("goes to people when function called", () => {
   const personOnLoad = jest.fn()
 
   const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
+  const renderer = createRenderer()
+  renderer.render(<Router router={router} />)
   const history: History = (router as any).history
 
   router.goTo.personList({})
@@ -55,12 +50,7 @@ describe("goes to people when function called", () => {
   it("correct url", () =>
     expect(history.location.pathname + history.location.search).toBe("/people?page=1"))
 
-  describe("Router component output", () => {
-    const wrapper = shallow(<Router router={router} />)
-    it("Renders PersonList", () => expect(wrapper.contains(<PersonList page={1} />)).toBeTruthy())
-    it("not render Main", () => expect(wrapper.find(Main)).toHaveLength(0))
-    it("not render Person", () => expect(wrapper.find(Person)).toHaveLength(0))
-  })
+  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
 describe("is on people page 2 to start", () => {
@@ -69,6 +59,8 @@ describe("is on people page 2 to start", () => {
   const personOnLoad = jest.fn()
 
   const router = createRouter("/people?page=2", { mainOnLoad, personListOnLoad, personOnLoad })
+  const renderer = createRenderer()
+  renderer.render(<Router router={router} />)
   const history: History = (router as any).history
 
   it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
@@ -78,12 +70,7 @@ describe("is on people page 2 to start", () => {
   it("correct url", () =>
     expect(history.location.pathname + history.location.search).toBe("/people?page=2"))
 
-  describe("Router component output", () => {
-    const wrapper = shallow(<Router router={router} />)
-    it("Renders PersonList", () => expect(wrapper.contains(<PersonList page={2} />)).toBeTruthy())
-    it("not render Main", () => expect(wrapper.find(Main)).toHaveLength(0))
-    it("not render Person", () => expect(wrapper.find(Person)).toHaveLength(0))
-  })
+  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
 describe("goes to person when function called", () => {
@@ -92,6 +79,8 @@ describe("goes to person when function called", () => {
   const personOnLoad = jest.fn()
 
   const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
+  const renderer = createRenderer()
+  renderer.render(<Router router={router} />)
   const history: History = (router as any).history
 
   router.goTo.person({ id: "42" })
@@ -103,12 +92,7 @@ describe("goes to person when function called", () => {
   it("correct url", () =>
     expect(history.location.pathname + history.location.search).toBe("/people/42"))
 
-  describe("Router component output", () => {
-    const wrapper = shallow(<Router router={router} />)
-    it("Renders PersonList", () => expect(wrapper.contains(<Person id="42" />)).toBeTruthy())
-    it("not render Main", () => expect(wrapper.find(Main)).toHaveLength(0))
-    it("not render PersonList", () => expect(wrapper.find(PersonList)).toHaveLength(0))
-  })
+  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
 describe("is on person list to start", () => {
@@ -117,6 +101,8 @@ describe("is on person list to start", () => {
   const personOnLoad = jest.fn()
 
   const router = createRouter("/people/100", { mainOnLoad, personListOnLoad, personOnLoad })
+  const renderer = createRenderer()
+  renderer.render(<Router router={router} />)
   const history: History = (router as any).history
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
@@ -126,12 +112,7 @@ describe("is on person list to start", () => {
   it("correct url", () =>
     expect(history.location.pathname + history.location.search).toBe("/people/100"))
 
-  describe("Router component output", () => {
-    const wrapper = shallow(<Router router={router} />)
-    it("Renders PersonList", () => expect(wrapper.contains(<Person id="100" />)).toBeTruthy())
-    it("not render Main", () => expect(wrapper.find(Main)).toHaveLength(0))
-    it("not render PersonList", () => expect(wrapper.find(PersonList)).toHaveLength(0))
-  })
+  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
 function createRouter(
