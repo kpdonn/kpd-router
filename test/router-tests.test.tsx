@@ -6,7 +6,6 @@ import { History } from "history"
 
 import { newRouter, path, Router } from "typed-mobx-router"
 import * as React from "react"
-import * as TestRenderer from "react-test-renderer"
 import { createRenderer } from "react-test-renderer/shallow"
 const Main = (a: any) => <span>Main</span>
 const PersonList = (a: any) => <div>PersonList</div>
@@ -17,31 +16,18 @@ const numConverter = {
 }
 
 describe("is on main page to start", () => {
-  const mainOnLoad = jest.fn()
-  const personListOnLoad = jest.fn()
-  const personOnLoad = jest.fn()
-
-  const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
-  const renderer = createRenderer()
-  renderer.render(<Router router={router} />)
+  const { router, mainOnLoad, renderer } = createRouter("/")
 
   it("current route main", () => expect(router.currentRoute.route).toBe("main"))
   it("mainOnLoad called", () => expect(mainOnLoad).toBeCalled())
 
-  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
+  it("Should render main no props", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
 describe("goes to people when function called", () => {
-  const mainOnLoad = jest.fn()
-  const personListOnLoad = jest.fn()
-  const personOnLoad = jest.fn()
+  const { router, personListOnLoad, history, renderer } = createRouter("/")
 
-  const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
-  const renderer = createRenderer()
-  renderer.render(<Router router={router} />)
-  const history: History = (router as any).history
-
-  router.goTo.personList({})
+  router.goTo.personList()
 
   it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
   it("correct params", () => expect(router.currentRoute.params).toEqual({ page: 1 }))
@@ -50,18 +36,12 @@ describe("goes to people when function called", () => {
   it("correct url", () =>
     expect(history.location.pathname + history.location.search).toBe("/people?page=1"))
 
-  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
+  it("Should render personlist page 1 num", () =>
+    expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
 describe("is on people page 2 to start", () => {
-  const mainOnLoad = jest.fn()
-  const personListOnLoad = jest.fn()
-  const personOnLoad = jest.fn()
-
-  const router = createRouter("/people?page=2", { mainOnLoad, personListOnLoad, personOnLoad })
-  const renderer = createRenderer()
-  renderer.render(<Router router={router} />)
-  const history: History = (router as any).history
+  const { router, personListOnLoad, history, renderer } = createRouter("/people?page=2")
 
   it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
   it("correct params", () => expect(router.currentRoute.params).toEqual({ page: 2 }))
@@ -70,18 +50,12 @@ describe("is on people page 2 to start", () => {
   it("correct url", () =>
     expect(history.location.pathname + history.location.search).toBe("/people?page=2"))
 
-  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
+  it("Should render personlist page 2 num", () =>
+    expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
 describe("goes to person when function called", () => {
-  const mainOnLoad = jest.fn()
-  const personListOnLoad = jest.fn()
-  const personOnLoad = jest.fn()
-
-  const router = createRouter("/", { mainOnLoad, personListOnLoad, personOnLoad })
-  const renderer = createRenderer()
-  renderer.render(<Router router={router} />)
-  const history: History = (router as any).history
+  const { router, personOnLoad, history, renderer } = createRouter("/")
 
   router.goTo.person({ id: "42" })
 
@@ -92,18 +66,12 @@ describe("goes to person when function called", () => {
   it("correct url", () =>
     expect(history.location.pathname + history.location.search).toBe("/people/42"))
 
-  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
+  it("should render person id 42 string", () =>
+    expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
-describe("is on person list to start", () => {
-  const mainOnLoad = jest.fn()
-  const personListOnLoad = jest.fn()
-  const personOnLoad = jest.fn()
-
-  const router = createRouter("/people/100", { mainOnLoad, personListOnLoad, personOnLoad })
-  const renderer = createRenderer()
-  renderer.render(<Router router={router} />)
-  const history: History = (router as any).history
+describe("is on person page to start", () => {
+  const { router, personOnLoad, history, renderer } = createRouter("/people/100")
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
   it("correct params", () => expect(router.currentRoute.params).toEqual({ id: "100" }))
@@ -112,19 +80,21 @@ describe("is on person list to start", () => {
   it("correct url", () =>
     expect(history.location.pathname + history.location.search).toBe("/people/100"))
 
-  it("renderer should match snapshot", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
+  it("should render person id 100 string", () =>
+    expect(renderer.getRenderOutput()).toMatchSnapshot())
 })
 
-function createRouter(
-  initialPath: string = "/",
-  mocks: { mainOnLoad: any; personListOnLoad: any; personOnLoad: any }
-) {
+function createRouter(initialPath: string = "/") {
   const history = createMemoryHistory({ initialEntries: [initialPath] })
-  return newRouter(history)
+  const mainOnLoad = jest.fn()
+  const personListOnLoad = jest.fn()
+  const personOnLoad = jest.fn()
+
+  const router = newRouter(history)
     .addRoute({
       name: "main",
       path: "/",
-      onLoad: mocks.mainOnLoad,
+      onLoad: mainOnLoad,
       component: Main
     })
     .addRoute({
@@ -133,14 +103,26 @@ function createRouter(
       queryParams: ["page"],
       defaults: { page: 1 },
       converters: [{ names: ["page"], ...numConverter }],
-      onLoad: mocks.personListOnLoad,
+      onLoad: personListOnLoad,
       component: PersonList
     })
     .addRoute({
       name: "person",
       path: path`/people/${"id"}`,
-      onLoad: mocks.personOnLoad,
+      onLoad: personOnLoad,
       component: Person
     })
     .start()
+
+  const renderer = createRenderer()
+  renderer.render(<Router router={router} />)
+
+  return {
+    router,
+    mainOnLoad,
+    personListOnLoad,
+    personOnLoad,
+    history,
+    renderer
+  }
 }
