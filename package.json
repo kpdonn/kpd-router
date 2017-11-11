@@ -23,8 +23,8 @@
     "prebuild": "rimraf dist",
     "build": "tsc && rollup -c rollup.config.ts && rimraf compiled",
     "start": "tsc -w & rollup -c rollup.config.ts -w",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest --env=node",
+    "test:watch": "jest --env=node --watch",
     "test:prod": "yarn run lint && yarn run test -- --coverage --no-cache",
     "precommit": "lint-staged"
   },

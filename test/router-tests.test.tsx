@@ -2,14 +2,13 @@ import * as raf from "raf"
 raf.polyfill(global)
 
 import createMemoryHistory from "history/createMemoryHistory"
-import { History } from "history"
-
 import { newRouter, path, Router } from "typed-mobx-router"
 import * as React from "react"
 import { createRenderer } from "react-test-renderer/shallow"
 const Main = (a: any) => <span>Main</span>
 const PersonList = (a: any) => <div>PersonList</div>
 const Person = (a: any) => <div>Person</div>
+
 const numConverter = {
   toString: (id: number) => id.toString(),
   fromString: (arg: string) => Number.parseInt(arg)
