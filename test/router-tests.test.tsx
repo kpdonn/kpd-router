@@ -5,6 +5,7 @@ import createMemoryHistory from "history/createMemoryHistory"
 import { newRouter, path, Router } from "typed-mobx-router"
 import * as React from "react"
 import { createRenderer } from "react-test-renderer/shallow"
+import { History } from "history"
 const Main = (a: any) => <span>Main</span>
 const PersonList = (a: any) => <div>PersonList</div>
 const Person = (a: any) => <div>Person</div>
@@ -20,67 +21,79 @@ describe("is on main page to start", () => {
   it("current route main", () => expect(router.currentRoute.route).toBe("main"))
   it("mainOnLoad called", () => expect(mainOnLoad).toBeCalled())
 
-  it("Should render main no props", () => expect(renderer.getRenderOutput()).toMatchSnapshot())
+  describe("router component should render component with", () => {
+    it("type", () => expect(renderer.getRenderOutput().type).toEqual(Main))
+    it("props", () => expect(renderer.getRenderOutput().props).toEqual({}))
+  })
 })
 
 describe("goes to people when function called", () => {
   const { router, personListOnLoad, history, renderer } = createRouter("/")
 
   router.goTo.personList()
+  const params = { page: 1 }
 
   it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
-  it("correct params", () => expect(router.currentRoute.params).toEqual({ page: 1 }))
+  it("correct params", () => expect(router.currentRoute.params).toEqual(params))
 
-  it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith({ page: 1 }))
-  it("correct url", () =>
-    expect(history.location.pathname + history.location.search).toBe("/people?page=1"))
+  it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith(params))
+  it("correct url", () => expect(url(history)).toBe("/people?page=1"))
 
-  it("Should render personlist page 1 num", () =>
-    expect(renderer.getRenderOutput()).toMatchSnapshot())
+  describe("router component should render component with", () => {
+    it("type", () => expect(renderer.getRenderOutput().type).toEqual(PersonList))
+    it("props", () => expect(renderer.getRenderOutput().props).toEqual(params))
+  })
 })
 
 describe("is on people page 2 to start", () => {
   const { router, personListOnLoad, history, renderer } = createRouter("/people?page=2")
 
+  const params = { page: 2 }
+
   it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
-  it("correct params", () => expect(router.currentRoute.params).toEqual({ page: 2 }))
+  it("correct params", () => expect(router.currentRoute.params).toEqual(params))
 
-  it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith({ page: 2 }))
-  it("correct url", () =>
-    expect(history.location.pathname + history.location.search).toBe("/people?page=2"))
+  it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith(params))
+  it("correct url", () => expect(url(history)).toBe("/people?page=2"))
 
-  it("Should render personlist page 2 num", () =>
-    expect(renderer.getRenderOutput()).toMatchSnapshot())
+  describe("router component should render component with", () => {
+    it("type", () => expect(renderer.getRenderOutput().type).toEqual(PersonList))
+    it("props", () => expect(renderer.getRenderOutput().props).toEqual(params))
+  })
 })
 
 describe("goes to person when function called", () => {
   const { router, personOnLoad, history, renderer } = createRouter("/")
+  const params = { id: "42" }
 
-  router.goTo.person({ id: "42" })
+  router.goTo.person({ ...params })
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
-  it("correct params", () => expect(router.currentRoute.params).toEqual({ id: "42" }))
+  it("correct params", () => expect(router.currentRoute.params).toEqual(params))
 
-  it("called on load correctly", () => expect(personOnLoad).toBeCalledWith({ id: "42" }))
-  it("correct url", () =>
-    expect(history.location.pathname + history.location.search).toBe("/people/42"))
+  it("called on load correctly", () => expect(personOnLoad).toBeCalledWith(params))
+  it("correct url", () => expect(url(history)).toBe("/people/42"))
 
-  it("should render person id 42 string", () =>
-    expect(renderer.getRenderOutput()).toMatchSnapshot())
+  describe("router component should render component with", () => {
+    it("type", () => expect(renderer.getRenderOutput().type).toEqual(Person))
+    it("props", () => expect(renderer.getRenderOutput().props).toEqual(params))
+  })
 })
 
 describe("is on person page to start", () => {
   const { router, personOnLoad, history, renderer } = createRouter("/people/100")
+  const params = { id: "100" }
 
   it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
-  it("correct params", () => expect(router.currentRoute.params).toEqual({ id: "100" }))
+  it("correct params", () => expect(router.currentRoute.params).toEqual(params))
 
-  it("called on load correctly", () => expect(personOnLoad).toBeCalledWith({ id: "100" }))
-  it("correct url", () =>
-    expect(history.location.pathname + history.location.search).toBe("/people/100"))
+  it("called on load correctly", () => expect(personOnLoad).toBeCalledWith(params))
+  it("correct url", () => expect(url(history)).toBe("/people/100"))
 
-  it("should render person id 100 string", () =>
-    expect(renderer.getRenderOutput()).toMatchSnapshot())
+  describe("router component should render component with", () => {
+    it("type", () => expect(renderer.getRenderOutput().type).toEqual(Person))
+    it("props", () => expect(renderer.getRenderOutput().props).toEqual(params))
+  })
 })
 
 describe("goes back when user clicks back", () => {
@@ -100,7 +113,10 @@ describe("goes back when user clicks back", () => {
   it("current route main after going back", () => expect(router.currentRoute.route).toBe("main"))
   it("current route params empty", () => expect(router.currentRoute.params).toEqual({}))
   it("main url after", () => expect(history.location.pathname + history.location.search).toBe("/"))
-  it("should render main", () => expect(renderer.getRenderOutput().type).toEqual(Main))
+  describe("router component should render component with", () => {
+    it("type", () => expect(renderer.getRenderOutput().type).toEqual(Main))
+    it("props", () => expect(renderer.getRenderOutput().props).toEqual({}))
+  })
 })
 
 function createRouter(initialPath: string = "/") {
@@ -144,4 +160,8 @@ function createRouter(initialPath: string = "/") {
     history,
     renderer
   }
+}
+
+function url(history: History): string {
+  return history.location.pathname + history.location.search
 }
