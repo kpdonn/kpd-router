@@ -4,7 +4,7 @@ raf.polyfill(global)
 import createMemoryHistory from "history/createMemoryHistory"
 import { newRouter, path, Router } from "typed-mobx-router"
 import * as React from "react"
-import { createRenderer } from "react-test-renderer/shallow"
+import { createRenderer, ShallowRenderer } from "react-test-renderer/shallow"
 import { History } from "history"
 const Main = (a: any) => <span>Main</span>
 const PersonList = (a: any) => <div>PersonList</div>
@@ -116,6 +116,45 @@ describe("goes back when user clicks back", () => {
   describe("router component should render component with", () => {
     it("type", () => expect(renderer.getRenderOutput().type).toEqual(Main))
     it("props", () => expect(renderer.getRenderOutput().props).toEqual({}))
+  })
+})
+
+describe("Link renders as expected", () => {
+  let renderer: ShallowRenderer
+  beforeEach(() => {
+    renderer = createRenderer()
+  })
+  const { router } = createRouter()
+  const Link = router.Link
+
+  it("Link main page", () => {
+    renderer.render(<Link route="main" />)
+    expect(renderer.getRenderOutput().type).toEqual("a")
+    expect(renderer.getRenderOutput().props).toEqual(expect.objectContaining({ href: "/" }))
+  })
+
+  it("Link person list default", () => {
+    renderer.render(<Link route="personList" />)
+    expect(renderer.getRenderOutput().type).toEqual("a")
+    expect(renderer.getRenderOutput().props).toEqual(
+      expect.objectContaining({ href: "/people?page=1" })
+    )
+  })
+
+  it("Link person list explicit page", () => {
+    renderer.render(<Link route="personList" page={4} />)
+    expect(renderer.getRenderOutput().type).toEqual("a")
+    expect(renderer.getRenderOutput().props).toEqual(
+      expect.objectContaining({ href: "/people?page=4" })
+    )
+  })
+
+  it("Link person", () => {
+    renderer.render(<Link route="person" id="1002" />)
+    expect(renderer.getRenderOutput().type).toEqual("a")
+    expect(renderer.getRenderOutput().props).toEqual(
+      expect.objectContaining({ href: "/people/1002" })
+    )
   })
 })
 
