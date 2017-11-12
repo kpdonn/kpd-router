@@ -128,32 +128,42 @@ describe("Link renders as expected", () => {
   const Link = router.Link
 
   it("Link main page", () => {
-    renderer.render(<Link route="main" />)
+    renderer.render(<Link route="main">Main Page</Link>)
     expect(renderer.getRenderOutput().type).toEqual("a")
-    expect(renderer.getRenderOutput().props).toEqual(expect.objectContaining({ href: "/" }))
+    expect(renderer.getRenderOutput().props).toEqual(
+      expect.objectContaining({ href: "/", children: "Main Page" })
+    )
   })
 
   it("Link person list default", () => {
-    renderer.render(<Link route="personList" />)
+    renderer.render(<Link route="personList">Person List</Link>)
     expect(renderer.getRenderOutput().type).toEqual("a")
     expect(renderer.getRenderOutput().props).toEqual(
-      expect.objectContaining({ href: "/people?page=1" })
+      expect.objectContaining({ href: "/people?page=1", children: "Person List" })
     )
   })
 
   it("Link person list explicit page", () => {
-    renderer.render(<Link route="personList" page={4} />)
+    renderer.render(
+      <Link route="personList" page={4}>
+        Page 4
+      </Link>
+    )
     expect(renderer.getRenderOutput().type).toEqual("a")
     expect(renderer.getRenderOutput().props).toEqual(
-      expect.objectContaining({ href: "/people?page=4" })
+      expect.objectContaining({ href: "/people?page=4", children: "Page 4" })
     )
   })
 
   it("Link person", () => {
-    renderer.render(<Link route="person" id="1002" />)
+    renderer.render(
+      <Link route="person" id="2">
+        Person 2
+      </Link>
+    )
     expect(renderer.getRenderOutput().type).toEqual("a")
     expect(renderer.getRenderOutput().props).toEqual(
-      expect.objectContaining({ href: "/people/1002" })
+      expect.objectContaining({ href: "/people/2", children: "Person 2" })
     )
   })
 })
