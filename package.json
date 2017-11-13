@@ -76,16 +76,17 @@
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.1.0",
     "tslint-config-standard": "^7.0.0",
-    "typescript": "^2.7.0-dev.20171110"
+    "typescript": "^2.7.0-dev.20171110",
+    "react": "^16.0.0"
   },
   "dependencies": {
     "history": "^4.7.2",
     "qs": "^6.5.1",
-    "react": "^16.0.0",
     "url-pattern": "^1.0.3"
   },
   "peerDependencies": {
-    "mobx": "^3.3.1"
+    "mobx": "^3.3.1",
+    "react": "^16.0.0"
   },
   "resolutions": {
     "@types/react": "16.0.22"
