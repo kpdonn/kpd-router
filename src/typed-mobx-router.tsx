@@ -160,7 +160,11 @@ function createLink(router: RouterStoreImpl) {
 
       const href = router.routeManager.buildRoute(route, params)
 
-      return <a href={href}>{children}</a>
+      return (
+        <a href={href} onClick={() => router.goTo[route](params)}>
+          {children}
+        </a>
+      )
     }
   }
 

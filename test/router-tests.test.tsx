@@ -5,10 +5,15 @@ import createMemoryHistory from "history/createMemoryHistory"
 import { newRouter, path, Router } from "typed-mobx-router"
 import * as React from "react"
 import { createRenderer, ShallowRenderer } from "react-test-renderer/shallow"
+import { create } from "react-test-renderer"
+import * as ReactTestUtils from "react-dom/test-utils"
+
 import { History } from "history"
-const Main = (a: any) => <span>Main</span>
-const PersonList = (a: any) => <div>PersonList</div>
-const Person = (a: any) => <div>Person</div>
+import * as ReactDOM from "react-dom"
+
+const Main = (a: any) => <div id="main">Main</div>
+const PersonList = (a: any) => <div id="personList">PersonList</div>
+const Person = (a: any) => <div id="person">Person</div>
 
 const numConverter = {
   toString: (id: number) => id.toString(),
@@ -106,7 +111,7 @@ describe("goes back when user clicks back", () => {
   expect(renderer.getRenderOutput().props).toEqual({ page: 5 })
   expect(mainOnLoad).not.toHaveBeenCalled()
   expect(router.currentRoute.name).not.toBe("main")
-  expect(history.location.pathname + history.location.search).not.toBe("/")
+  expect(url(history)).not.toBe("/")
   history.goBack()
 
   it("called main on load after going back", () => expect(mainOnLoad).toHaveBeenCalled())
@@ -166,6 +171,35 @@ describe("Link renders as expected", () => {
       expect.objectContaining({ href: "/people/2", children: "Person 2" })
     )
   })
+})
+
+describe("clicking Link changes pages", () => {
+  const { router, history, personListOnLoad } = createRouter()
+  const Link = router.Link
+  const rendered = ReactTestUtils.renderIntoDocument(
+    <div>
+      <Router router={router} />
+      <Link route="personList">People</Link>
+      <Link route="person" id="5">
+        Person 5
+      </Link>
+    </div>
+  ) as Element
+
+  expect(personListOnLoad).not.toHaveBeenCalled()
+
+  const peopleLink = Array.from(rendered.querySelectorAll("a")).filter(
+    a => a.textContent && a.textContent.includes("People")
+  )
+
+  expect(peopleLink).toHaveLength(1)
+  ReactTestUtils.Simulate.click(peopleLink[0])
+
+  it("renders personlist", () => expect(rendered.querySelector("#personList")).toBeTruthy())
+  it("url changed", () => expect(url(history)).toEqual("/people?page=1"))
+  it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith({ page: 1 }))
+  it("current route is person list", () => expect(router.currentRoute.name).toBe("personList"))
+  it("current route params", () => expect(router.currentRoute.params).toEqual({ page: 1 }))
 })
 
 function createRouter(initialPath: string = "/") {
