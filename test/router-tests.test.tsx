@@ -2,7 +2,7 @@ import * as raf from "raf"
 raf.polyfill(global)
 
 import createMemoryHistory from "history/createMemoryHistory"
-import { newRouter, path, Router } from "typed-mobx-router"
+import { newRouter, routerPath, Router } from "../src/typed-mobx-router"
 import * as React from "react"
 import { createRenderer, ShallowRenderer } from "react-test-renderer/shallow"
 import * as ReactTestUtils from "react-dom/test-utils"
@@ -219,7 +219,7 @@ function createRouter(initialPath: string = "/") {
     })
     .addRoute({
       name: "personList",
-      path: path`/people`,
+      path: routerPath`/people`,
       queryParams: ["page"],
       defaults: { page: 1 },
       converters: [{ names: ["page"], ...numConverter }],
@@ -228,7 +228,7 @@ function createRouter(initialPath: string = "/") {
     })
     .addRoute({
       name: "person",
-      path: path`/people/${"id"}`,
+      path: routerPath`/people/${"id"}`,
       onLoad: personOnLoad,
       component: Person
     })

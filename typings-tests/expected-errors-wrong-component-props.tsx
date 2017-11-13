@@ -1,4 +1,4 @@
-import {newRouter, path} from "typed-mobx-router"
+import {newRouter, routerPath} from  "../src/typed-mobx-router"
 import * as React from "react"
 
 class P3Comp extends React.Component<{ q1?: boolean; extra: string }> {
@@ -11,7 +11,7 @@ const boolConverter = { toString: (nid: boolean) => nid.toString(), fromString: 
 
 newRouter({} as any).addRoute({
   name: "p1",
-  path: path`/p1/${"r1"}`,
+  path: routerPath`/p1/${"r1"}`,
   queryParams: ["q1"],
   defaults: { q1: true },
   component: (arg: { r1: string; q1: boolean }) => (
@@ -28,7 +28,7 @@ newRouter({} as any).addRoute({
 
 newRouter({} as any).addRoute({
   name: "p2",
-  path: path`/p2/${"r1"}`,
+  path: routerPath`/p2/${"r1"}`,
   queryParams: ["q1"],
   defaults: { r1: "" },
   component: (arg: { r1: string; q1: string }) => <div />
@@ -36,7 +36,7 @@ newRouter({} as any).addRoute({
 
 newRouter({} as any).addRoute({
   name: "noQuery",
-  path: path`/noQuery/${"r1"}/${"r2"}`,
+  path: routerPath`/noQuery/${"r1"}/${"r2"}`,
   component: P3Comp,
   defaults: { r1: 0, r2: false },
   converters: [

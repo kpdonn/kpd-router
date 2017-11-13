@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Diff } from "type-utils"
+import { Diff } from "./type-utils"
 
 export interface RouterStore<GoToFuns, LinkProps, States> {
   readonly currentPath: string

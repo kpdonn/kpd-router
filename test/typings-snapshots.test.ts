@@ -3,8 +3,6 @@ import { spawnSync } from "child_process"
 const tscOptions = [
   "configs/definitions.d.ts",
   "--noEmit",
-  "--baseUrl",
-  "src/",
   "--jsx",
   "react",
   "--experimentalDecorators",

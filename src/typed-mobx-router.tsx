@@ -1,11 +1,11 @@
-import { History } from "history"
-import { ReactComponentCreator, RouterBuilder, RouterStore } from "interfaces"
+import { History, createBrowserHistory } from "history"
+import { ReactComponentCreator, RouterBuilder, RouterStore } from "./interfaces"
 import * as React from "react"
 import { autorun, computed, observable, runInAction } from "mobx"
-import { RouteManager } from "route-manager"
+import { RouteManager } from "./route-manager"
 import { observer } from "mobx-react"
 
-export const path = <T extends string>(
+export const routerPath = <T extends string>(
   literals: TemplateStringsArray,
   ...args: T[]
 ): [string, T[]] => {
@@ -16,7 +16,7 @@ export const path = <T extends string>(
   return [builtPath, args]
 }
 
-export function newRouter(history: History): RouterBuilder {
+export function newRouter(history: History = createBrowserHistory()): RouterBuilder {
   return new RouterBuilderImpl(history) as any
 }
 

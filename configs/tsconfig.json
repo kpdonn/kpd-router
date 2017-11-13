@@ -13,7 +13,6 @@
     "experimentalDecorators": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "baseUrl": "../src",
     "noErrorTruncation": true
   },
   "files": [

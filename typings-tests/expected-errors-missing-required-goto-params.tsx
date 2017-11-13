@@ -1,21 +1,21 @@
-import {newRouter, path} from "typed-mobx-router"
+import {newRouter, routerPath} from "../src/typed-mobx-router"
 const numConverter = {toString: (id: number) => id.toString(), fromString: (arg: string) => Number.parseInt(arg) }
 const boolConverter = { toString: (nid: boolean) => nid.toString(), fromString: (arg: string) => arg === "true"  }
 const nr = newRouter({} as any)
   .addRoute({
     name: "p1",
-    path: path`/p1/${"r1"}/${"r2"}`,
+    path: routerPath`/p1/${"r1"}/${"r2"}`,
     queryParams: ["q1"],
     defaults: { q1: "" }
   })
   .addRoute({
     name: "p2",
-    path: path`/p2/${"r1"}/${"r2"}`,
+    path: routerPath`/p2/${"r1"}/${"r2"}`,
     defaults: { r1: "" }
   })
   .addRoute({
     name: "p3",
-    path: path`/p3/${"r1"}/${"r2"}`,
+    path: routerPath`/p3/${"r1"}/${"r2"}`,
     defaults: { r1: 4 },
     converters: [
       { names: ["r1"], ...numConverter },

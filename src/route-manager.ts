@@ -1,7 +1,6 @@
 import * as UrlPattern from "url-pattern"
 import * as qs from "qs"
-import * as React from "react"
-import { Route } from "typed-mobx-router"
+import { Route } from "./typed-mobx-router"
 
 type RouteInfo = {
   urlPattern: UrlPattern
