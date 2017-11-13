@@ -86,13 +86,13 @@ export class RouteManager {
           (defaultedParams[key] = routeInfo.converterMap.get(key)!.toString(defaultedParams[key]))
       )
 
-    const path = routeInfo.urlPattern.stringify(params)
+    const path = routeInfo.urlPattern.stringify(defaultedParams)
 
     const queryParams = Object.keys(defaultedParams)
       .filter(key => routeInfo.queryParams.includes(key))
       .reduce(
         (obj, key) => {
-          obj[key] = params[key]
+          obj[key] = defaultedParams[key]
           return obj
         },
         {} as any
