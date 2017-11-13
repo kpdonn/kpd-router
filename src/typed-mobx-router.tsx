@@ -28,7 +28,7 @@ class RouterStoreImpl
   @observable currentRoute: { name: string; params: any }
 
   constructor(
-    private routeManager: RouteManager,
+    public routeManager: RouteManager,
     readonly history: History,
     readonly componentMap: Map<string, ReactComponentCreator<any>>
   ) {}
@@ -93,6 +93,9 @@ class RouterBuilderImpl {
       }
     })
 
+    const link = createLink(this.routerStore)
+    this.routerStore.Link = link
+
     return this.routerStore
   }
 
@@ -147,4 +150,19 @@ export class Router extends React.Component<{ router: RouterStore<any, any, any>
       return null
     }
   }
+}
+
+function createLink(router: RouterStoreImpl) {
+  @observer
+  class Link extends React.Component<{ route: string; children: any; [params: string]: any }> {
+    render() {
+      const { route, children, ...params } = this.props
+
+      const href = router.routeManager.buildRoute(route, params)
+
+      return <a href={href}>{children}</a>
+    }
+  }
+
+  return Link
 }
