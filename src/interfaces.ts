@@ -32,12 +32,13 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
     CT0,
     CN1 extends string,
     CT1,
-    D extends DefaultsAllReq<R, Q, CN0, CT0, CN1, CT1>
+    D extends DefaultsAllReq<R, Q, CN0, CT0, CN1, CT1>,
+    OL extends (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
   >(route: {
     name: N
     path: [string, R[]]
     queryParams?: Q[]
-    onLoad?: (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
+    onLoad?: OL
     defaults: D
     converters?: Converters<CN0, CT0, CN1, CT1>
     component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
@@ -54,12 +55,13 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
     CT0,
     CN1 extends string,
     CT1,
-    D extends Defaults<R, Q, CN0, CT0, CN1, CT1>
+    D extends Defaults<R, Q, CN0, CT0, CN1, CT1>,
+    OL extends (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
   >(route: {
     name: N
     path: string
     queryParams?: Q[]
-    onLoad?: (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
+    onLoad?: OL
     defaults?: D
     converters?: Converters<CN0, CT0, CN1, CT1>
     component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
@@ -76,12 +78,13 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
     CT0,
     CN1 extends string,
     CT1,
-    D extends Defaults<R, Q, CN0, CT0, CN1, CT1>
+    D extends Defaults<R, Q, CN0, CT0, CN1, CT1>,
+    OL extends (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
   >(route: {
     name: N
     path: [string, R[]] | string
     queryParams?: Q[]
-    onLoad?: (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
+    onLoad?: OL
     defaults?: D
     converters?: Converters<CN0, CT0, CN1, CT1>
     component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>

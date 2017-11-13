@@ -86,10 +86,10 @@ exports[`Verify expected errors from wrong onload params matches expected 1`] = 
               Type 'number' is not assignable to type 'string'.
 typings-tests/expected-errors-wrong-onload-params.tsx(21,31): error TS2345: Argument of type '{ name: \\"p2\\"; path: [string, \\"r1\\"[]]; queryParams: \\"q1\\"[]; onLoad: (arg: { r1: string; q1: boolea...' is not assignable to parameter of type '{ name: \\"p2\\"; path: string | [string, \\"r1\\"[]]; queryParams?: \\"q1\\"[] | undefined; onLoad?: ((param...'.
   Types of property 'onLoad' are incompatible.
-    Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '((params: OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean>) => void) | undef...'.
-      Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '(params: OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean>) => void'.
+    Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '((params: OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, {}>) => void) | undefined'.
+      Type '(arg: { r1: string; q1: boolean; }) => { r1: string; q1: boolean; }' is not assignable to type '(params: OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, {}>) => void'.
         Types of parameters 'arg' and 'params' are incompatible.
-          Type 'OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, string | boolean>' is not assignable to type '{ r1: string; q1: boolean; }'.
+          Type 'OnLoadParams<\\"r1\\", \\"q1\\", {}, \\"q1\\", boolean, string, {}>' is not assignable to type '{ r1: string; q1: boolean; }'.
             Types of property 'q1' are incompatible.
               Type 'boolean | undefined' is not assignable to type 'boolean'.
                 Type 'undefined' is not assignable to type 'boolean'.
@@ -102,11 +102,11 @@ typings-tests/expected-errors-wrong-onload-params.tsx(29,31): error TS2345: Argu
             Property 'missingArg' is missing in type 'OnLoadParams<\\"r1\\" | \\"r2\\", string, { r1: number; r2: boolean; }, \\"r1\\", number, \\"r2\\", boolean>'.
 typings-tests/expected-errors-wrong-onload-params.tsx(40,31): error TS2345: Argument of type '{ name: \\"noArgs\\"; path: string; onLoad: (args: { q1: string; }) => { q1: string; }; }' is not assignable to parameter of type '{ name: \\"noArgs\\"; path: string | [string, string[]]; queryParams?: string[] | undefined; onLoad?:...'.
   Types of property 'onLoad' are incompatible.
-    Type '(args: { q1: string; }) => { q1: string; }' is not assignable to type '((params: DefaultsAllReq<string, string, string, string, string, string>) => void) | undefined'.
-      Type '(args: { q1: string; }) => { q1: string; }' is not assignable to type '(params: DefaultsAllReq<string, string, string, string, string, string>) => void'.
+    Type '(args: { q1: string; }) => { q1: string; }' is not assignable to type '((params: OnLoadParams<string, string, {}, string, {}, string, {}>) => void) | undefined'.
+      Type '(args: { q1: string; }) => { q1: string; }' is not assignable to type '(params: OnLoadParams<string, string, {}, string, {}, string, {}>) => void'.
         Types of parameters 'args' and 'params' are incompatible.
-          Type 'DefaultsAllReq<string, string, string, string, string, string>' is not assignable to type '{ q1: string; }'.
-            Property 'q1' is missing in type 'DefaultsAllReq<string, string, string, string, string, string>'.
+          Type 'OnLoadParams<string, string, {}, string, {}, string, {}>' is not assignable to type '{ q1: string; }'.
+            Property 'q1' is missing in type 'OnLoadParams<string, string, {}, string, {}, string, {}>'.
 "
 `;
 
