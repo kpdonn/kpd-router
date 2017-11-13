@@ -5,11 +5,13 @@ import createMemoryHistory from "history/createMemoryHistory"
 import { newRouter, path, Router } from "typed-mobx-router"
 import * as React from "react"
 import { createRenderer, ShallowRenderer } from "react-test-renderer/shallow"
-import { create } from "react-test-renderer"
 import * as ReactTestUtils from "react-dom/test-utils"
 
 import { History } from "history"
-import * as ReactDOM from "react-dom"
+
+import { useStrict } from "mobx"
+
+useStrict(true)
 
 const Main = (a: any) => <div id="main">Main</div>
 const PersonList = (a: any) => <div id="personList">PersonList</div>

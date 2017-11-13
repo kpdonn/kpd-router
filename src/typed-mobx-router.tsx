@@ -89,7 +89,9 @@ class RouterBuilderImpl {
       )
 
       if (match) {
-        this.routerStore.currentRoute = { name: match.name, params: match.params }
+        runInAction(() => {
+          this.routerStore.currentRoute = { name: match.name, params: match.params }
+        })
       }
     })
 
