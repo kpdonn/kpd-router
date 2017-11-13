@@ -18,7 +18,7 @@ const numConverter = {
 describe("is on main page to start", () => {
   const { router, mainOnLoad, renderer } = createRouter("/")
 
-  it("current route main", () => expect(router.currentRoute.route).toBe("main"))
+  it("current route main", () => expect(router.currentRoute.name).toBe("main"))
   it("mainOnLoad called", () => expect(mainOnLoad).toBeCalled())
 
   describe("router component should render component with", () => {
@@ -33,7 +33,7 @@ describe("goes to people when function called", () => {
   router.goTo.personList()
   const params = { page: 1 }
 
-  it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
+  it("current route personList", () => expect(router.currentRoute.name).toBe("personList"))
   it("correct params", () => expect(router.currentRoute.params).toEqual(params))
 
   it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith(params))
@@ -50,7 +50,7 @@ describe("is on people page 2 to start", () => {
 
   const params = { page: 2 }
 
-  it("current route personList", () => expect(router.currentRoute.route).toBe("personList"))
+  it("current route personList", () => expect(router.currentRoute.name).toBe("personList"))
   it("correct params", () => expect(router.currentRoute.params).toEqual(params))
 
   it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith(params))
@@ -68,7 +68,7 @@ describe("goes to person when function called", () => {
 
   router.goTo.person({ ...params })
 
-  it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
+  it("current route person", () => expect(router.currentRoute.name).toEqual("person"))
   it("correct params", () => expect(router.currentRoute.params).toEqual(params))
 
   it("called on load correctly", () => expect(personOnLoad).toBeCalledWith(params))
@@ -84,7 +84,7 @@ describe("is on person page to start", () => {
   const { router, personOnLoad, history, renderer } = createRouter("/people/100")
   const params = { id: "100" }
 
-  it("current route person", () => expect(router.currentRoute.route).toEqual("person"))
+  it("current route person", () => expect(router.currentRoute.name).toEqual("person"))
   it("correct params", () => expect(router.currentRoute.params).toEqual(params))
 
   it("called on load correctly", () => expect(personOnLoad).toBeCalledWith(params))
@@ -105,12 +105,12 @@ describe("goes back when user clicks back", () => {
   expect(renderer.getRenderOutput().type).toEqual(PersonList)
   expect(renderer.getRenderOutput().props).toEqual({ page: 5 })
   expect(mainOnLoad).not.toHaveBeenCalled()
-  expect(router.currentRoute.route).not.toBe("main")
+  expect(router.currentRoute.name).not.toBe("main")
   expect(history.location.pathname + history.location.search).not.toBe("/")
   history.goBack()
 
   it("called main on load after going back", () => expect(mainOnLoad).toHaveBeenCalled())
-  it("current route main after going back", () => expect(router.currentRoute.route).toBe("main"))
+  it("current route main after going back", () => expect(router.currentRoute.name).toBe("main"))
   it("current route params empty", () => expect(router.currentRoute.params).toEqual({}))
   it("main url after", () => expect(history.location.pathname + history.location.search).toBe("/"))
   describe("router component should render component with", () => {

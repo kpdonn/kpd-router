@@ -21,11 +21,11 @@ export function newRouter(history: History): RouterBuilder {
 }
 
 class RouterStoreImpl
-  implements RouterStore<{ [index: string]: Function }, any, { route: string; params: any }> {
+  implements RouterStore<{ [index: string]: Function }, any, { name: string; params: any }> {
   goTo: { [index: string]: Function } = {}
   Link: React.ComponentClass<any>
 
-  @observable currentRoute: { route: string; params: any }
+  @observable currentRoute: { name: string; params: any }
 
   constructor(
     private routeManager: RouteManager,
@@ -35,7 +35,7 @@ class RouterStoreImpl
 
   @computed
   get currentPath(): string {
-    return this.routeManager.buildRoute(this.currentRoute.route, this.currentRoute.params)
+    return this.routeManager.buildRoute(this.currentRoute.name, this.currentRoute.params)
   }
 }
 
@@ -57,15 +57,15 @@ class RouterBuilderImpl {
       this.history.location.search
     )
 
-    this.routerStore.currentRoute = { route: match.name, params: match.params }
+    this.routerStore.currentRoute = { name: match.name, params: match.params }
   }
 
   start(): RouterStoreImpl {
     this.setRouteInfoFromLocation()
 
     autorun(() => {
-      const { route } = this.routerStore.currentRoute
-      const onLoadFun = this.onLoadMap.get(route)
+      const { name } = this.routerStore.currentRoute
+      const onLoadFun = this.onLoadMap.get(name)
       if (onLoadFun) {
         const params = this.routerStore.currentRoute.params
         onLoadFun(params)
@@ -79,6 +79,20 @@ class RouterBuilderImpl {
       }
     })
 
+    this.history.listen((newLocation, action) => {
+      if (action !== "POP") {
+        return
+      }
+      const match = this.routeManager.matchRoute(
+        this.history.location.pathname,
+        this.history.location.search
+      )
+
+      if (match) {
+        this.routerStore.currentRoute = { name: match.name, params: match.params }
+      }
+    })
+
     return this.routerStore
   }
 
@@ -89,7 +103,7 @@ class RouterBuilderImpl {
 
     this.routerStore.goTo[route.name] = (args: any) => {
       runInAction(() => {
-        this.routerStore.currentRoute = { route: route.name, params: { ...defaults, ...args } }
+        this.routerStore.currentRoute = { name: route.name, params: { ...defaults, ...args } }
       })
     }
 
@@ -123,9 +137,9 @@ export class Router extends React.Component<{ router: RouterStore<any, any, any>
   render() {
     const routerStoreImpl = this.props.router as RouterStoreImpl
 
-    const { route, params } = this.props.router.currentRoute
+    const { name, params } = this.props.router.currentRoute
 
-    const Component = routerStoreImpl.componentMap.get(route)
+    const Component = routerStoreImpl.componentMap.get(name)
 
     if (Component) {
       return <Component {...params} />

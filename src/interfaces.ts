@@ -18,7 +18,7 @@ export type RouteState<
   CN1 extends string,
   CT1
 > = {
-  route: N
+  name: N
   params: Readonly<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
 }
 export interface RouterBuilder<T = {}, L = never, S = never> {
