@@ -158,12 +158,12 @@ function createLink(router: RouterStoreImpl) {
   @observer
   class Link extends React.Component<{ route: string; children: any; [params: string]: any }> {
     render() {
-      const { route, children, ...params } = this.props
+      const { route, children, className, ...params } = this.props
 
       const href = router.routeManager.buildRoute(route, params)
 
       return (
-        <a href={href} onClick={this.onClick}>
+        <a href={href} onClick={this.onClick} {...{ className }}>
           {children}
         </a>
       )

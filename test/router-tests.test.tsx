@@ -1,5 +1,4 @@
-import * as raf from "raf"
-raf.polyfill(global)
+import "raf/polyfill"
 
 import createMemoryHistory from "history/createMemoryHistory"
 import { newRouter, routerPath, Router } from "../src/typed-mobx-router"
@@ -135,18 +134,30 @@ describe("Link renders as expected", () => {
   const Link = router.Link
 
   it("Link main page", () => {
-    renderer.render(<Link route="main">Main Page</Link>)
+    renderer.render(
+      <Link route="main" className="customClass">
+        Main Page
+      </Link>
+    )
     expect(renderer.getRenderOutput().type).toEqual("a")
     expect(renderer.getRenderOutput().props).toEqual(
-      expect.objectContaining({ href: "/", children: "Main Page" })
+      expect.objectContaining({ href: "/", children: "Main Page", className: "customClass" })
     )
   })
 
   it("Link person list default", () => {
-    renderer.render(<Link route="personList">Person List</Link>)
+    renderer.render(
+      <Link route="personList" className="testClass">
+        Person List
+      </Link>
+    )
     expect(renderer.getRenderOutput().type).toEqual("a")
     expect(renderer.getRenderOutput().props).toEqual(
-      expect.objectContaining({ href: "/people?page=1", children: "Person List" })
+      expect.objectContaining({
+        href: "/people?page=1",
+        children: "Person List",
+        className: "testClass"
+      })
     )
   })
 
@@ -199,7 +210,8 @@ describe("clicking Link changes pages", () => {
 
   it("renders personlist", () => expect(rendered.querySelector("#personList")).toBeTruthy())
   it("url changed", () => expect(url(history)).toEqual("/people?page=1"))
-  it("called on load correctly", () => expect(personListOnLoad).toBeCalledWith({ page: 1 }))
+  it("called on load correctly", () =>
+    expect(personListOnLoad).toBeCalledWith(expect.objectContaining({ page: 1 })))
   it("current route is person list", () => expect(router.currentRoute.name).toBe("personList"))
   it("current route params", () => expect(router.currentRoute.params).toEqual({ page: 1 }))
 })
