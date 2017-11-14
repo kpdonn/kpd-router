@@ -1,5 +1,5 @@
-import * as UrlPattern from "url-pattern"
-import * as qs from "qs"
+import UrlPattern from "url-pattern"
+import qs from "qs"
 import { Route } from "./typed-mobx-router"
 
 type RouteInfo = {

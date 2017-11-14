@@ -163,10 +163,16 @@ function createLink(router: RouterStoreImpl) {
       const href = router.routeManager.buildRoute(route, params)
 
       return (
-        <a href={href} onClick={() => router.goTo[route](params)}>
+        <a href={href} onClick={this.onClick}>
           {children}
         </a>
       )
+    }
+
+    onClick = (e: React.MouseEvent<any>) => {
+      e.preventDefault()
+      const { route, ...params } = this.props
+      router.goTo[route](params)
     }
   }
 
