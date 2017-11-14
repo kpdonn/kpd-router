@@ -170,6 +170,9 @@ function createLink(router: RouterStoreImpl) {
     }
 
     onClick = (e: React.MouseEvent<any>) => {
+      if (e.ctrlKey || e.metaKey) {
+        return
+      }
       e.preventDefault()
       const { route, ...params } = this.props
       router.goTo[route](params)
