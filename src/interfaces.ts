@@ -4,7 +4,7 @@ import { Diff } from "./type-utils"
 export interface RouterStore<GoToFuns, LinkProps, States> {
   readonly currentPath: string
   goTo: GoToFuns
-  Link: React.ComponentClass<LinkProps & { children: any } & { className?: string }>
+  Link: React.ComponentClass<LinkProps & { children: any } & { [index: string]: any }>
   currentRoute: States
 }
 
