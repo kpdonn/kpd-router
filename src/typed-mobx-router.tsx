@@ -156,7 +156,12 @@ export class Router extends React.Component<{ router: RouterStore<any, any, any>
 
 function createLink(router: RouterStoreImpl) {
   @observer
-  class Link extends React.Component<{ route: string; children: any; [params: string]: any }> {
+  class Link extends React.Component<{
+    route: string
+    children: any
+    as?: any
+    className?: string
+  }> {
     render() {
       const El = this.props.as ? this.props.as : "a"
 
