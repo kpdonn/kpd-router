@@ -38,10 +38,10 @@ exports[`Verify expected errors from wrong component props matches expected 1`] 
               Type 'number' is not assignable to type 'string'.
 typings-tests/expected-errors-wrong-component-props.tsx(29,31): error TS2345: Argument of type '{ name: \\"p2\\"; path: [string, \\"r1\\"[]]; queryParams: \\"q1\\"[]; defaults: { r1: string; }; component: ...' is not assignable to parameter of type '{ name: \\"p2\\"; path: string | [string, \\"r1\\"[]]; queryParams?: \\"q1\\"[] | undefined; onLoad?: ((param...'.
   Types of property 'component' are incompatible.
-    Type '(arg: { r1: string; q1: string; }) => Element' is not assignable to type '(new (props: OnLoadParams<\\"r1\\", \\"q1\\", { r1: string; }, string, string, string, string>) => Compon...'.
-      Type '(arg: { r1: string; q1: string; }) => Element' is not assignable to type 'StatelessComponent<OnLoadParams<\\"r1\\", \\"q1\\", { r1: string; }, string, string, string, string>>'.
+    Type '(arg: { r1: string; q1: string; }) => Element' is not assignable to type '(new (props: OnLoadParams<\\"r1\\", \\"q1\\", { r1: string; }, string, {}, string, {}>) => Component<any,...'.
+      Type '(arg: { r1: string; q1: string; }) => Element' is not assignable to type 'StatelessComponent<OnLoadParams<\\"r1\\", \\"q1\\", { r1: string; }, string, {}, string, {}>>'.
         Types of parameters 'arg' and 'props' are incompatible.
-          Type 'Record<\\"r1\\", string> & Record<\\"r1\\", string> & Partial<Record<\\"q1\\", string>> & Record<never, strin...' is not assignable to type '{ r1: string; q1: string; }'.
+          Type 'Record<\\"r1\\", string> & Record<\\"r1\\", string> & Partial<Record<\\"q1\\", string>> & Record<never, {}> &...' is not assignable to type '{ r1: string; q1: string; }'.
             Types of property 'q1' are incompatible.
               Type 'string | undefined' is not assignable to type 'string'.
                 Type 'undefined' is not assignable to type 'string'.
