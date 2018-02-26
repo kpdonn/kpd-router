@@ -23,9 +23,9 @@ export function newRouter(history: History = createBrowserHistory()): RouterBuil
 class RouterStoreImpl
   implements RouterStore<{ [index: string]: Function }, any, { name: string; params: any }> {
   goTo: { [index: string]: Function } = {}
-  Link: React.ComponentClass<any>
+  Link!: React.ComponentClass<any>
 
-  @observable currentRoute: { name: string; params: any }
+  @observable currentRoute!: { name: string; params: any }
 
   constructor(
     public routeManager: RouteManager,
