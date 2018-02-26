@@ -213,7 +213,7 @@ describe("clicking Link changes pages", () => {
   it("called on load correctly", () =>
     expect(personListOnLoad).toBeCalledWith(expect.objectContaining({ page: 1 })))
   it("current route is person list", () => expect(router.currentRoute.name).toBe("personList"))
-  it("current route params", () => expect(router.currentRoute.params).toEqual({ page: 1 }))
+  it("current route params", () => expect(router.currentRoute.params).toHaveProperty("page", 1))
 })
 
 function createRouter(initialPath: string = "/") {
