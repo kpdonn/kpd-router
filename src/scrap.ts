@@ -38,6 +38,8 @@ type PartPartial<T, U extends string> = string extends U
   ? T
   : { [K in Extract<keyof T, U>]?: T[K] } & { [K in Exclude<keyof T, U>]: T[K] }
 
+const strToNum = (arg: string) => arg.length
+
 interface Rb<G = {}> {
   start(): { goTo: G }
 
@@ -46,7 +48,7 @@ interface Rb<G = {}> {
     ReqParams extends string,
     OptParams extends string,
     Params extends Literal<ReqParams> | Literal<OptParams>,
-    Conv extends { [P in Params]?: (str: string) => any },
+    Conv extends { [P in Params]: (str: string) => any },
     ConvertedArgs extends {
       [ConvArg in Params]: Conv[ConvArg] extends (arg: string) => infer T ? T : string
     },
@@ -55,7 +57,7 @@ interface Rb<G = {}> {
     name: Name
     params: ReqParams[]
     optParams?: OptParams[]
-    converters?: Conv
+    converters?: Partial<Conv>
   }): Rb<G & Record<Name, (arg: GoToArgs) => void>>
 }
 
