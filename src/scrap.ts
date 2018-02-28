@@ -54,7 +54,7 @@ interface Rb<G = {}> {
     ConvertedArgs extends {
       [ConvArg in Params]: Converters[ConvArg] extends (arg: string) => infer T ? T : string
     },
-    GoToArgs extends PartPartial<ConvertedArgs, OptParams | Literal<keyof Defaults>>,
+    GoToArgs extends PartPartial<ConvertedArgs, Literal<OptParams> | Literal<keyof Defaults>>,
     Defaults extends Exactly<Partial<ConvertedArgs>, Defaults>
   >(route: {
     name: Name
