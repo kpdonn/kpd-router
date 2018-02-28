@@ -48,16 +48,18 @@ interface Rb<G = {}> {
     ReqParams extends string,
     OptParams extends string,
     Params extends Literal<ReqParams> | Literal<OptParams>,
-    Conv extends { [P in Params]?: (str: string) => any },
+    Converters extends {
+      [K in keyof Converters]?: K extends Params ? (str: string) => any : never
+    },
     ConvertedArgs extends {
-      [ConvArg in Params]: Conv[ConvArg] extends (arg: string) => infer T ? T : string
+      [ConvArg in Params]: Converters[ConvArg] extends (arg: string) => infer T ? T : string
     },
     GoToArgs extends PartPartial<ConvertedArgs, OptParams>
   >(route: {
     name: Name
     params: ReqParams[]
     optParams?: OptParams[]
-    converters?: Conv
+    converters?: Converters
   }): Rb<G & Record<Name, (arg: GoToArgs) => void>>
 }
 
