@@ -48,7 +48,7 @@ interface Rb<G = {}> {
     ReqParams extends string,
     OptParams extends string,
     Params extends Literal<ReqParams> | Literal<OptParams>,
-    Conv extends { [P in Params]: (str: string) => any },
+    Conv extends { [P in Params]?: (str: string) => any },
     ConvertedArgs extends {
       [ConvArg in Params]: Conv[ConvArg] extends (arg: string) => infer T ? T : string
     },
@@ -57,7 +57,7 @@ interface Rb<G = {}> {
     name: Name
     params: ReqParams[]
     optParams?: OptParams[]
-    converters?: Partial<Conv>
+    converters?: Conv
   }): Rb<G & Record<Name, (arg: GoToArgs) => void>>
 }
 
@@ -75,4 +75,4 @@ const r = rb
   })
   .start()
 
-r.goTo.hello({ a: 6, b: "", c: 63 })
+r.goTo.hello({ a: 6, b: "", c: 5 })
