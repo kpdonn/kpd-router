@@ -27,3 +27,36 @@ const t = f1({
   a: ["a", "b", "c"],
   conv: { 0: { fields: ["a"], t: 2 }, 1: { fields: ["b"], t: true } }
 })
+
+type OnLoad<R extends string> = (arg: Record<R, string>) => void
+
+interface Rb<G = {}> {
+  start(): { goTo: G }
+
+  add<
+    Name extends string,
+    ReqParams extends string,
+    Conv extends { [P in ReqParams]?: (str: string) => any },
+    LoadArgs extends {
+      [LoadArg in ReqParams]: Conv[LoadArg] extends (arg: string) => infer T ? T : string
+    }
+  >(route: {
+    name: Name
+    params: ReqParams[]
+    converters?: Conv
+  }): Rb<G & Record<Name, (arg: LoadArgs) => void>>
+}
+
+declare const rb: Rb
+
+const r = rb
+  .add({
+    name: "hello",
+    params: ["a", "b"],
+    converters: {
+      a: (arg: string) => arg.length
+    }
+  })
+  .start()
+
+r.goTo.hello({ a: 6, b: "" })
