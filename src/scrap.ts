@@ -1,3 +1,5 @@
+import { OptParams, ReqParams } from "./interfaces"
+
 type ever = string | number | boolean | object | null | undefined | {}
 
 declare function f1<A extends string, C extends { [key: number]: { fields: A[]; t: any } }>(arg: {
@@ -30,21 +32,31 @@ const t = f1({
 
 type OnLoad<R extends string> = (arg: Record<R, string>) => void
 
+type Literal<T extends string> = string extends T ? never : T
+
+type PartPartial<T, U extends string> = string extends U
+  ? T
+  : { [K in Extract<keyof T, U>]?: T[K] } & { [K in Exclude<keyof T, U>]: T[K] }
+
 interface Rb<G = {}> {
   start(): { goTo: G }
 
   add<
     Name extends string,
     ReqParams extends string,
-    Conv extends { [P in ReqParams]?: (str: string) => any },
-    LoadArgs extends {
-      [LoadArg in ReqParams]: Conv[LoadArg] extends (arg: string) => infer T ? T : string
-    }
+    OptParams extends string,
+    Params extends Literal<ReqParams> | Literal<OptParams>,
+    Conv extends { [P in Params]?: (str: string) => any },
+    ConvertedArgs extends {
+      [ConvArg in Params]: Conv[ConvArg] extends (arg: string) => infer T ? T : string
+    },
+    GoToArgs extends PartPartial<ConvertedArgs, OptParams>
   >(route: {
     name: Name
     params: ReqParams[]
+    optParams?: OptParams[]
     converters?: Conv
-  }): Rb<G & Record<Name, (arg: LoadArgs) => void>>
+  }): Rb<G & Record<Name, (arg: GoToArgs) => void>>
 }
 
 declare const rb: Rb
@@ -53,10 +65,12 @@ const r = rb
   .add({
     name: "hello",
     params: ["a", "b"],
+    optParams: ["c", "d"],
     converters: {
-      a: (arg: string) => arg.length
+      a: (arg: string) => arg.length,
+      c: (arg: string) => arg.length
     }
   })
   .start()
 
-r.goTo.hello({ a: 6, b: "" })
+r.goTo.hello({ a: 6, b: "", c: 63 })
