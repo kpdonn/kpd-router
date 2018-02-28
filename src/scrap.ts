@@ -1,4 +1,4 @@
-import { OptParams, ReqParams } from "./interfaces"
+import { Converters, OptParams, ReqParams } from "./interfaces"
 
 type ever = string | number | boolean | object | null | undefined | {}
 
@@ -40,6 +40,8 @@ type PartPartial<T, U extends string> = string extends U
 
 const strToNum = (arg: string) => arg.length
 
+type Exactly<T, X> = { [K in keyof X]: K extends keyof T ? T[K] : never }
+
 interface Rb<G = {}> {
   start(): { goTo: G }
 
@@ -48,18 +50,18 @@ interface Rb<G = {}> {
     ReqParams extends string,
     OptParams extends string,
     Params extends Literal<ReqParams> | Literal<OptParams>,
-    Converters extends {
-      [K in keyof Converters]?: K extends Params ? (str: string) => any : never
-    },
+    Converters extends Exactly<Partial<Record<Params, (str: string) => any>>, Converters>,
     ConvertedArgs extends {
       [ConvArg in Params]: Converters[ConvArg] extends (arg: string) => infer T ? T : string
     },
-    GoToArgs extends PartPartial<ConvertedArgs, OptParams>
+    GoToArgs extends PartPartial<ConvertedArgs, OptParams | Literal<keyof Defaults>>,
+    Defaults extends Exactly<Partial<ConvertedArgs>, Defaults>
   >(route: {
     name: Name
     params: ReqParams[]
     optParams?: OptParams[]
     converters?: Converters
+    defaults?: Defaults
   }): Rb<G & Record<Name, (arg: GoToArgs) => void>>
 }
 
@@ -73,8 +75,11 @@ const r = rb
     converters: {
       a: (arg: string) => arg.length,
       c: (arg: string) => arg.length
+    },
+    defaults: {
+      a: 3
     }
   })
   .start()
 
-r.goTo.hello({ a: 6, b: "", c: 5 })
+r.goTo.hello({ b: "", c: 5 })
