@@ -1,4 +1,4 @@
-import {newRouter, routerPath} from  "../src/typed-mobx-router"
+import {newRouter, routerPath} from "../src/kpd-router"
 import * as React from "react"
 
 

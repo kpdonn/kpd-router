@@ -1,4 +1,4 @@
-import {newRouter, routerPath} from "../src/typed-mobx-router"
+import {newRouter, routerPath} from "../src/kpd-router"
 import * as React from "react"
 
 class P1Comp extends React.Component<{ r1: number; q1?: boolean; extra?: string }> {

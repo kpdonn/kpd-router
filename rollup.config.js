@@ -5,7 +5,7 @@ import camelCase from 'lodash.camelcase'
 
 const pkg = require('./package.json')
 
-const libraryName = 'typed-mobx-router'
+const libraryName = 'kpd-router'
 
 export default {
   input: `compiled/${libraryName}.js`,

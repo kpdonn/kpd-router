@@ -1,7 +1,7 @@
 import "raf/polyfill"
 
 import createMemoryHistory from "history/createMemoryHistory"
-import { newRouter, routerPath, Router } from "../src/typed-mobx-router"
+import { newRouter, routerPath, Router } from "../src/kpd-router"
 import * as React from "react"
 import { createRenderer, ShallowRenderer } from "react-test-renderer/shallow"
 import * as ReactTestUtils from "react-dom/test-utils"

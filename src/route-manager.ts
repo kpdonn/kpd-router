@@ -1,6 +1,6 @@
 import UrlPattern from "url-pattern"
 import qs from "qs"
-import { Route } from "./typed-mobx-router"
+import { Route } from "./kpd-router"
 
 type RouteInfo = {
   urlPattern: UrlPattern

@@ -1,11 +1,11 @@
 {
-  "name": "typed-mobx-router",
+  "name": "kpd-router",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/typed-mobx-router.umd.js",
-  "module": "dist/typed-mobx-router.es5.js",
-  "typings": "dist/types/typed-mobx-router.d.ts",
+  "main": "dist/kpd-router.umd.js",
+  "module": "dist/kpd-router.es5.js",
+  "typings": "dist/types/kpd-router.d.ts",
   "files": [
     "dist"
   ],
