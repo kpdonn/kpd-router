@@ -62,7 +62,12 @@ interface Rb<G = {}> {
     optParams?: OptParams[]
     converters?: Converters
     defaults?: Defaults
-  }): Rb<G & Record<Name, (arg: GoToArgs) => void>>
+  }): Rb<
+    G &
+      ({} extends GoToArgs
+        ? Record<Name, (arg?: GoToArgs) => void>
+        : Record<Name, (arg: GoToArgs) => void>)
+  >
 }
 
 declare const rb: Rb
