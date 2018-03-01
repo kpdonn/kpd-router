@@ -43,7 +43,7 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
   >
 }
 
-type GoToFun<Name extends string, Args> = {} extends Args
+export type GoToFun<Name extends string, Args> = {} extends Args
   ? Record<Name, (arg?: Args) => void>
   : Record<Name, (arg: Args) => void>
 
@@ -51,7 +51,7 @@ export type ReactComponentCreator<P> =
   | (new (props: P) => React.Component<any>)
   | React.StatelessComponent<P>
 
-type Converters<Params extends string> = Partial<Record<Params, Converter<any>>>
+export type Converters<Params extends string> = Partial<Record<Params, Converter<any>>>
 
 export interface Converter<T> {
   toString: (arg: T) => string
