@@ -29,10 +29,10 @@ const nr = newRouter({} as any)
     queryParams: ["q1"],
     onLoad: p1OnLoad,
     defaults: { q1: true },
-    converters: [
-      { names: ["r1"], ...numConverter },
-      { names: ["q1"], ...boolConverter}
-    ],
+    converters: {
+      r1: numConverter,
+      q1: boolConverter,
+    },
     component: P1Comp
   })
   .addRoute({
@@ -50,20 +50,22 @@ const nr = newRouter({} as any)
       r1: 1,
       r2: true
     },
-    converters: [
-      { names: ["r1", "q1"], ...numConverter },
-      { names: ["r2", "q2"], ...boolConverter }
-    ]
+    converters: {
+      r1: numConverter,
+      q1: numConverter,
+      r2: boolConverter,
+      q2: boolConverter
+    },
   })
   .addRoute({
     name: "noQuery",
     path: routerPath`/noQuery/${"r1"}/${"r2"}`,
     onLoad: (args: { r1: number; r2: boolean }) => args,
     defaults: { r1: 0 },
-    converters: [
-      { names: ["r1"], ...numConverter },
-      { names: ["r2"], ...boolConverter }
-    ]
+    converters: {
+      r1: numConverter,
+      r2: boolConverter,
+    },
   })
   .addRoute({
     name: "noRequired",
@@ -71,8 +73,9 @@ const nr = newRouter({} as any)
     queryParams: ["q1", "q2"],
     onLoad: (args: { q1: number; q2?: string }) => args,
     defaults: { q1: 2 },
-    converters: [{ names: ["q1"], ...numConverter}]
-  })
+    converters: {
+      q1: numConverter,
+    },  })
   .addRoute({
     name: "noArgs",
     path: "/noArgs",
