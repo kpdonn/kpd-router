@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Diff } from "./type-utils"
+import { Exactly, Literal, PartPartial } from "./type-utils"
 
 export interface RouterStore<GoToFuns, LinkProps, States> {
   readonly currentPath: string
@@ -8,185 +8,52 @@ export interface RouterStore<GoToFuns, LinkProps, States> {
   currentRoute: States
 }
 
-export type RouteState<
-  N extends string,
-  R extends string,
-  Q extends string,
-  D,
-  CN0 extends string,
-  CT0,
-  CN1 extends string,
-  CT1
-> = {
+export type RouteState<N extends string, OnLoadArgs> = {
   name: N
-  params: Readonly<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
+  params: Readonly<OnLoadArgs>
 }
+
 export interface RouterBuilder<T = {}, L = never, S = never> {
   start(): RouterStore<T, L, S>
 
   addRoute<
-    N extends string,
-    R extends string,
-    Q extends string,
-    CN0 extends string,
-    CT0,
-    CN1 extends string,
-    CT1,
-    D extends DefaultsAllReq<R, Q, CN0, CT0, CN1, CT1>,
-    OL extends (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
+    Name extends string,
+    RawReq extends string,
+    RawOpt extends string,
+    Req extends Literal<RawReq>,
+    Opt extends Literal<RawOpt>,
+    Params extends Req | Opt,
+    Conv extends Exactly<Converters<Params>, Conv>,
+    Converted extends { [P in Params]: Conv[P] extends Converter<infer T> ? T : string },
+    Defaults extends Exactly<Partial<Converted>, Defaults>,
+    GoToArgs extends PartPartial<Converted, Opt | Literal<keyof Defaults>>,
+    OnLoadArgs extends PartPartial<Converted, Exclude<Opt, Literal<keyof Defaults>>>
   >(route: {
-    name: N
-    path: [string, R[]]
-    queryParams?: Q[]
-    onLoad?: OL
-    defaults: D
-    converters?: Converters<CN0, CT0, CN1, CT1>
-    component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
+    name: Name
+    path: [string, RawReq[]] | string
+    queryParams?: RawOpt[]
+    onLoad?: (arg: OnLoadArgs) => void
+    defaults?: Defaults
+    converters?: Conv
+    component?: ReactComponentCreator<OnLoadArgs>
   }): RouterBuilder<
-    T & Record<N, (args?: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>) => void>,
-    L | ({ route: N } & GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>),
-    S | RouteState<N, R, Q, D, CN0, CT0, CN1, CT1>
-  >
-  addRoute<
-    N extends string,
-    R extends string,
-    Q extends string,
-    CN0 extends string,
-    CT0,
-    CN1 extends string,
-    CT1,
-    D extends Defaults<R, Q, CN0, CT0, CN1, CT1>,
-    OL extends (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
-  >(route: {
-    name: N
-    path: string
-    queryParams?: Q[]
-    onLoad?: OL
-    defaults?: D
-    converters?: Converters<CN0, CT0, CN1, CT1>
-    component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
-  }): RouterBuilder<
-    T & Record<N, (args?: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>) => void>,
-    L | ({ route: N } & GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>),
-    S | RouteState<N, R, Q, D, CN0, CT0, CN1, CT1>
-  >
-  addRoute<
-    N extends string,
-    R extends string,
-    Q extends string,
-    CN0 extends string,
-    CT0,
-    CN1 extends string,
-    CT1,
-    D extends Defaults<R, Q, CN0, CT0, CN1, CT1>,
-    OL extends (params: OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>) => void
-  >(route: {
-    name: N
-    path: [string, R[]] | string
-    queryParams?: Q[]
-    onLoad?: OL
-    defaults?: D
-    converters?: Converters<CN0, CT0, CN1, CT1>
-    component?: ReactComponentCreator<OnLoadParams<R, Q, D, CN0, CT0, CN1, CT1>>
-  }): RouterBuilder<
-    T & Record<N, (args: GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>) => void>,
-    L | ({ route: N } & GoToRouteParams<R, Q, D, CN0, CT0, CN1, CT1>),
-    S | RouteState<N, R, Q, D, CN0, CT0, CN1, CT1>
+    T & GoToFun<Name, GoToArgs>,
+    L | ({ route: Name } & GoToArgs),
+    S | RouteState<Name, OnLoadArgs>
   >
 }
+
+type GoToFun<Name extends string, Args> = {} extends Args
+  ? Record<Name, (arg?: Args) => void>
+  : Record<Name, (arg: Args) => void>
 
 export type ReactComponentCreator<P> =
   | (new (props: P) => React.Component<any>)
   | React.StatelessComponent<P>
 
-export type GoToRouteParams<
-  R extends string,
-  Q extends string,
-  D,
-  CN0 extends string,
-  CT0,
-  CN1 extends string,
-  CT1
-> = ReqParams<MultiDiff<R, CN0, CN1, keyof D>> &
-  OptParams<MultiDiff<Q | keyof D, CN0, CN1>> &
-  GoToRouteConvertedParams<R, Q, D, CN0, CT0> &
-  GoToRouteConvertedParams<R, Q, D, CN1, CT1>
+type Converters<Params extends string> = Partial<Record<Params, Converter<any>>>
 
-export type GoToRouteConvertedParams<
-  R extends string,
-  Q extends string,
-  D,
-  CN extends string,
-  CT
-> = ReqParams<Diff<CN, Q> & Diff<R, keyof D>, CT> & OptParams<Diff<CN, Diff<R, keyof D>>, CT>
-
-export type MultiDiff<
-  A extends string,
-  M1 extends string,
-  M2 extends string = string,
-  M3 extends string = string
-> = Diff<Diff<Diff<A, M1>, M2>, M3>
-
-export type DefaultsAllReq<
-  R extends string,
-  Q extends string,
-  CN0 extends string,
-  CT0,
-  CN1 extends string,
-  CT1
-> = ReqParams<MultiDiff<R, CN0, CN1>> &
-  ReqParams<Diff<CN0, Q>, CT0> &
-  ReqParams<Diff<CN1, Q>, CT1> &
-  OptParams<MultiDiff<Q, CN0, CN1>> &
-  OptParams<Diff<CN0, R>, CT0> &
-  OptParams<Diff<CN1, R>, CT1>
-
-export type Defaults<
-  R extends string,
-  Q extends string,
-  CN0 extends string,
-  CT0,
-  CN1 extends string,
-  CT1
-> = OptParams<MultiDiff<R | Q, CN0, CN1>> & OptParams<CN0, CT0> & OptParams<CN1, CT1>
-
-export type OnLoadParams<
-  R extends string,
-  Q extends string,
-  D,
-  CN0 extends string,
-  CT0,
-  CN1 extends string,
-  CT1
-> = ReqParams<MultiDiff<R, CN0, CN1>> &
-  ReqParams<MultiDiff<keyof D, CN0, CN1>> &
-  OptParams<MultiDiff<Q, CN0, CN1, keyof D>> &
-  OnLoadConvertedParams<R, Q, D, CN0, CT0> &
-  OnLoadConvertedParams<R, Q, D, CN1, CT1>
-
-export type OnLoadConvertedParams<
-  R extends string,
-  Q extends string,
-  D,
-  CN extends string,
-  CT
-> = ReqParams<Diff<R, Diff<R, CN>>, CT> &
-  ReqParams<Diff<keyof D, Diff<keyof D, CN>>, CT> &
-  OptParams<Diff<Q & CN, keyof D>, CT>
-
-export interface Converters<CN0 extends string, CT0, CN1 extends string, CT1> {
-  [0]?: Converter<CN0, CT0>
-  [1]?: Converter<CN1, CT1>
-  [2]?: never // Error on more than 6 elements since that can't be typed correctly
-
-  [index: number]: Converter<any, any> | undefined
-}
-
-export interface Converter<N extends string, T> {
-  names: N[]
+export interface Converter<T> {
   toString: (arg: T) => string
   fromString: (arg: string) => T
 }
-
-export type ReqParams<K extends string, T = string> = Record<K, T>
-export type OptParams<K extends string, T = string> = Partial<Record<K, T>>

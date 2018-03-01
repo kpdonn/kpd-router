@@ -1,14 +1,6 @@
-type Literal<T extends string> = string extends T ? never : T
-
-type PartPartial<T, U extends string> = string extends U
-  ? T
-  : Identity<{ [K in Extract<keyof T, U>]?: T[K] } & { [K in Exclude<keyof T, U>]: T[K] }>
-
-type Identity<T> = { [K in keyof T]: T[K] }
+import { Exactly, Literal, PartPartial } from "./type-utils"
 
 const strToNum = (arg: string) => arg.length
-
-type Exactly<T, X> = { [K in keyof X]: K extends keyof T ? T[K] : never }
 
 interface Rb<G = {}> {
   start(): { goTo: G }
