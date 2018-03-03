@@ -50,10 +50,8 @@
     ]
   },
   "devDependencies": {
-    "@types/history": "^4.6.1",
     "@types/jest": "^22.0.0",
     "@types/node": "^9.0.0",
-    "@types/qs": "^6.5.1",
     "@types/react": "^16.0.18",
     "@types/react-dom": "^16.0.3",
     "@types/react-test-renderer": "^16.0.0",
@@ -80,7 +78,9 @@
     "typescript": "^2.8.0-dev.20180302"
   },
   "dependencies": {
+    "@types/history": "^4.6.1",
     "history": "^4.7.2",
+    "@types/qs": "^6.5.1",
     "qs": "^6.5.1",
     "url-pattern": "^1.0.3"
   },
