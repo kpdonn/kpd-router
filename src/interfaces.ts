@@ -34,7 +34,9 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
     R extends string,
     Q extends string,
     PC extends Exactly<Converters<Props<R, Q>>, PC>,
-    D extends Exactly<Partial<PropTypes<R, Q, PC>>, D>
+    D extends Exactly<Partial<PropTypes<R, Q, PC>>, D>,
+    GTArgs = GoToFunArgs<R, Q, PC, D>,
+    GTFun = {} extends GTArgs ? Record<N, (arg?: GTArgs) => void> : Record<N, (arg: GTArgs) => void>
   >(route: {
     name: N
     path: [string, R[]] | string
@@ -44,8 +46,8 @@ export interface RouterBuilder<T = {}, L = never, S = never> {
     converters?: PC
     component?: ReactComponentCreator<LoadArgs<R, Q, PC, D>>
   }): RouterBuilder<
-    T & GoToFun<N, R, Q, PC, D>,
-    L | ({ route: N } & GoToFunArgs<R, Q, PC, D>),
+    T & GTFun,
+    L | ({ route: N } & GTArgs),
     S | RouteState<N, LoadArgs<R, Q, PC, D>>
   >
 }
@@ -55,16 +57,6 @@ export type GoToFunArgs<
   PC extends Converters<Props<R, Q>>,
   D
 > = PartPartial<PropTypes<R, Q, PC>, Literal<Q> | Literal<keyof D>>
-
-export type GoToFun<
-  N extends string,
-  R extends string,
-  Q extends string,
-  PC extends Converters<Props<R, Q>>,
-  D
-> = {} extends GoToFunArgs<R, Q, PC, D>
-  ? Record<N, (arg?: GoToFunArgs<R, Q, PC, D>) => void>
-  : Record<N, (arg: GoToFunArgs<R, Q, PC, D>) => void>
 
 export type ReactComponentCreator<P> =
   | (new (props: P) => React.Component<any>)
