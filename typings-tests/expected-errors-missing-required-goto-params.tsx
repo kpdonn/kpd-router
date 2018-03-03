@@ -17,10 +17,10 @@ const nr = newRouter({} as any)
     name: "p3",
     path: routerPath`/p3/${"r1"}/${"r2"}`,
     defaults: { r1: 4 },
-    converters: [
-      { names: ["r1"], ...numConverter },
-      { names: ["r2"], ...boolConverter }
-    ]
+    converters: {
+      r1: numConverter,
+      r2: boolConverter,
+    },
   })
   .start()
 

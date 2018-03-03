@@ -20,10 +20,10 @@ newRouter({} as any).addRoute({
       {arg.r1} {arg.q1}{" "}
     </div>
   ),
-  converters: [
-    { names: ["r1"],...numConverter },
-    { names: ["q1"], ...boolConverter}
-  ]
+  converters: {
+    r1: numConverter,
+    q1: boolConverter,
+  },
 })
 
 newRouter({} as any).addRoute({
@@ -39,8 +39,8 @@ newRouter({} as any).addRoute({
   path: routerPath`/noQuery/${"r1"}/${"r2"}`,
   component: P3Comp,
   defaults: { r1: 0, r2: false },
-  converters: [
-    { names: ["r1"], ...numConverter },
-    { names: ["r2"], ...boolConverter }
-  ]
+  converters: {
+    r1: numConverter,
+    r2: boolConverter,
+  },
 })

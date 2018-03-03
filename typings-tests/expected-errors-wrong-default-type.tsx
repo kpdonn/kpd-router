@@ -15,7 +15,9 @@ newRouter({} as any).addRoute({
   path: routerPath`/p1/${"r1"}`,
   queryParams: ["q1"],
   defaults: { r1: "str" },
-  converters: [{ names: ["r1"], ...numConverter }]
+  converters: {
+    r1: numConverter,
+  }
 })
 
 // Would be nice for the following to fail but it currently won't because of

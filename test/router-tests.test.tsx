@@ -234,7 +234,9 @@ function createRouter(initialPath: string = "/") {
       path: routerPath`/people`,
       queryParams: ["page"],
       defaults: { page: 1 },
-      converters: [{ names: ["page"], ...numConverter }],
+      converters: {
+        page: numConverter
+      },
       onLoad: personListOnLoad,
       component: PersonList
     })
