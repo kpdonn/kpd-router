@@ -130,10 +130,11 @@ export interface Route {
   onLoad?: (params: any) => void
   defaults?: { [index: string]: any }
   converters?: {
-    names: string[]
-    toString: (arg: any) => string
-    fromString: (arg: string) => any
-  }[]
+    [index: string]: {
+      toString: (arg: any) => string
+      fromString: (arg: string) => any
+    }
+  }
   component?: React.ComponentType
 }
 

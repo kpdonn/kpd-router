@@ -27,15 +27,13 @@ export class RouteManager {
 
     const urlPattern = new UrlPattern(path)
 
-    const routeConverters = route.converters || []
+    const routeConverters = route.converters || {}
 
     const converterMap = new Map<string, Converter>()
 
-    routeConverters.forEach(rc =>
-      rc.names.forEach(field =>
-        converterMap.set(field, { fromString: rc.fromString, toString: rc.toString })
-      )
-    )
+    Object.keys(routeConverters).forEach(key => {
+      converterMap.set(key, routeConverters[key])
+    })
 
     this.routes.set(route.name, { urlPattern, queryParams, converterMap, defaults })
   }
