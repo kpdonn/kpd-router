@@ -10,10 +10,9 @@ const libraryName = 'kpd-router'
 export default {
   input: `compiled/${libraryName}.js`,
   output: [
-    { file: pkg.main, name: camelCase(libraryName), format: 'umd' },
-    { file: pkg.module, format: 'es' },
+    { file: pkg.main, name: camelCase(libraryName), format: 'umd',   sourcemap: true  },
+    { file: pkg.module, format: 'es',   sourcemap: true  },
   ],
-  sourcemap: true,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: ['mobx', "react", "react-dom", "mobx-react"],
   watch: {
