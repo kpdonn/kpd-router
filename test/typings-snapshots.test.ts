@@ -18,7 +18,8 @@ const tscOptions = [
   "--noUnusedLocals",
   "false",
   "--skipLibCheck",
-  "--allowSyntheticDefaultImports"
+  "--allowSyntheticDefaultImports",
+  "--noErrorTruncation"
 ]
 
 it("Verify output of no-errors matches expected", () => {
